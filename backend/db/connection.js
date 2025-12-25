@@ -11,9 +11,19 @@
 import pkg from 'pg';
 const { Pool } = pkg;
 
+// Kontrola DATABASE_URL
+const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+
+if (!connectionString) {
+    console.error('❌ CHYBA: DATABASE_URL není nastavená!');
+    console.error('💡 Nastav DATABASE_URL jako environment variable na Railway.');
+    console.error('💡 Nebo lokálně: export DATABASE_URL="postgresql://..."');
+    // Neexitujeme, aby aplikace mohla zobrazit lepší chybovou hlášku
+}
+
 // Connection pool pro efektivní správu připojení
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL || process.env.POSTGRES_URL,
+    connectionString: connectionString,
     ssl: process.env.NODE_ENV === 'production' 
         ? { rejectUnauthorized: false } 
         : false,
@@ -29,7 +39,10 @@ pool.on('connect', () => {
 
 pool.on('error', (err) => {
     console.error('❌ Neočekávaná chyba databáze:', err);
-    process.exit(-1);
+    if (!connectionString) {
+        console.error('💡 Zkontroluj, že DATABASE_URL je nastavená na Railway!');
+    }
+    // Neexitujeme, aby aplikace mohla zobrazit chybovou hlášku
 });
 
 export default pool;
