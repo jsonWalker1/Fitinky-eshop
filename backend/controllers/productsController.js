@@ -20,9 +20,9 @@ import {
  * GET /api/categories
  * Vrací všechny kategorie s počtem produktů
  */
-export const getCategories = (req, res) => {
+export const getCategories = async (req, res) => {
     try {
-        const categories = getCategoriesWithProductCount();
+        const categories = await getCategoriesWithProductCount();
         res.json({
             success: true,
             categories
@@ -40,10 +40,10 @@ export const getCategories = (req, res) => {
  * GET /api/categories/:slug
  * Vrací kategorii podle slug
  */
-export const getCategory = (req, res) => {
+export const getCategory = async (req, res) => {
     try {
         const { slug } = req.params;
-        const category = getCategoryBySlug(slug);
+        const category = await getCategoryBySlug(slug);
         
         if (!category) {
             return res.status(404).json({
@@ -69,15 +69,15 @@ export const getCategory = (req, res) => {
  * GET /api/products
  * Vrací všechny produkty nebo produkty podle kategorie
  */
-export const getProducts = (req, res) => {
+export const getProducts = async (req, res) => {
     try {
         const { category } = req.query;
         
         let products;
         if (category) {
-            products = getProductsByCategory(category);
+            products = await getProductsByCategory(category);
         } else {
-            products = getAllProducts();
+            products = await getAllProducts();
         }
         
         res.json({
@@ -97,10 +97,10 @@ export const getProducts = (req, res) => {
  * GET /api/products/:id
  * Vrací produkt podle ID
  */
-export const getProduct = (req, res) => {
+export const getProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const product = getProductById(id);
+        const product = await getProductById(id);
         
         if (!product) {
             return res.status(404).json({

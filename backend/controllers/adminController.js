@@ -1,19 +1,7 @@
 import fs from 'fs';
 import { paths } from '../config/paths.js';
 import path from 'path';
-
-const productsFile = path.join(paths.root, 'backend', 'data', 'products.json');
-
-// Zajistit, že data složka existuje
-const dataDir = path.dirname(productsFile);
-if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-}
-
-// Inicializovat products.json pokud neexistuje
-if (!fs.existsSync(productsFile)) {
-    fs.writeFileSync(productsFile, JSON.stringify({ products: [] }, null, 2));
-}
+import * as productsService from '../services/productsService.js';
 
 /**
  * Controller pro admin rozhraní
@@ -103,12 +91,12 @@ export const getAdminOrders = (req, res) => {
 /**
  * Získá všechny produkty
  */
-export const getProducts = (req, res) => {
+export const getProducts = async (req, res) => {
     try {
-        const data = JSON.parse(fs.readFileSync(productsFile, 'utf8'));
+        const products = await productsService.getAllProducts();
         res.json({
             success: true,
-            products: data.products || []
+            products
         });
     } catch (error) {
         console.error('Chyba při načítání produktů:', error);
@@ -122,7 +110,7 @@ export const getProducts = (req, res) => {
 /**
  * Přidá nový produkt
  */
-export const addProduct = (req, res) => {
+export const addProduct = async (req, res) => {
     try {
         const { name, category, price, description, availabilityStatus } = req.body;
         
@@ -139,19 +127,16 @@ export const addProduct = (req, res) => {
             ? availabilityStatus 
             : 'in_stock'; // default
         
-        const data = JSON.parse(fs.readFileSync(productsFile, 'utf8'));
-        const newProduct = {
-            id: Date.now().toString(),
+        const productData = {
             name,
             category,
+            categorySlug: category,
             price: parseFloat(price),
             description: description || '',
-            availabilityStatus: status,
-            createdAt: new Date().toISOString()
+            availabilityStatus: status
         };
         
-        data.products.push(newProduct);
-        fs.writeFileSync(productsFile, JSON.stringify(data, null, 2));
+        const newProduct = await productsService.addProduct(productData);
         
         res.json({
             success: true,
@@ -170,22 +155,18 @@ export const addProduct = (req, res) => {
 /**
  * Smaže produkt
  */
-export const deleteProduct = (req, res) => {
+export const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
         
-        const data = JSON.parse(fs.readFileSync(productsFile, 'utf8'));
-        const initialLength = data.products.length;
-        data.products = data.products.filter(p => p.id !== id);
+        const deleted = await productsService.deleteProduct(id);
         
-        if (data.products.length === initialLength) {
+        if (!deleted) {
             return res.status(404).json({
                 success: false,
                 error: 'Produkt nenalezen'
             });
         }
-        
-        fs.writeFileSync(productsFile, JSON.stringify(data, null, 2));
         
         res.json({
             success: true,
