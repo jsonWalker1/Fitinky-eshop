@@ -43,10 +43,17 @@ function updateAuthUI() {
     const cartIcon = document.getElementById('cartIcon');
     const ordersMenuItem = document.getElementById('ordersMenuItem');
     
+    // Pokud je uživatel autorizován (přihlášen)
     if (isAuthenticated()) {
-        // Zobrazit odhlášení a jméno
-        if (loginButton) loginButton.classList.remove('visible');
-        if (logoutButton) logoutButton.classList.add('visible');
+        // Skrýt tlačítko "Přihlásit se"
+        if (loginButton) {
+            loginButton.classList.remove('visible');
+        }
+        // Zobrazit tlačítko "Odhlásit se"
+        if (logoutButton) {
+            logoutButton.classList.add('visible');
+        }
+        // Zobrazit uživatelské jméno
         if (userName) {
             // Zkusit získat jméno z userData nebo userName
             let name = 'Uživatel';
@@ -86,10 +93,19 @@ function updateAuthUI() {
         // Košík je vždy viditelný
         if (cartIcon) cartIcon.style.pointerEvents = 'auto';
     } else {
-        // Zobrazit přihlášení
-        if (loginButton) loginButton.classList.add('visible');
-        if (logoutButton) logoutButton.classList.remove('visible');
-        if (userName) userName.classList.remove('visible');
+        // Pokud uživatel NENÍ autorizován (není přihlášen)
+        // Zobrazit tlačítko "Přihlásit se"
+        if (loginButton) {
+            loginButton.classList.add('visible');
+        }
+        // Skrýt tlačítko "Odhlásit se"
+        if (logoutButton) {
+            logoutButton.classList.remove('visible');
+        }
+        // Skrýt uživatelské jméno
+        if (userName) {
+            userName.classList.remove('visible');
+        }
         // Skrýt odkaz na objednávky v menu
         if (ordersMenuItem) ordersMenuItem.classList.remove('visible');
         // Košík je viditelný, ale při kliknutí přesměruje na login
