@@ -37,7 +37,7 @@
     }
     
     // Rozbalit při hoveru na desktopu
-    @media (min-width: $admin-breakpoint-mobile + 1px) {
+    @media (min-width: 769px) {
         &:hover {
             width: $admin-sidebar-width-expanded;
             
