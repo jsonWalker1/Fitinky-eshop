@@ -7,24 +7,19 @@
  */
 
 import * as userAuthService from '../services/userAuthService.js';
-import fs from 'fs';
-import path from 'path';
-import { paths } from '../config/paths.js';
+import * as userRepo from '../repositories/userRepository.js';
 
 /**
  * Získá všechny objednávky
  * GET /admin/api/orders
  */
-export const getAllOrders = (req, res) => {
+export const getAllOrders = async (req, res) => {
     try {
-        const orders = userAuthService.getAllOrders();
+        const orders = await userAuthService.getAllOrders();
         
         // Obohať objednávky o informace o uživateli
-        const usersFile = path.join(paths.root, 'backend', 'data', 'users.json');
-        const data = JSON.parse(fs.readFileSync(usersFile, 'utf8'));
-        
-        const ordersWithUsers = orders.map(order => {
-            const user = data.users.find(u => u.id === order.userId);
+        const ordersWithUsers = await Promise.all(orders.map(async (order) => {
+            const user = await userAuthService.findUserById(order.userId);
             return {
                 ...order,
                 user: user ? {
@@ -34,7 +29,7 @@ export const getAllOrders = (req, res) => {
                     lastName: user.lastName
                 } : null
             };
-        });
+        }));
         
         res.json({
             success: true,
@@ -53,11 +48,10 @@ export const getAllOrders = (req, res) => {
  * Získá objednávku podle ID
  * GET /admin/api/orders/:id
  */
-export const getOrderById = (req, res) => {
+export const getOrderById = async (req, res) => {
     try {
         const { id } = req.params;
-        const orders = userAuthService.getAllOrders();
-        const order = orders.find(o => o.id === id);
+        const order = await userRepo.getOrderById(id);
         
         if (!order) {
             return res.status(404).json({
@@ -66,7 +60,7 @@ export const getOrderById = (req, res) => {
             });
         }
         
-        const user = userAuthService.findUserById(order.userId);
+        const user = await userAuthService.findUserById(order.userId);
         
         res.json({
             success: true,
@@ -95,7 +89,7 @@ export const getOrderById = (req, res) => {
  * Aktualizuje status objednávky
  * PUT /admin/api/orders/:id/status
  */
-export const updateOrderStatus = (req, res) => {
+export const updateOrderStatus = async (req, res) => {
     try {
         const { id } = req.params;
         const { status } = req.body;
@@ -108,7 +102,7 @@ export const updateOrderStatus = (req, res) => {
             });
         }
         
-        const result = userAuthService.updateOrderStatus(id, status);
+        const result = await userAuthService.updateOrderStatus(id, status);
         
         if (!result.success) {
             return res.status(404).json({
@@ -130,4 +124,3 @@ export const updateOrderStatus = (req, res) => {
         });
     }
 };
-

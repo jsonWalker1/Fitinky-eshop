@@ -12,7 +12,7 @@ import * as userAuthService from '../services/userAuthService.js';
  * Uživatelské přihlášení
  * POST /api/auth/login
  */
-export const login = (req, res) => {
+export const login = async (req, res) => {
     const { email, password } = req.body;
     
     if (!email || !password) {
@@ -22,7 +22,7 @@ export const login = (req, res) => {
         });
     }
     
-    const result = userAuthService.verifyCredentials(email, password);
+    const result = await userAuthService.verifyCredentials(email, password);
     
     if (!result.success) {
         return res.status(401).json({
@@ -56,7 +56,7 @@ export const logout = (req, res) => {
  * Registrace nového uživatele
  * POST /api/auth/register
  */
-export const register = (req, res) => {
+export const register = async (req, res) => {
     const { email, password, firstName, lastName, phone } = req.body;
     
     if (!email || !password) {
@@ -66,7 +66,7 @@ export const register = (req, res) => {
         });
     }
     
-    const result = userAuthService.createUser({
+    const result = await userAuthService.createUser({
         email,
         password,
         firstName,
@@ -92,7 +92,7 @@ export const register = (req, res) => {
  * Ověření přihlášení
  * GET /api/auth/verify
  */
-export const verify = (req, res) => {
+export const verify = async (req, res) => {
     // TODO: Ověřit JWT token nebo session
     const userId = req.headers['x-user-id'];
     
@@ -103,7 +103,7 @@ export const verify = (req, res) => {
         });
     }
     
-    const user = userAuthService.findUserById(userId);
+    const user = await userAuthService.findUserById(userId);
     
     if (!user) {
         return res.status(401).json({
@@ -119,4 +119,3 @@ export const verify = (req, res) => {
         user: userWithoutPassword
     });
 };
-

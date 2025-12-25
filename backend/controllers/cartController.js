@@ -27,10 +27,10 @@ const getUserId = (req) => {
  * GET /api/cart
  * Vrací obsah košíku
  */
-export const getCartItems = (req, res) => {
+export const getCartItems = async (req, res) => {
     try {
         const userId = req.userId; // Z auth middleware
-        const cart = getCart(userId);
+        const cart = await getCart(userId);
         
         res.json({
             success: true,
@@ -49,7 +49,7 @@ export const getCartItems = (req, res) => {
  * POST /api/cart/add
  * Přidá produkt do košíku
  */
-export const addItem = (req, res) => {
+export const addItem = async (req, res) => {
     try {
         const userId = req.userId; // Z auth middleware
         const { productId, quantity } = req.body;
@@ -61,7 +61,7 @@ export const addItem = (req, res) => {
             });
         }
         
-        const cart = addToCart(userId, productId, quantity || 1);
+        const cart = await addToCart(userId, productId, quantity || 1);
         
         res.json({
             success: true,
@@ -81,12 +81,12 @@ export const addItem = (req, res) => {
  * DELETE /api/cart/remove/:productId
  * Odstraní produkt z košíku
  */
-export const removeItem = (req, res) => {
+export const removeItem = async (req, res) => {
     try {
         const userId = req.userId; // Z auth middleware
         const { productId } = req.params;
         
-        const cart = removeFromCart(userId, productId);
+        const cart = await removeFromCart(userId, productId);
         
         res.json({
             success: true,
@@ -106,7 +106,7 @@ export const removeItem = (req, res) => {
  * PUT /api/cart/update
  * Aktualizuje množství produktu v košíku
  */
-export const updateItem = (req, res) => {
+export const updateItem = async (req, res) => {
     try {
         const userId = req.userId; // Z auth middleware
         const { productId, quantity } = req.body;
@@ -118,7 +118,7 @@ export const updateItem = (req, res) => {
             });
         }
         
-        const cart = updateCartItem(userId, productId, quantity);
+        const cart = await updateCartItem(userId, productId, quantity);
         
         res.json({
             success: true,
@@ -138,10 +138,10 @@ export const updateItem = (req, res) => {
  * DELETE /api/cart/clear
  * Vyprázdní košík
  */
-export const clearCartItems = (req, res) => {
+export const clearCartItems = async (req, res) => {
     try {
         const userId = req.userId; // Z auth middleware
-        const cart = clearCart(userId);
+        const cart = await clearCart(userId);
         
         res.json({
             success: true,
@@ -161,10 +161,10 @@ export const clearCartItems = (req, res) => {
  * GET /api/cart/count
  * Vrací počet položek v košíku (volitelný - nevyžaduje přihlášení)
  */
-export const getItemCount = (req, res) => {
+export const getItemCount = async (req, res) => {
     try {
         const userId = getUserId(req);
-        const count = getCartItemCount(userId);
+        const count = await getCartItemCount(userId);
         
         res.json({
             success: true,
@@ -178,4 +178,3 @@ export const getItemCount = (req, res) => {
         });
     }
 };
-

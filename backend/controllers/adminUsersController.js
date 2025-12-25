@@ -7,28 +7,25 @@
  */
 
 import * as userAuthService from '../services/userAuthService.js';
-import fs from 'fs';
-import path from 'path';
-import { paths } from '../config/paths.js';
+import * as userRepo from '../repositories/userRepository.js';
 
 /**
  * Získá všechny uživatele
  * GET /admin/api/users
  */
-export const getAllUsers = (req, res) => {
+export const getAllUsers = async (req, res) => {
     try {
-        const usersFile = path.join(paths.root, 'backend', 'data', 'users.json');
-        const data = JSON.parse(fs.readFileSync(usersFile, 'utf8'));
+        const users = await userRepo.getAllUsers();
         
         // Vrátit uživatele bez hesel
-        const users = data.users.map(user => {
+        const usersWithoutPasswords = users.map(user => {
             const { password, ...userWithoutPassword } = user;
             return userWithoutPassword;
         });
         
         res.json({
             success: true,
-            users
+            users: usersWithoutPasswords
         });
     } catch (error) {
         console.error('Chyba při načítání uživatelů:', error);
@@ -43,10 +40,10 @@ export const getAllUsers = (req, res) => {
  * Získá uživatele podle ID
  * GET /admin/api/users/:id
  */
-export const getUserById = (req, res) => {
+export const getUserById = async (req, res) => {
     try {
         const { id } = req.params;
-        const user = userAuthService.findUserById(id);
+        const user = await userAuthService.findUserById(id);
         
         if (!user) {
             return res.status(404).json({
@@ -73,7 +70,7 @@ export const getUserById = (req, res) => {
  * Resetuje heslo uživatele
  * POST /admin/api/users/:id/reset-password
  */
-export const resetUserPassword = (req, res) => {
+export const resetUserPassword = async (req, res) => {
     try {
         const { id } = req.params;
         const { newPassword } = req.body;
@@ -85,7 +82,7 @@ export const resetUserPassword = (req, res) => {
             });
         }
         
-        const result = userAuthService.resetPassword(id, newPassword);
+        const result = await userAuthService.resetPassword(id, newPassword);
         
         if (!result.success) {
             return res.status(404).json({
@@ -111,26 +108,18 @@ export const resetUserPassword = (req, res) => {
  * Smaže uživatele
  * DELETE /admin/api/users/:id
  */
-export const deleteUser = (req, res) => {
+export const deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const usersFile = path.join(paths.root, 'backend', 'data', 'users.json');
-        const data = JSON.parse(fs.readFileSync(usersFile, 'utf8'));
         
-        const initialLength = data.users.length;
-        data.users = data.users.filter(user => user.id !== id);
+        const deleted = await userRepo.deleteUser(id);
         
-        // Odstranit objednávky uživatele
-        data.orders = data.orders.filter(order => order.userId !== id);
-        
-        if (data.users.length === initialLength) {
+        if (!deleted) {
             return res.status(404).json({
                 success: false,
                 error: 'Uživatel nenalezen'
             });
         }
-        
-        fs.writeFileSync(usersFile, JSON.stringify(data, null, 2));
         
         res.json({
             success: true,

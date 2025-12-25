@@ -7,12 +7,13 @@
  */
 
 import * as userAuthService from '../services/userAuthService.js';
+import * as userRepo from '../repositories/userRepository.js';
 
 /**
  * Získá objednávky přihlášeného uživatele
  * GET /api/orders
  */
-export const getUserOrders = (req, res) => {
+export const getUserOrders = async (req, res) => {
     try {
         const userId = req.userId; // Z auth middleware
         
@@ -24,7 +25,7 @@ export const getUserOrders = (req, res) => {
             });
         }
         
-        const orders = userAuthService.getUserOrders(userId);
+        const orders = await userAuthService.getUserOrders(userId);
         
         res.json({
             success: true,
@@ -43,7 +44,7 @@ export const getUserOrders = (req, res) => {
  * Získá detail objednávky uživatele
  * GET /api/orders/:id
  */
-export const getOrderById = (req, res) => {
+export const getOrderById = async (req, res) => {
     try {
         const userId = req.userId; // Z auth middleware
         const { id } = req.params;
@@ -56,13 +57,20 @@ export const getOrderById = (req, res) => {
             });
         }
         
-        const orders = userAuthService.getUserOrders(userId);
-        const order = orders.find(o => o.id === id);
+        const order = await userRepo.getOrderById(id);
         
         if (!order) {
             return res.status(404).json({
                 success: false,
                 error: 'Objednávka nenalezena'
+            });
+        }
+        
+        // Ověřit, že objednávka patří uživateli
+        if (order.userId !== userId) {
+            return res.status(403).json({
+                success: false,
+                error: 'Nemáte přístup k této objednávce'
             });
         }
         
@@ -78,4 +86,3 @@ export const getOrderById = (req, res) => {
         });
     }
 };
-

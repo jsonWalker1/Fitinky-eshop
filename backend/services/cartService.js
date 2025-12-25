@@ -5,132 +5,80 @@
  * Business logika pro práci s košíkem
  * Podle rules.md: services → business logika
  * 
- * Košík je uložen v users.json pro každého uživatele
+ * Používá SQL repository pro přístup k datům
  * ============================================
  */
 
 import { getProductById } from './productsService.js';
-import { getUserCart, saveUserCart } from './userAuthService.js';
-
-/**
- * Vypočítá celkovou cenu košíku
- */
-const calculateTotal = (items) => {
-    return items.reduce((total, item) => {
-        return total + (item.price * item.quantity);
-    }, 0);
-};
+import * as userRepo from '../repositories/userRepository.js';
 
 /**
  * Přidá produkt do košíku (pro přihlášeného uživatele)
  */
-export const addToCart = (userId, productId, quantity = 1) => {
+export const addToCart = async (userId, productId, quantity = 1) => {
     if (!userId) {
         throw new Error('Uživatel musí být přihlášen');
     }
     
-    const product = getProductById(productId);
+    const product = await getProductById(productId);
     
     if (!product) {
         throw new Error('Produkt nenalezen');
     }
     
-    const cart = getUserCart(userId);
-    
-    // Zkontrolovat, jestli produkt už je v košíku
-    const existingItem = cart.items.find(item => item.productId === productId);
-    
-    if (existingItem) {
-        // Zvýšit množství
-        existingItem.quantity += quantity;
-    } else {
-        // Přidat nový produkt
-        cart.items.push({
-            productId: product.id,
-            name: product.name,
-            price: product.price,
-            image: product.image,
-            quantity: quantity
-        });
-    }
-    
-    // Přepočítat celkovou cenu
-    cart.total = calculateTotal(cart.items);
-    
-    saveUserCart(userId, cart);
-    return cart;
+    return await userRepo.addToCart(userId, productId, quantity);
 };
 
 /**
  * Odstraní produkt z košíku
  */
-export const removeFromCart = (userId, productId) => {
+export const removeFromCart = async (userId, productId) => {
     if (!userId) {
         throw new Error('Uživatel musí být přihlášen');
     }
     
-    const cart = getUserCart(userId);
-    cart.items = cart.items.filter(item => item.productId !== productId);
-    cart.total = calculateTotal(cart.items);
-    saveUserCart(userId, cart);
-    return cart;
+    return await userRepo.removeFromCart(userId, productId);
 };
 
 /**
  * Aktualizuje množství produktu v košíku
  */
-export const updateCartItem = (userId, productId, quantity) => {
+export const updateCartItem = async (userId, productId, quantity) => {
     if (!userId) {
         throw new Error('Uživatel musí být přihlášen');
     }
     
-    if (quantity <= 0) {
-        return removeFromCart(userId, productId);
-    }
-    
-    const cart = getUserCart(userId);
-    const item = cart.items.find(item => item.productId === productId);
-    
-    if (item) {
-        item.quantity = quantity;
-        cart.total = calculateTotal(cart.items);
-        saveUserCart(userId, cart);
-    }
-    
-    return cart;
+    return await userRepo.updateCartItem(userId, productId, quantity);
 };
 
 /**
  * Získá košík
  */
-export const getCart = (userId) => {
+export const getCart = async (userId) => {
     if (!userId) {
         return { items: [], total: 0 };
     }
-    return getUserCart(userId);
+    return await userRepo.getUserCart(userId);
 };
 
 /**
  * Vyprázdní košík
  */
-export const clearCart = (userId) => {
+export const clearCart = async (userId) => {
     if (!userId) {
         throw new Error('Uživatel musí být přihlášen');
     }
     
-    const emptyCart = { items: [], total: 0 };
-    saveUserCart(userId, emptyCart);
-    return emptyCart;
+    return await userRepo.clearCart(userId);
 };
 
 /**
  * Získá počet položek v košíku
  */
-export const getCartItemCount = (userId) => {
+export const getCartItemCount = async (userId) => {
     if (!userId) {
         return 0;
     }
-    const cart = getUserCart(userId);
+    const cart = await userRepo.getUserCart(userId);
     return cart.items.reduce((count, item) => count + item.quantity, 0);
 };
-

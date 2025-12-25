@@ -13,7 +13,7 @@ import { getCart } from '../services/cartService.js';
  * Vytvoří objednávku z košíku
  * POST /api/checkout
  */
-export const createOrder = (req, res) => {
+export const createOrder = async (req, res) => {
     try {
         const userId = req.userId; // Z auth middleware
         
@@ -26,7 +26,7 @@ export const createOrder = (req, res) => {
         }
         
         // Získat košík uživatele
-        const cart = getCart(userId);
+        const cart = await getCart(userId);
         
         if (!cart || !cart.items || cart.items.length === 0) {
             return res.status(400).json({
@@ -81,7 +81,7 @@ export const createOrder = (req, res) => {
             dic: req.body.dic || ''
         };
         
-        const result = userAuthService.createOrder(userId, orderData);
+        const result = await userAuthService.createOrder(userId, orderData);
         
         if (!result.success) {
             return res.status(400).json({
@@ -103,5 +103,3 @@ export const createOrder = (req, res) => {
         });
     }
 };
-
-
