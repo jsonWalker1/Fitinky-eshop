@@ -71,32 +71,38 @@ function displayCart(cart) {
     
     // Zobrazení produktů
     const itemsContainer = document.getElementById('cartItems');
-    itemsContainer.innerHTML = cart.items.map(item => `
+    itemsContainer.innerHTML = cart.items.map(item => {
+        // Zajistit, že price je číslo
+        const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
+        const quantity = typeof item.quantity === 'number' ? item.quantity : parseInt(item.quantity) || 1;
+        
+        return `
         <div class="cart-item" data-product-id="${item.productId}">
             <div class="item-image">
                 <img src="${item.image || '/assets/pic/trubka.webp'}" alt="${item.name}">
             </div>
             <div class="item-info">
                 <h3>${item.name}</h3>
-                <div class="item-price">${item.price.toFixed(2)} Kč / ks</div>
+                <div class="item-price">${price.toFixed(2)} Kč / ks</div>
             </div>
             <div class="item-quantity">
-                <button class="quantity-btn" onclick="updateQuantity('${item.productId}', ${item.quantity - 1})">-</button>
-                <input type="number" value="${item.quantity}" min="1" 
+                <button class="quantity-btn" onclick="updateQuantity('${item.productId}', ${quantity - 1})">-</button>
+                <input type="number" value="${quantity}" min="1" 
                        onchange="updateQuantity('${item.productId}', parseInt(this.value))">
-                <button class="quantity-btn" onclick="updateQuantity('${item.productId}', ${item.quantity + 1})">+</button>
+                <button class="quantity-btn" onclick="updateQuantity('${item.productId}', ${quantity + 1})">+</button>
             </div>
             <div class="item-total">
-                <span>${(item.price * item.quantity).toFixed(2)} Kč</span>
+                <span>${(price * quantity).toFixed(2)} Kč</span>
             </div>
             <button class="btn-remove" onclick="removeItem('${item.productId}')">
                 <span>×</span>
             </button>
         </div>
-    `).join('');
+        `;
+    }).join('');
     
     // Výpočet celkové ceny
-    const subtotal = cart.total;
+    const subtotal = typeof cart.total === 'number' ? cart.total : parseFloat(cart.total) || 0;
     const vat = subtotal * 0.21;
     const total = subtotal + vat;
     

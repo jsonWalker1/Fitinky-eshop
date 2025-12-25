@@ -53,14 +53,16 @@ function displayOrderSummary(cart) {
     
     let html = '';
     cart.items.forEach(item => {
+        const price = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
+        const quantity = typeof item.quantity === 'number' ? item.quantity : parseInt(item.quantity) || 1;
         html += `
             <div class="order-item">
                 <div>
                     <strong>${item.name}</strong><br>
-                    <small>${item.quantity}ks x ${item.price.toFixed(2)} Kč</small>
+                    <small>${quantity}ks x ${price.toFixed(2)} Kč</small>
                 </div>
                 <div>
-                    ${(item.quantity * item.price).toFixed(2)} Kč
+                    ${(quantity * price).toFixed(2)} Kč
                 </div>
             </div>
         `;

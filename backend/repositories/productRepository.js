@@ -251,7 +251,7 @@ function mapProductToJSON(row) {
         id: row.id,
         name: row.name,
         description: row.description,
-        price: parseFloat(row.price),
+        price: parseFloat(row.price) || 0,
         image: row.image,
         categoryId: row.category_id,
         categorySlug: row.category_slug || row.category_slug_db,

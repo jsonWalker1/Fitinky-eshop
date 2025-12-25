@@ -104,23 +104,34 @@ function displayOrders(orders) {
                     <div class="order-items">
                         <h4>Položky:</h4>
                         <ul>
-                            ${order.items.map(item => `
+                            ${order.items.map(item => {
+                                const itemPrice = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
+                                const itemQuantity = typeof item.quantity === 'number' ? item.quantity : parseInt(item.quantity) || 1;
+                                return `
                                 <li>
                                     <span class="item-name">${item.name}</span>
-                                    <span class="item-quantity">${item.quantity}ks</span>
-                                    <span class="item-price">${(item.quantity * item.price).toFixed(2)} Kč</span>
+                                    <span class="item-quantity">${itemQuantity}ks</span>
+                                    <span class="item-price">${(itemPrice * itemQuantity).toFixed(2)} Kč</span>
                                 </li>
-                            `).join('')}
+                                `;
+                            }).join('')}
                         </ul>
                     </div>
                     
                     <div class="order-summary">
-                        ${order.subtotal ? `<div class="summary-row"><span>Mezisoučet:</span><span>${order.subtotal.toFixed(2)} Kč</span></div>` : ''}
-                        ${order.shippingPrice !== undefined ? `<div class="summary-row"><span>Doprava:</span><span>${order.shippingPrice.toFixed(2)} Kč</span></div>` : ''}
-                        <div class="summary-row summary-total">
-                            <span><strong>Celkem:</strong></span>
-                            <span><strong>${order.total ? order.total.toFixed(2) : (order.subtotal + (order.shippingPrice || 0)).toFixed(2)} Kč</strong></span>
-                        </div>
+                        ${(() => {
+                            const subtotal = typeof order.subtotal === 'number' ? order.subtotal : parseFloat(order.subtotal) || 0;
+                            const shippingPrice = typeof order.shippingPrice === 'number' ? order.shippingPrice : parseFloat(order.shippingPrice) || 0;
+                            const total = typeof order.total === 'number' ? order.total : parseFloat(order.total) || (subtotal + shippingPrice);
+                            return `
+                                ${subtotal > 0 ? `<div class="summary-row"><span>Mezisoučet:</span><span>${subtotal.toFixed(2)} Kč</span></div>` : ''}
+                                ${shippingPrice > 0 ? `<div class="summary-row"><span>Doprava:</span><span>${shippingPrice.toFixed(2)} Kč</span></div>` : ''}
+                                <div class="summary-row summary-total">
+                                    <span><strong>Celkem:</strong></span>
+                                    <span><strong>${total.toFixed(2)} Kč</strong></span>
+                                </div>
+                            `;
+                        })()}
                     </div>
                     
                     ${order.shippingAddress ? `
@@ -200,14 +211,19 @@ window.viewOrderDetails = async function(orderId) {
             
             details += `Položky:\n`;
             order.items.forEach(item => {
-                details += `- ${item.name}: ${item.quantity}ks x ${item.price.toFixed(2)} Kč = ${(item.quantity * item.price).toFixed(2)} Kč\n`;
+                const itemPrice = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0;
+                const itemQuantity = typeof item.quantity === 'number' ? item.quantity : parseInt(item.quantity) || 1;
+                details += `- ${item.name}: ${itemQuantity}ks x ${itemPrice.toFixed(2)} Kč = ${(itemQuantity * itemPrice).toFixed(2)} Kč\n`;
             });
             
-            details += `\nMezisoučet: ${order.subtotal ? order.subtotal.toFixed(2) : '0.00'} Kč\n`;
-            if (order.shippingPrice) {
-                details += `Doprava: ${order.shippingPrice.toFixed(2)} Kč\n`;
+            const orderSubtotal = typeof order.subtotal === 'number' ? order.subtotal : parseFloat(order.subtotal) || 0;
+            const orderShippingPrice = typeof order.shippingPrice === 'number' ? order.shippingPrice : parseFloat(order.shippingPrice) || 0;
+            const orderTotal = typeof order.total === 'number' ? order.total : parseFloat(order.total) || (orderSubtotal + orderShippingPrice);
+            details += `\nMezisoučet: ${orderSubtotal.toFixed(2)} Kč\n`;
+            if (orderShippingPrice > 0) {
+                details += `Doprava: ${orderShippingPrice.toFixed(2)} Kč\n`;
             }
-            details += `Celkem: ${order.total ? order.total.toFixed(2) : (order.subtotal + (order.shippingPrice || 0)).toFixed(2)} Kč\n`;
+            details += `Celkem: ${orderTotal.toFixed(2)} Kč\n`;
             
             if (order.note) {
                 details += `\nPoznámka: ${order.note}`;

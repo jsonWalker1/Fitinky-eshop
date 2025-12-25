@@ -113,7 +113,7 @@ function displayProducts(products) {
             <div class="product-info">
                 <h3>${product.name}</h3>
                 <p class="product-description">${product.description || ''}</p>
-                <div class="product-price">${product.price.toFixed(2)} Kč</div>
+                <div class="product-price">${(typeof product.price === 'number' ? product.price : parseFloat(product.price) || 0).toFixed(2)} Kč</div>
                 ${status === 'in_stock' ? `<div class="product-availability product-available">✓ Skladem</div>` : ''}
                 ${status === 'on_order' ? `<div class="product-availability product-on-order">⏱ Na objednávku</div>` : ''}
                 ${status === 'out_of_stock' ? `<div class="product-availability product-out-of-stock">✗ Nedostupné</div>` : ''}

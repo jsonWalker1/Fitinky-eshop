@@ -188,11 +188,11 @@ export const getUserCart = async (userId) => {
 
         const items = result.rows.map(row => ({
             productId: row.product_id,
-            name: row.product_name,
-            price: parseFloat(row.product_price),
+            name: row.product_name || 'Neznámý produkt',
+            price: parseFloat(row.product_price) || 0,
             image: row.product_image,
-            quantity: row.quantity
-        }));
+            quantity: row.quantity || 1
+        })).filter(item => item.price > 0); // Filtrovat položky bez ceny (smazané produkty)
 
         const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
@@ -393,7 +393,7 @@ export const getOrderById = async (orderId) => {
         order.items = itemsResult.rows.map(row => ({
             productId: row.product_id,
             name: row.product_name,
-            price: parseFloat(row.product_price),
+            price: parseFloat(row.product_price) || 0,
             image: row.product_image,
             quantity: row.quantity
         }));
