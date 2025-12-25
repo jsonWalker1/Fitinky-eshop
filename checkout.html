@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokračovat k objednávce - Eshop</title>
+    <link rel="stylesheet" href="/sass/main.css">
+    <style>
+        .checkout-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 768px) {
+            .checkout-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .form-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-section h2 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #666;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+        .company-fields {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #ddd;
+        }
+        .company-fields.show {
+            display: block;
+        }
+        .order-summary {
+            background: #f5f5f5;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        .summary-total {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #333;
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        .btn-submit:hover {
+            background: #5568d3;
+        }
+        .btn-submit:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .error-message {
+            color: #e74c3c;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        .error-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="mainContainer">
+        <header>
+            <div class="logo">
+                <a href="/" class="menu-icon">
+                    <img src="/assets/pic/logo.png" alt="logo">
+                </a>
+            </div>
+            
+            <button class="hamburger" aria-label="Menu" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <div class="header-menu" id="headerMenu">
+                <nav class="header-menu">
+                    <ul>
+                        <li><a href="/">Domů</a></li>
+                        <li><a href="/products">Produkty</a></li>
+                        <li><a href="#about">O nás</a></li>
+                        <li><a href="#contact">Kontakt</a></li>
+                        <li id="ordersMenuItem" style="display: none;"><a href="/orders">Moje objednávky</a></li>
+                    </ul>
+                </nav>
+            </div>
+            
+            <div class="right-menu">
+                <a href="/cart" class="menu-icon cart-icon" id="cartIcon" aria-label="Košík">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 18C5.9 18 5.01 18.9 5.01 20C5.01 21.1 5.9 22 7 22C8.1 22 9 21.1 9 20C9 18.9 8.1 18 7 18ZM1 2V4H3L6.6 11.59L5.25 14.04C5.09 14.32 5 14.65 5 15C5 16.1 5.9 17 7 17H19V15H7.42C7.28 15 7.17 14.89 7.17 14.75L7.2 14.63L8.1 13H15.55C16.3 13 16.96 12.59 17.3 11.97L20.88 5.48C20.96 5.34 21 5.17 21 5C21 4.45 20.55 4 20 4H5.21L4.27 2H1ZM17 18C15.9 18 15.01 18.9 15.01 20C15.01 21.1 15.9 22 17 22C18.1 22 19 21.1 19 20C19 18.9 18.1 18 17 18Z" fill="currentColor"/>
+                    </svg>
+                    <span class="cart-badge" id="cartBadge">0</span>
+                </a>
+                
+                <button class="login" id="loginButton" style="display: none;">
+                    <a href="/login">Přihlášení</a>
+                </button>
+                <button class="login" id="logoutButton" style="display: none;">
+                    <a href="#" onclick="handleLogout(event)">Odhlásit se</a>
+                </button>
+            </div>
+        </header>
+        
+        <main>
+            <div class="checkout-container">
+                <h1>Dokončení objednávky</h1>
+                
+                <div class="checkout-grid">
+                    <div class="checkout-form">
+                        <form id="checkoutForm">
+                            <!-- Kontaktní údaje -->
+                            <div class="form-section">
+                                <h2>Kontaktní údaje</h2>
+                                <div class="form-group">
+                                    <label for="firstName">Jméno *</label>
+                                    <input type="text" id="firstName" name="firstName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Příjmení *</label>
+                                    <input type="text" id="lastName" name="lastName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Telefon *</label>
+                                    <input type="tel" id="phone" name="phone" required>
+                                </div>
+                            </div>
+                            
+                            <!-- Dodací adresa -->
+                            <div class="form-section">
+                                <h2>Dodací adresa</h2>
+                                <div class="form-group">
+                                    <label for="street">Ulice a číslo *</label>
+                                    <input type="text" id="street" name="street" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="city">Město *</label>
+                                    <input type="text" id="city" name="city" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="postalCode">PSČ *</label>
+                                    <input type="text" id="postalCode" name="postalCode" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="country">Země *</label>
+                                    <input type="text" id="country" name="country" value="Česká republika" required>
+                                </div>
+                            </div>
+                            
+                            <!-- Nákup na firmu -->
+                            <div class="form-section">
+                                <h2>Fakturace</h2>
+                                <div class="form-group checkbox-group">
+                                    <input type="checkbox" id="isCompany" name="isCompany">
+                                    <label for="isCompany">Nákup na firmu</label>
+                                </div>
+                                
+                                <div class="company-fields" id="companyFields">
+                                    <div class="form-group">
+                                        <label for="companyName">Název firmy *</label>
+                                        <input type="text" id="companyName" name="companyName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ico">IČO *</label>
+                                        <input type="text" id="ico" name="ico">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="dic">DIČ</label>
+                                        <input type="text" id="dic" name="dic">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Doprava -->
+                            <div class="form-section">
+                                <h2>Způsob dopravy</h2>
+                                <div class="form-group">
+                                    <select id="shipping" name="shipping" required>
+                                        <option value="">Vyberte způsob dopravy</option>
+                                        <option value="standard">Standardní doprava (150 Kč)</option>
+                                        <option value="express">Expresní doprava (250 Kč)</option>
+                                        <option value="pickup">Osobní odběr (0 Kč)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Platba -->
+                            <div class="form-section">
+                                <h2>Způsob platby</h2>
+                                <div class="form-group">
+                                    <select id="payment" name="payment" required>
+                                        <option value="">Vyberte způsob platby</option>
+                                        <option value="card">Kreditní karta</option>
+                                        <option value="transfer">Bankovní převod</option>
+                                        <option value="cash">Hotově při převzetí</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Poznámka -->
+                            <div class="form-section">
+                                <h2>Poznámka k objednávce</h2>
+                                <div class="form-group">
+                                    <textarea id="note" name="note" rows="4" placeholder="Volitelná poznámka..."></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="error-message" id="errorMessage"></div>
+                            
+                            <button type="submit" class="btn-submit" id="submitBtn">
+                                Dokončit objednávku
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Shrnutí objednávky -->
+                    <div class="order-summary">
+                        <h2>Shrnutí objednávky</h2>
+                        <div id="orderSummaryItems"></div>
+                        <div class="summary-total">
+                            <span>Celkem:</span>
+                            <span id="orderTotal">0 Kč</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script type="module" src="/src/js/main.js"></script>
+    <script type="module" src="/src/js/checkout.js"></script>
+</body>
+</html>
+
+

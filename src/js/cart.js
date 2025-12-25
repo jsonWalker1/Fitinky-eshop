@@ -1,0 +1,243 @@
+/**
+ * ============================================
+ * CART PAGE LOGIC
+ * ============================================
+ * JavaScript pro stránku košíku
+ * ============================================
+ */
+
+import { isAuthenticated, getUserId, requireAuth } from './auth.js';
+import { handleLogout } from './main.js';
+
+const API_BASE = '/api';
+
+window.handleLogout = handleLogout;
+
+// Zkontrolovat přihlášení při načtení stránky
+document.addEventListener('DOMContentLoaded', async () => {
+    if (!await requireAuth()) {
+        return; // requireAuth přesměruje na login
+    }
+    loadCart();
+    updateCartBadge();
+});
+
+// Načtení košíku
+async function loadCart() {
+    if (!isAuthenticated()) {
+        showError('Pro zobrazení košíku se musíte přihlásit');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE}/cart`, {
+            headers: {
+                'X-User-Id': getUserId()
+            }
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            displayCart(data.cart);
+        } else {
+            if (data.requiresAuth) {
+                showError('Pro zobrazení košíku se musíte přihlásit');
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 2000);
+            } else {
+                showError('Chyba při načítání košíku');
+            }
+        }
+    } catch (error) {
+        console.error('Chyba:', error);
+        showError('Chyba připojení k serveru');
+    }
+}
+
+// Zobrazení košíku
+function displayCart(cart) {
+    const emptyCart = document.getElementById('emptyCart');
+    const cartContent = document.getElementById('cartContent');
+    
+    if (cart.items.length === 0) {
+        emptyCart.style.display = 'block';
+        cartContent.style.display = 'none';
+        return;
+    }
+    
+    emptyCart.style.display = 'none';
+    cartContent.style.display = 'block';
+    
+    // Zobrazení produktů
+    const itemsContainer = document.getElementById('cartItems');
+    itemsContainer.innerHTML = cart.items.map(item => `
+        <div class="cart-item" data-product-id="${item.productId}">
+            <div class="item-image">
+                <img src="${item.image || '/assets/pic/trubka.webp'}" alt="${item.name}">
+            </div>
+            <div class="item-info">
+                <h3>${item.name}</h3>
+                <div class="item-price">${item.price.toFixed(2)} Kč / ks</div>
+            </div>
+            <div class="item-quantity">
+                <button class="quantity-btn" onclick="updateQuantity('${item.productId}', ${item.quantity - 1})">-</button>
+                <input type="number" value="${item.quantity}" min="1" 
+                       onchange="updateQuantity('${item.productId}', parseInt(this.value))">
+                <button class="quantity-btn" onclick="updateQuantity('${item.productId}', ${item.quantity + 1})">+</button>
+            </div>
+            <div class="item-total">
+                <span>${(item.price * item.quantity).toFixed(2)} Kč</span>
+            </div>
+            <button class="btn-remove" onclick="removeItem('${item.productId}')">
+                <span>×</span>
+            </button>
+        </div>
+    `).join('');
+    
+    // Výpočet celkové ceny
+    const subtotal = cart.total;
+    const vat = subtotal * 0.21;
+    const total = subtotal + vat;
+    
+    document.getElementById('subtotal').textContent = subtotal.toFixed(2) + ' Kč';
+    document.getElementById('vat').textContent = vat.toFixed(2) + ' Kč';
+    document.getElementById('total').textContent = total.toFixed(2) + ' Kč';
+}
+
+// Aktualizace množství
+window.updateQuantity = async function(productId, quantity) {
+    if (!isAuthenticated()) {
+        alert('Pro úpravu košíku se musíte přihlásit');
+        window.location.href = '/login';
+        return;
+    }
+    
+    if (quantity < 1) {
+        removeItem(productId);
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE}/cart/update`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-User-Id': getUserId()
+            },
+            body: JSON.stringify({ productId, quantity })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            displayCart(data.cart);
+            updateCartBadge();
+        }
+    } catch (error) {
+        console.error('Chyba:', error);
+    }
+};
+
+// Odstranění produktu
+window.removeItem = async function(productId) {
+    if (!isAuthenticated()) {
+        alert('Pro úpravu košíku se musíte přihlásit');
+        window.location.href = '/login';
+        return;
+    }
+    
+    if (!confirm('Opravdu chcete odstranit tento produkt z košíku?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE}/cart/remove/${productId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-User-Id': getUserId()
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            displayCart(data.cart);
+            updateCartBadge();
+        }
+    } catch (error) {
+        console.error('Chyba:', error);
+    }
+};
+
+// Přesměrování na checkout
+document.getElementById('checkoutBtn')?.addEventListener('click', () => {
+    if (!isAuthenticated()) {
+        alert('Pro dokončení objednávky se musíte přihlásit');
+        window.location.href = '/login';
+        return;
+    }
+    window.location.href = '/checkout';
+});
+
+document.getElementById('clearCartBtn')?.addEventListener('click', async () => {
+    if (!isAuthenticated()) {
+        alert('Pro úpravu košíku se musíte přihlásit');
+        window.location.href = '/login';
+        return;
+    }
+    
+    if (!confirm('Opravdu chcete vyprázdnit košík?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE}/cart/clear`, {
+            method: 'DELETE',
+            headers: {
+                'X-User-Id': getUserId()
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            displayCart(data.cart);
+            updateCartBadge();
+        }
+    } catch (error) {
+        console.error('Chyba:', error);
+    }
+});
+
+// Aktualizace badge v headeru
+async function updateCartBadge() {
+    try {
+        const headers = {};
+        if (isAuthenticated()) {
+            headers['X-User-Id'] = getUserId();
+        }
+        
+        const response = await fetch(`${API_BASE}/cart/count`, {
+            headers: headers
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            const badge = document.getElementById('cartBadge');
+            if (badge) {
+                badge.textContent = data.count;
+                badge.style.display = data.count > 0 ? 'block' : 'none';
+            }
+        }
+    } catch (error) {
+        console.error('Chyba při načítání počtu:', error);
+    }
+}
+
+// Zobrazení chyby
+function showError(message) {
+    const container = document.querySelector('.cart-section .container');
+    container.innerHTML = `<p class="error">${message}</p>`;
+}
+

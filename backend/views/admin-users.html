@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Správa uživatelů - Admin</title>
+    <link rel="stylesheet" href="/sass/admin.css">
+</head>
+<body>
+    <div class="admin-header">
+        <h1>Správa uživatelů</h1>
+        <div>
+            <a href="/admin/dashboard" style="color: #667eea; text-decoration: none; margin-right: 1rem;">Dashboard</a>
+            <a href="/admin/orders" style="color: #667eea; text-decoration: none; margin-right: 1rem;">Objednávky</a>
+            <a href="/" style="color: #667eea; text-decoration: none;">← Zpět na eshop</a>
+        </div>
+    </div>
+    
+    <div class="admin-container">
+        <div class="admin-section">
+            <h2>Seznam uživatelů</h2>
+            <div class="message" id="message"></div>
+            <div class="users-list" id="usersList">
+                <p>Načítám uživatele...</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE = '/admin/api';
+        
+        // Načtení uživatelů
+        async function loadUsers() {
+            try {
+                const response = await fetch(`${API_BASE}/users`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayUsers(data.users);
+                } else {
+                    showMessage('Chyba při načítání uživatelů', 'error');
+                }
+            } catch (error) {
+                showMessage('Chyba připojení k serveru', 'error');
+            }
+        }
+        
+        // Zobrazení uživatelů
+        function displayUsers(users) {
+            const list = document.getElementById('usersList');
+            
+            if (users.length === 0) {
+                list.innerHTML = '<p>Žádní uživatelé.</p>';
+                return;
+            }
+            
+            list.innerHTML = users.map(user => `
+                <div class="user-item">
+                    <div class="user-info">
+                        <h3>${user.firstName} ${user.lastName}</h3>
+                        <p><strong>Email:</strong> ${user.email}</p>
+                        ${user.phone ? `<p><strong>Telefon:</strong> ${user.phone}</p>` : ''}
+                        <p><strong>Registrace:</strong> ${new Date(user.createdAt).toLocaleDateString('cs-CZ')}</p>
+                        <p><strong>Košík:</strong> ${user.cart?.items?.length || 0} položek</p>
+                        <p><strong>Objednávky:</strong> ${user.orders?.length || 0}</p>
+                    </div>
+                    <div class="user-actions">
+                        <button class="btn btn-secondary" onclick="resetPassword('${user.id}')">Resetovat heslo</button>
+                        <button class="btn btn-danger" onclick="deleteUser('${user.id}', '${user.email}')">Smazat</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Reset hesla
+        window.resetPassword = async function(userId) {
+            const newPassword = prompt('Zadejte nové heslo (min. 6 znaků):');
+            
+            if (!newPassword || newPassword.length < 6) {
+                alert('Heslo musí mít minimálně 6 znaků');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/users/${userId}/reset-password`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ newPassword })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage('Heslo bylo úspěšně resetováno', 'success');
+                } else {
+                    showMessage(data.error || 'Chyba při resetování hesla', 'error');
+                }
+            } catch (error) {
+                showMessage('Chyba připojení k serveru', 'error');
+            }
+        };
+        
+        // Smazání uživatele
+        window.deleteUser = async function(userId, userEmail) {
+            if (!confirm(`Opravdu chcete smazat uživatele ${userEmail}? Tato akce je nevratná.`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/users/${userId}`, {
+                    method: 'DELETE'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage('Uživatel úspěšně smazán', 'success');
+                    loadUsers();
+                } else {
+                    showMessage(data.error || 'Chyba při mazání uživatele', 'error');
+                }
+            } catch (error) {
+                showMessage('Chyba připojení k serveru', 'error');
+            }
+        };
+        
+        // Zobrazení zprávy
+        function showMessage(text, type) {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = text;
+            messageEl.className = `message ${type} show`;
+            setTimeout(() => {
+                messageEl.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Načtení uživatelů při načtení stránky
+        loadUsers();
+    </script>
+</body>
+</html>
+

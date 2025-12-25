@@ -1,0 +1,107 @@
+// ============================================
+// ADMIN LOGIN COMPONENT
+// ============================================
+// Styly pro admin přihlašovací stránku
+//
+// HTML struktura:
+//   <div class="login-container">
+//     <div class="login-box">...</div>
+//   </div>
+//
+// ============================================
+
+@use '../../mixins' as *;
+
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem;
+}
+
+.login-box {
+    background: white;
+    padding: 3rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 100%;
+    
+    h1 {
+        @include text-heading(2rem, 600, #333, 2rem);
+        @include text-center;
+    }
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #333;
+        font-weight: 500;
+    }
+    
+    input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease;
+        
+        &:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+    }
+}
+
+.error-message {
+    color: #e74c3c;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    display: none;
+    
+    &.show {
+        display: block;
+    }
+}
+
+.btn-login {
+    width: 100%;
+    padding: 0.75rem;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    
+    &:hover {
+        background: #5568d3;
+    }
+    
+    &:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+    }
+}
+
+// Responzivní design
+@media (max-width: 480px) {
+    .login-container {
+        padding: 1rem;
+    }
+    
+    .login-box {
+        padding: 2rem 1.5rem;
+    }
+}
+

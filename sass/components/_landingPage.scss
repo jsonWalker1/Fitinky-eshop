@@ -1,0 +1,166 @@
+// ============================================
+// LANDING PAGE COMPONENT
+// ============================================
+// Styly pro landing page včetně hero sekce, features a CTA.
+//
+// HTML struktura:
+//   <main>
+//     <section class="hero">...</section>
+//     <section class="features">...</section>
+//     <section class="cta">...</section>
+//   </main>
+//
+// Používá mixiny z _mixins.scss
+//
+// ============================================
+
+@use '../mixins' as *;
+
+// Hero section
+.hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 2rem;
+    text-align: center;
+    
+    @media (max-width: 768px) {
+        min-height: 60vh;
+        padding: 1.5rem;
+    }
+}
+
+.hero-content {
+    max-width: 800px;
+    
+    h1 {
+        @include text-heading(3rem, 700, #fff, 1rem);
+        
+        @media (max-width: 768px) {
+            @include text-heading(2rem, 700, #fff, 1rem);
+        }
+        
+        @media (max-width: 480px) {
+            @include text-heading(1.5rem, 700, #fff, 1rem);
+        }
+    }
+    
+    p {
+        @include text-body(1.25rem, #fff, 1.6, 2rem);
+        
+        @media (max-width: 768px) {
+            @include text-body(1.1rem, #fff, 1.6, 1.5rem);
+        }
+        
+        @media (max-width: 480px) {
+            @include text-body(1rem, #fff, 1.6, 1.5rem);
+        }
+    }
+}
+
+// Features section
+.features {
+    padding: 4rem 2rem;
+    background-color: #f8f9fa;
+    
+    @media (max-width: 768px) {
+        padding: 3rem 1.5rem;
+    }
+    
+    @media (max-width: 480px) {
+        padding: 2rem 1rem;
+    }
+}
+
+.features h2 {
+    @include text-heading(2.5rem, 600, #333, 3rem);
+    @include text-center;
+    
+    @media (max-width: 768px) {
+        @include text-heading(2rem, 600, #333, 2rem);
+    }
+    
+    @media (max-width: 480px) {
+        @include text-heading(1.5rem, 600, #333, 1.5rem);
+    }
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+.feature-card {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    
+    h3 {
+        @include text-heading(1.5rem, 600, #333, 1rem);
+    }
+    
+    p {
+        @include text-body(1rem, #666, 1.6);
+    }
+}
+
+// CTA section
+.cta {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    @include text-center;
+    color: #fff;
+    
+    @media (max-width: 768px) {
+        padding: 3rem 1.5rem;
+    }
+    
+    @media (max-width: 480px) {
+        padding: 2rem 1rem;
+    }
+    
+    h2 {
+        @include text-heading(2.5rem, 600, #fff, 1rem);
+        
+        @media (max-width: 768px) {
+            @include text-heading(2rem, 600, #fff, 1rem);
+        }
+        
+        @media (max-width: 480px) {
+            @include text-heading(1.5rem, 600, #fff, 1rem);
+        }
+    }
+    
+    p {
+        @include text-body(1.25rem, #fff, 1.6, 2rem);
+        
+        @media (max-width: 768px) {
+            @include text-body(1.1rem, #fff, 1.6, 1.5rem);
+        }
+        
+        @media (max-width: 480px) {
+            @include text-body(1rem, #fff, 1.6, 1.5rem);
+        }
+    }
+}
+
+// Buttons - používají mixiny
+.btn {
+    @include button-base;
+}
+
+.btn-primary {
+    @include button-primary;
+}
+
+.btn-secondary {
+    @include button-secondary;
+}

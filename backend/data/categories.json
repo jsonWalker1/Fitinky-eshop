@@ -1,0 +1,47 @@
+{
+  "categories": [
+    {
+      "id": "1",
+      "name": "Spojky a redukce",
+      "slug": "spojky-redukce",
+      "description": "Spojky a redukce pro vodovodní potrubí",
+      "image": "/assets/pic/trubka.webp"
+    },
+    {
+      "id": "2",
+      "name": "Tvarovky",
+      "slug": "tvarovky",
+      "description": "Různé tvarovky pro změnu směru potrubí",
+      "image": "/assets/pic/trubka.webp"
+    },
+    {
+      "id": "3",
+      "name": "Kohouty a ventily",
+      "slug": "kohouty-ventily",
+      "description": "Kohouty a ventily pro regulaci průtoku vody",
+      "image": "/assets/pic/trubka.webp"
+    },
+    {
+      "id": "4",
+      "name": "Těsnění a O-kroužky",
+      "slug": "tesneni-krouzky",
+      "description": "Těsnění a O-kroužky pro vodotěsné spoje",
+      "image": "/assets/pic/trubka.webp"
+    },
+    {
+      "id": "5",
+      "name": "Adaptéry a přechody",
+      "slug": "adaptery-prechody",
+      "description": "Adaptéry pro přechod mezi různými typy závitů",
+      "image": "/assets/pic/trubka.webp"
+    },
+    {
+      "id": "6",
+      "name": "Závitové spojky",
+      "slug": "zavitove-spojky",
+      "description": "Závitové spojky pro pevné spoje potrubí",
+      "image": "/assets/pic/trubka.webp"
+    }
+  ]
+}
+

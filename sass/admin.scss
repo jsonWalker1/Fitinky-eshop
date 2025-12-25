@@ -1,0 +1,19 @@
+// ============================================
+// ADMIN SCSS FILE
+// ============================================
+// Hlavní Sass soubor pro admin rozhraní
+//
+// Struktura:
+// 1. Variables - proměnné
+// 2. Mixins - znovupoužitelné mixiny
+// 3. Base - základní styly
+// 4. Components - admin komponenty
+//
+// ============================================
+
+@use 'variables';
+@use 'mixins';
+@use 'base';
+@use 'components/admin/login';
+@use 'components/admin/dashboard';
+

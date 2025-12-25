@@ -1,0 +1,108 @@
+/**
+ * ============================================
+ * USER REPOSITORY (PŘÍKLAD)
+ * ============================================
+ * Podle rules.md: repositories → práce s DB (Prisma)
+ * 
+ * Toto je příklad, jak by vypadaly repository soubory
+ * s Prismou místo JSON souborů.
+ * ============================================
+ */
+
+import prisma from '../db/prisma.js';
+
+/**
+ * Najde uživatele podle emailu
+ */
+export const findUserByEmail = async (email) => {
+    return await prisma.user.findUnique({
+        where: { email },
+        include: {
+            cartItems: {
+                include: {
+                    product: true
+                }
+            },
+            orders: {
+                include: {
+                    items: true
+                }
+            }
+        }
+    });
+};
+
+/**
+ * Najde uživatele podle ID
+ */
+export const findUserById = async (id) => {
+    return await prisma.user.findUnique({
+        where: { id },
+        include: {
+            cartItems: {
+                include: {
+                    product: true
+                }
+            }
+        }
+    });
+};
+
+/**
+ * Vytvoří nového uživatele
+ */
+export const createUser = async (userData) => {
+    return await prisma.user.create({
+        data: {
+            email: userData.email,
+            password: userData.password, // TODO: Hashovat před uložením
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            phone: userData.phone,
+            addressStreet: userData.address?.street,
+            addressCity: userData.address?.city,
+            addressPostalCode: userData.address?.postalCode,
+            addressCountry: userData.address?.country || 'Česká republika',
+        }
+    });
+};
+
+/**
+ * Aktualizuje heslo uživatele
+ */
+export const updateUserPassword = async (userId, newPassword) => {
+    return await prisma.user.update({
+        where: { id: userId },
+        data: { password: newPassword } // TODO: Hashovat před uložením
+    });
+};
+
+/**
+ * Smaže uživatele
+ */
+export const deleteUser = async (userId) => {
+    return await prisma.user.delete({
+        where: { id: userId }
+    });
+};
+
+/**
+ * Vrátí všechny uživatele (pro admin)
+ */
+export const getAllUsers = async () => {
+    return await prisma.user.findMany({
+        select: {
+            id: true,
+            email: true,
+            firstName: true,
+            lastName: true,
+            phone: true,
+            createdAt: true,
+            // Nezahrnout password
+        },
+        orderBy: {
+            createdAt: 'desc'
+        }
+    });
+};
+

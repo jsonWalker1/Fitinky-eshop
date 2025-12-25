@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Správa objednávek - Admin</title>
+    <link rel="stylesheet" href="/sass/admin.css">
+</head>
+<body>
+    <div class="admin-header">
+        <h1>Správa objednávek</h1>
+        <div>
+            <a href="/admin/dashboard" style="color: #667eea; text-decoration: none; margin-right: 1rem;">Dashboard</a>
+            <a href="/admin/users" style="color: #667eea; text-decoration: none; margin-right: 1rem;">Uživatelé</a>
+            <a href="/" style="color: #667eea; text-decoration: none;">← Zpět na eshop</a>
+        </div>
+    </div>
+    
+    <div class="admin-container">
+        <div class="admin-section">
+            <h2>Seznam objednávek</h2>
+            <div class="message" id="message"></div>
+            <div class="orders-list" id="ordersList">
+                <p>Načítám objednávky...</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE = '/admin/api';
+        
+        const statusLabels = {
+            'pending': 'Čeká',
+            'processing': 'Zpracovává se',
+            'shipped': 'Odesláno',
+            'delivered': 'Doručeno',
+            'cancelled': 'Zrušeno'
+        };
+        
+        const statusColors = {
+            'pending': '#f39c12',
+            'processing': '#3498db',
+            'shipped': '#9b59b6',
+            'delivered': '#27ae60',
+            'cancelled': '#e74c3c'
+        };
+        
+        // Načtení objednávek
+        async function loadOrders() {
+            try {
+                const response = await fetch(`${API_BASE}/orders`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayOrders(data.orders);
+                } else {
+                    showMessage('Chyba při načítání objednávek', 'error');
+                }
+            } catch (error) {
+                showMessage('Chyba připojení k serveru', 'error');
+            }
+        }
+        
+        // Zobrazení objednávek
+        function displayOrders(orders) {
+            const list = document.getElementById('ordersList');
+            
+            if (orders.length === 0) {
+                list.innerHTML = '<p>Žádné objednávky.</p>';
+                return;
+            }
+            
+            list.innerHTML = orders.map(order => `
+                <div class="order-item">
+                    <div class="order-info">
+                        <h3>Objednávka #${order.id}</h3>
+                        <p><strong>Uživatel:</strong> ${order.contactInfo ? `${order.contactInfo.firstName} ${order.contactInfo.lastName} (${order.contactInfo.email})` : order.user ? `${order.user.firstName} ${order.user.lastName} (${order.user.email})` : 'Neznámý uživatel'}</p>
+                        <p><strong>Datum:</strong> ${new Date(order.createdAt).toLocaleString('cs-CZ')}</p>
+                        <p><strong>Položek:</strong> ${order.items.length}</p>
+                        ${order.shipping ? `<p><strong>Doprava:</strong> ${order.shipping === 'standard' ? 'Standardní' : order.shipping === 'express' ? 'Expresní' : 'Osobní odběr'}</p>` : ''}
+                        ${order.payment ? `<p><strong>Platba:</strong> ${order.payment === 'card' ? 'Kreditní karta' : order.payment === 'transfer' ? 'Bankovní převod' : 'Hotově'}</p>` : ''}
+                        ${order.shippingPrice ? `<p><strong>Cena dopravy:</strong> ${order.shippingPrice.toFixed(2)} Kč</p>` : ''}
+                        <p><strong>Celkem:</strong> ${order.total ? order.total.toFixed(2) : order.subtotal ? (order.subtotal + (order.shippingPrice || 0)).toFixed(2) : '0.00'} Kč</p>
+                        ${order.company ? `<p><strong>Firma:</strong> ${order.company.name} (IČO: ${order.company.ico})</p>` : ''}
+                        <p>
+                            <strong>Status:</strong> 
+                            <span style="color: ${statusColors[order.status] || '#333'}; font-weight: 600;">
+                                ${statusLabels[order.status] || order.status}
+                            </span>
+                        </p>
+                    </div>
+                    <div class="order-actions">
+                        <select id="status-${order.id}" onchange="updateStatus('${order.id}')" style="padding: 0.5rem; margin-bottom: 0.5rem; width: 100%;">
+                            <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Čeká</option>
+                            <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>Zpracovává se</option>
+                            <option value="shipped" ${order.status === 'shipped' ? 'selected' : ''}>Odesláno</option>
+                            <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>Doručeno</option>
+                            <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Zrušeno</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="viewOrderDetails('${order.id}')">Detaily</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Aktualizace statusu objednávky
+        window.updateStatus = async function(orderId) {
+            const select = document.getElementById(`status-${orderId}`);
+            const newStatus = select.value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/orders/${orderId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage('Status objednávky aktualizován', 'success');
+                    loadOrders();
+                } else {
+                    showMessage(data.error || 'Chyba při aktualizaci statusu', 'error');
+                    loadOrders(); // Obnovit původní hodnotu
+                }
+            } catch (error) {
+                showMessage('Chyba připojení k serveru', 'error');
+                loadOrders(); // Obnovit původní hodnotu
+            }
+        };
+        
+        // Zobrazení detailu objednávky
+        window.viewOrderDetails = async function(orderId) {
+            try {
+                const response = await fetch(`${API_BASE}/orders/${orderId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const order = data.order;
+                    let details = `Objednávka #${order.id}\n\n`;
+                    details += `Uživatel: ${order.contactInfo ? `${order.contactInfo.firstName} ${order.contactInfo.lastName} (${order.contactInfo.email})` : order.user ? `${order.user.firstName} ${order.user.lastName} (${order.user.email})` : 'Neznámý'}\n`;
+                    details += `Telefon: ${order.contactInfo?.phone || 'Neznámý'}\n`;
+                    details += `Datum: ${new Date(order.createdAt).toLocaleString('cs-CZ')}\n`;
+                    details += `Status: ${statusLabels[order.status] || order.status}\n\n`;
+                    
+                    if (order.shippingAddress) {
+                        details += `Dodací adresa:\n`;
+                        details += `${order.shippingAddress.street || ''}\n`;
+                        details += `${order.shippingAddress.postalCode || ''} ${order.shippingAddress.city || ''}\n`;
+                        details += `${order.shippingAddress.country || ''}\n\n`;
+                    }
+                    
+                    if (order.company) {
+                        details += `Firma:\n`;
+                        details += `Název: ${order.company.name}\n`;
+                        details += `IČO: ${order.company.ico}\n`;
+                        if (order.company.dic) details += `DIČ: ${order.company.dic}\n`;
+                        details += `\n`;
+                    }
+                    
+                    details += `Doprava: ${order.shipping === 'standard' ? 'Standardní' : order.shipping === 'express' ? 'Expresní' : 'Osobní odběr'}\n`;
+                    details += `Platba: ${order.payment === 'card' ? 'Kreditní karta' : order.payment === 'transfer' ? 'Bankovní převod' : 'Hotově'}\n\n`;
+                    
+                    details += `Položky:\n`;
+                    order.items.forEach(item => {
+                        details += `- ${item.name}: ${item.quantity}ks x ${item.price.toFixed(2)} Kč = ${(item.quantity * item.price).toFixed(2)} Kč\n`;
+                    });
+                    details += `\nMezisoučet: ${order.subtotal ? order.subtotal.toFixed(2) : order.total ? order.total.toFixed(2) : '0.00'} Kč\n`;
+                    if (order.shippingPrice) {
+                        details += `Doprava: ${order.shippingPrice.toFixed(2)} Kč\n`;
+                    }
+                    details += `Celkem: ${order.total ? order.total.toFixed(2) : order.subtotal ? (order.subtotal + (order.shippingPrice || 0)).toFixed(2) : '0.00'} Kč\n`;
+                    
+                    if (order.note) {
+                        details += `\nPoznámka: ${order.note}`;
+                    }
+                    
+                    alert(details);
+                } else {
+                    showMessage('Chyba při načítání detailu objednávky', 'error');
+                }
+            } catch (error) {
+                showMessage('Chyba připojení k serveru', 'error');
+            }
+        };
+        
+        // Zobrazení zprávy
+        function showMessage(text, type) {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = text;
+            messageEl.className = `message ${type} show`;
+            setTimeout(() => {
+                messageEl.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Načtení objednávek při načtení stránky
+        loadOrders();
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,129 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// MODELS
+// ============================================
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String
+  slug        String    @unique
+  description String?
+  image       String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  
+  products    Product[]
+  
+  @@map("categories")
+}
+
+model Product {
+  id                Int       @id @default(autoincrement())
+  name              String
+  description       String?
+  price             Decimal   @db.Decimal(10, 2)
+  image             String?
+  categoryId        Int?      @map("category_id")
+  availabilityStatus String   @default("available") @map("availability_status")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+  
+  category          Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  cartItems         CartItem[]
+  orderItems        OrderItem[]
+  
+  @@map("products")
+  @@index([categoryId])
+  @@index([availabilityStatus])
+}
+
+model User {
+  id              Int       @id @default(autoincrement())
+  email           String    @unique
+  password        String
+  firstName       String?   @map("first_name")
+  lastName        String?   @map("last_name")
+  phone           String?
+  addressStreet   String?   @map("address_street")
+  addressCity     String?   @map("address_city")
+  addressPostalCode String? @map("address_postal_code")
+  addressCountry  String?   @default("Česká republika") @map("address_country")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  
+  cartItems       CartItem[]
+  orders          Order[]
+  
+  @@map("users")
+  @@index([email])
+}
+
+model CartItem {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  productId Int      @map("product_id")
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, productId])
+  @@map("cart_items")
+  @@index([userId])
+}
+
+model Order {
+  id              Int       @id @default(autoincrement())
+  userId          Int       @map("user_id")
+  orderNumber     String    @unique @map("order_number")
+  status          String    @default("pending")
+  totalPrice      Decimal   @db.Decimal(10, 2) @map("total_price")
+  shippingAddress Json?     @map("shipping_address")
+  billingAddress  Json?     @map("billing_address")
+  shippingMethod  String?   @map("shipping_method")
+  paymentMethod   String?   @map("payment_method")
+  companyName     String?   @map("company_name")
+  companyIco      String?   @map("company_ico")
+  companyDic      String?   @map("company_dic")
+  note            String?
+  contactInfo     Json?     @map("contact_info")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  
+  user            User      @relation(fields: [userId], references: [id])
+  items           OrderItem[]
+  
+  @@map("orders")
+  @@index([userId])
+  @@index([status])
+  @@index([orderNumber])
+}
+
+model OrderItem {
+  id          Int      @id @default(autoincrement())
+  orderId     Int      @map("order_id")
+  productId   Int?     @map("product_id")
+  productName String   @map("product_name")
+  productPrice Decimal @db.Decimal(10, 2) @map("product_price")
+  quantity    Int
+  createdAt   DateTime @default(now()) @map("created_at")
+  
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  
+  @@map("order_items")
+  @@index([orderId])
+}
+

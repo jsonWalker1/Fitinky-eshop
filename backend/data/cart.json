@@ -1,0 +1,44 @@
+{
+  "carts": {
+    "session-1766421583069": {
+      "items": [
+        {
+          "productId": "1",
+          "name": "Přímá spojka 1/2\"",
+          "price": 45.9,
+          "image": "/assets/pic/trubka.webp",
+          "quantity": 3
+        },
+        {
+          "productId": "2",
+          "name": "Redukce 3/4\" na 1/2\"",
+          "price": 52.5,
+          "image": "/assets/pic/trubka.webp",
+          "quantity": 2
+        },
+        {
+          "productId": "11",
+          "name": "Redukce 1\" na 3/4\"",
+          "price": 68.5,
+          "image": "/assets/pic/trubka.webp",
+          "quantity": 2
+        },
+        {
+          "productId": "8",
+          "name": "O-kroužek 1/2\"",
+          "price": 8.5,
+          "image": "/assets/pic/trubka.webp",
+          "quantity": 3
+        },
+        {
+          "productId": "7",
+          "name": "Těsnění 1/2\"",
+          "price": 12.9,
+          "image": "/assets/pic/trubka.webp",
+          "quantity": 3
+        }
+      ],
+      "total": 443.9
+    }
+  }
+}

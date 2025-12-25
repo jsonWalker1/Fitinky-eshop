@@ -1,0 +1,24 @@
+// ============================================
+// MAIN CONTAINER COMPONENT
+// ============================================
+// Styly pro hlavní kontejner stránky.
+//
+// HTML struktura:
+//   <main>...</main>
+//
+// ============================================
+
+main {
+    width: 100vw;
+    min-height: 100vh;
+    background: url(/assets/pic/28ae60de-7568-4e68-a2f3-5c985597d5af.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover; // Použít cover místo 100% 100% aby se nedeformovalo
+    background-attachment: fixed; // Fixní pozadí při scrollování
+    
+    @media (max-width: 768px) {
+        background-attachment: scroll; // Na mobilu scrollovat s obsahem
+        background-size: cover;
+    }
+}

@@ -1,0 +1,27 @@
+// ============================================
+// MAIN SCSS FILE
+// ============================================
+// Tento soubor importuje všechny Sass partials.
+// Pořadí importů je důležité!
+//
+// 1. Variables - proměnné (barvy, spacing, atd.)
+// 2. Mixins - znovupoužitelné mixiny
+// 3. Base - základní reset a globální styly
+// 4. Layout - layout styly
+// 5. Components - komponenty (header, footer, atd.)
+//
+// Při přidávání nových komponent nezapomeňte je přidat sem!
+//
+// ============================================
+
+@use 'variables';
+@use 'mixins';
+@use 'base';
+@use 'layout';
+@use 'components/header';
+@use 'components/footer';
+@use 'components/mainCon';
+@use 'components/landingPage';
+@use 'components/products';
+@use 'components/cart';
+@use 'components/orders';

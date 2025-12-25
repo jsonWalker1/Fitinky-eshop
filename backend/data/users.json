@@ -1,0 +1,141 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "user@example.com",
+      "password": "user123",
+      "firstName": "Jan",
+      "lastName": "Novák",
+      "phone": "+420 123 456 789",
+      "address": {
+        "street": "Hlavní 123",
+        "city": "Praha",
+        "postalCode": "120 00",
+        "country": "Česká republika"
+      },
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "cart": {
+        "items": [
+          {
+            "productId": "6",
+            "name": "Pojistný ventil 3/4\"",
+            "price": 245,
+            "image": "/assets/pic/trubka.webp",
+            "quantity": 1
+          },
+          {
+            "productId": "5",
+            "name": "Kulový kohout 1/2\"",
+            "price": 189.9,
+            "image": "/assets/pic/trubka.webp",
+            "quantity": 7
+          }
+        ],
+        "total": 1574.3
+      },
+      "orders": [
+        "1766424464591",
+        "1766424714274"
+      ]
+    }
+  ],
+  "orders": [
+    {
+      "id": "1766424464591",
+      "userId": "1",
+      "items": [
+        {
+          "productId": "4",
+          "name": "T-kus 1/2\"",
+          "price": 65,
+          "image": "/assets/pic/trubka.webp",
+          "quantity": 24
+        },
+        {
+          "productId": "12",
+          "name": "Roh 45° 3/4\"",
+          "price": 48.9,
+          "image": "/assets/pic/trubka.webp",
+          "quantity": 99
+        },
+        {
+          "productId": "3",
+          "name": "Roh 90° 1/2\"",
+          "price": 38.9,
+          "image": "/assets/pic/trubka.webp",
+          "quantity": 99
+        },
+        {
+          "productId": "8",
+          "name": "O-kroužek 1/2\"",
+          "price": 8.5,
+          "image": "/assets/pic/trubka.webp",
+          "quantity": 1
+        }
+      ],
+      "subtotal": 10260.699999999999,
+      "shippingPrice": 150,
+      "total": 10410.699999999999,
+      "status": "shipped",
+      "createdAt": "2025-12-22T17:27:44.591Z",
+      "shippingAddress": {
+        "street": "Hlavní 123",
+        "city": "Praha",
+        "postalCode": "120 00",
+        "country": "Česká republika"
+      },
+      "contactInfo": {
+        "firstName": "Jan",
+        "lastName": "Novák",
+        "email": "user@example.com",
+        "phone": "+420 123 456 789"
+      },
+      "shipping": "standard",
+      "payment": "transfer",
+      "note": "at to fugnuje ",
+      "company": null,
+      "updatedAt": "2025-12-22T20:38:20.827Z"
+    },
+    {
+      "id": "1766424714274",
+      "userId": "1",
+      "items": [
+        {
+          "productId": "8",
+          "name": "O-kroužek 1/2\"",
+          "price": 8.5,
+          "image": "/assets/pic/trubka.webp",
+          "quantity": 2
+        },
+        {
+          "productId": "7",
+          "name": "Těsnění 1/2\"",
+          "price": 12.9,
+          "image": "/assets/pic/trubka.webp",
+          "quantity": 2
+        }
+      ],
+      "subtotal": 42.8,
+      "shippingPrice": 250,
+      "total": 292.8,
+      "status": "pending",
+      "createdAt": "2025-12-22T17:31:54.274Z",
+      "shippingAddress": {
+        "street": "Hlavní 123",
+        "city": "Praha",
+        "postalCode": "120 00",
+        "country": "Česká republika"
+      },
+      "contactInfo": {
+        "firstName": "Jan",
+        "lastName": "Novák",
+        "email": "user@example.com",
+        "phone": "+420 123 456 789"
+      },
+      "shipping": "express",
+      "payment": "card",
+      "note": "",
+      "company": null
+    }
+  ]
+}

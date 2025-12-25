@@ -1,0 +1,38 @@
+{
+  "name": "eshop-admin-gui",
+  "version": "1.0.0",
+  "description": "Eshop Admin GUI",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "sass:watch": "sass sass/main.scss sass/main.css --watch & sass sass/admin.scss sass/admin.css --watch",
+    "sass:compile": "sass sass/main.scss sass/main.css && sass sass/admin.scss sass/admin.css",
+    "server": "node backend/server.js",
+    "server:admin": "node backend/adminServer.js",
+    "server:all": "node backend/start-servers.js",
+    "server:stop": "node backend/stop-servers.js",
+    "dev:server": "node backend/server.js",
+    "test": "node backend/tests/test-endpoints.js",
+    "build:css": "npm run sass:compile",
+    "start": "npm run build:css && node backend/start-servers.js",
+    "start:main": "npm run build:css && node backend/server.js",
+    "start:admin": "npm run build:css && node backend/adminServer.js",
+    "db:migrate": "node backend/db/migrate.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "prisma:deploy": "prisma migrate deploy"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.19.0",
+    "express": "^4.22.1",
+    "pg": "^8.16.3",
+    "sass": "^1.69.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.19.0",
+    "vite": "^5.0.0"
+  }
+}
