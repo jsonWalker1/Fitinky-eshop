@@ -1,5 +1,5 @@
 # Procfile pro Railway
-# Tento soubor spustí oba servery současně
+# Spustí hlavní server (obsahuje i admin rozhraní na /admin/*)
 # Railway automaticky použije PORT env variable
 
 web: npm start

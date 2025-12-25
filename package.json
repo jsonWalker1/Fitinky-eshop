@@ -16,7 +16,7 @@
     "dev:server": "node backend/server.js",
     "test": "node backend/tests/test-endpoints.js",
     "build:css": "npm run sass:compile",
-    "start": "npm run build:css && node backend/start-servers.js",
+    "start": "npm run build:css && node backend/server.js",
     "start:main": "npm run build:css && node backend/server.js",
     "start:admin": "npm run build:css && node backend/adminServer.js",
     "db:migrate": "node backend/db/migrate.js",
