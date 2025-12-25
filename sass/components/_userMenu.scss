@@ -17,12 +17,23 @@
 
 @use '../mixins' as *;
 
-// Login/Logout tlačítka
+// Login/Logout tlačítka - výchozí stav je skrytý
 .login {
     // Výchozí stav: skrytý (zobrazí se pomocí JS)
     display: none;
     
     // Třída pro zobrazení
+    &.visible {
+        display: inline-block;
+    }
+}
+
+// Specifičtější selektory pro ID tlačítka v right-menu
+// Toto má vyšší specifičnost než .right-menu .login z _header.scss
+.right-menu #loginButton,
+.right-menu #logoutButton {
+    display: none;
+    
     &.visible {
         display: inline-block;
     }

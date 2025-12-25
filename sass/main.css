@@ -1676,6 +1676,15 @@ main {
   display: inline-block;
 }
 
+.right-menu #loginButton,
+.right-menu #logoutButton {
+  display: none;
+}
+.right-menu #loginButton.visible,
+.right-menu #logoutButton.visible {
+  display: inline-block;
+}
+
 #userName {
   display: none;
   margin-right: 1rem;
