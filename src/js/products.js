@@ -58,7 +58,7 @@ window.loadCategoryProducts = async function(slug) {
     try {
         // Skrýt kategorie, zobrazit produkty
         document.getElementById('categoriesGrid').style.display = 'none';
-        document.getElementById('productsContainer').style.display = 'block';
+        document.getElementById('productsContainer').classList.add('visible');
         
         // Načíst kategorii pro název
         const categoryResponse = await fetch(`${API_BASE}/categories/${slug}`);
@@ -138,7 +138,7 @@ function displayProducts(products) {
 // Zpět na kategorie
 window.backToCategories = function() {
     document.getElementById('categoriesGrid').style.display = 'grid';
-    document.getElementById('productsContainer').style.display = 'none';
+    document.getElementById('productsContainer').classList.remove('visible');
 };
 
 // Správa množství

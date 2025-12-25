@@ -1,0 +1,178 @@
+// ============================================
+// ADMIN MIXINS
+// ============================================
+// Mixiny specifické pro admin rozhraní
+// Použití: @use 'adminMixins' as *;
+//
+// ============================================
+
+@use 'adminVariables' as *;
+
+// Card mixin - pro statistiky a widgety
+@mixin admin-card {
+    background: $admin-card-bg;
+    border-radius: $admin-radius-md;
+    padding: $admin-spacing-lg;
+    box-shadow: $admin-shadow-sm;
+    transition: box-shadow $admin-transition-base, transform $admin-transition-base;
+    
+    &:hover {
+        box-shadow: $admin-shadow-md;
+        transform: translateY(-2px);
+    }
+}
+
+// Statistiky widget
+@mixin admin-stat-card($icon-color: $admin-primary) {
+    @include admin-card;
+    
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: $admin-radius-md;
+        background: rgba($icon-color, 0.1);
+        color: $icon-color;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: $admin-font-size-2xl;
+        margin-bottom: $admin-spacing-md;
+    }
+    
+    .stat-value {
+        font-size: $admin-font-size-3xl;
+        font-weight: 700;
+        color: $admin-text-primary;
+        margin-bottom: $admin-spacing-xs;
+    }
+    
+    .stat-label {
+        font-size: $admin-font-size-sm;
+        color: $admin-text-secondary;
+        font-weight: 500;
+    }
+    
+    .stat-change {
+        font-size: $admin-font-size-xs;
+        margin-top: $admin-spacing-sm;
+        
+        &.positive {
+            color: $admin-success;
+        }
+        
+        &.negative {
+            color: $admin-danger;
+        }
+    }
+}
+
+// Sidebar link mixin
+@mixin admin-sidebar-link {
+    color: $admin-text-white;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: $admin-spacing-md;
+    border-radius: $admin-radius-sm;
+    transition: background $admin-transition-base;
+    
+    &:hover {
+        background: $admin-sidebar-hover;
+    }
+    
+    &.active {
+        background: rgba($admin-primary, 0.2);
+        color: $admin-primary;
+    }
+    
+    .material-symbols-outlined {
+        font-size: 24px;
+        margin-right: $admin-spacing-md;
+        flex-shrink: 0;
+    }
+    
+    span:not(.material-symbols-outlined) {
+        opacity: 0;
+        transition: opacity $admin-transition-slow;
+    }
+}
+
+// Button mixiny pro admin
+@mixin admin-btn($bg-color: $admin-primary, $hover-color: $admin-primary-hover) {
+    padding: $admin-spacing-sm $admin-spacing-lg;
+    background: $bg-color;
+    color: $admin-text-white;
+    border: none;
+    border-radius: $admin-radius-sm;
+    font-size: $admin-font-size-base;
+    font-weight: 600;
+    font-family: $admin-font-family;
+    cursor: pointer;
+    transition: background $admin-transition-base, transform $admin-transition-fast;
+    
+    &:hover {
+        background: $hover-color;
+        transform: translateY(-1px);
+    }
+    
+    &:active {
+        transform: translateY(0);
+    }
+    
+    &:disabled {
+        background: $admin-text-light;
+        cursor: not-allowed;
+        transform: none;
+    }
+}
+
+@mixin admin-btn-secondary {
+    @include admin-btn($admin-text-secondary, darken($admin-text-secondary, 10%));
+}
+
+@mixin admin-btn-danger {
+    @include admin-btn($admin-danger, darken($admin-danger, 10%));
+}
+
+// Form input mixin
+@mixin admin-input {
+    width: 100%;
+    padding: $admin-spacing-sm $admin-spacing-md;
+    border: 1px solid #ddd;
+    border-radius: $admin-radius-sm;
+    font-size: $admin-font-size-base;
+    font-family: $admin-font-family;
+    box-sizing: border-box;
+    transition: border-color $admin-transition-base, box-shadow $admin-transition-base;
+    
+    &:focus {
+        outline: none;
+        border-color: $admin-primary;
+        box-shadow: 0 0 0 3px rgba($admin-primary, 0.1);
+    }
+}
+
+// Text mixiny
+@mixin admin-text-heading($size: $admin-font-size-2xl, $weight: 600) {
+    font-size: $size;
+    font-weight: $weight;
+    color: $admin-text-primary;
+    font-family: $admin-font-family;
+    line-height: 1.2;
+}
+
+@mixin admin-text-body($size: $admin-font-size-base, $color: $admin-text-secondary) {
+    font-size: $size;
+    color: $color;
+    font-family: $admin-font-family;
+    line-height: 1.6;
+}
+
+// Responsive mixin
+@mixin admin-mobile {
+    @media (max-width: $admin-breakpoint-mobile) {
+        @content;
+    }
+}
+

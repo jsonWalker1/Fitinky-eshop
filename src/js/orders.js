@@ -95,7 +95,7 @@ function displayOrders(orders) {
                         <h3>Objednávka #${order.id}</h3>
                         <span class="order-date">${formatDate(order.createdAt)}</span>
                     </div>
-                    <div class="order-status" style="color: ${statusColor};">
+                    <div class="order-status status-${status}" data-status="${status}">
                         <strong>${statusLabel}</strong>
                     </div>
                 </div>

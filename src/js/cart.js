@@ -61,13 +61,13 @@ function displayCart(cart) {
     const cartContent = document.getElementById('cartContent');
     
     if (cart.items.length === 0) {
-        emptyCart.style.display = 'block';
-        cartContent.style.display = 'none';
+        emptyCart.classList.add('visible');
+        cartContent.classList.remove('visible');
         return;
     }
     
-    emptyCart.style.display = 'none';
-    cartContent.style.display = 'block';
+    emptyCart.classList.remove('visible');
+    cartContent.classList.add('visible');
     
     // Zobrazení produktů
     const itemsContainer = document.getElementById('cartItems');

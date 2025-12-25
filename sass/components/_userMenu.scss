@@ -1,0 +1,88 @@
+// ============================================
+// USER MENU COMPONENT
+// ============================================
+// Styly pro uživatelské menu (login/logout tlačítka, userName span).
+// Tyto komponenty jsou dynamicky zobrazovány/skrývány pomocí JavaScriptu.
+//
+// HTML struktura:
+//   <button class="login" id="loginButton">...</button>
+//   <button class="login" id="logoutButton">...</button>
+//   <span id="userName">...</span>
+//
+// JavaScript třídy pro zobrazení/skrytí:
+//   - .hidden - skrýt prvek (display: none)
+//   - .visible - zobrazit prvek (display: inline-block/inline)
+//
+// ============================================
+
+@use '../mixins' as *;
+
+// Login/Logout tlačítka
+.login {
+    // Výchozí stav: skrytý (zobrazí se pomocí JS)
+    display: none;
+    
+    // Třída pro zobrazení
+    &.visible {
+        display: inline-block;
+    }
+}
+
+// Uživatelské jméno
+#userName {
+    // Výchozí stav: skrytý
+    display: none;
+    margin-right: 1rem;
+    color: #333;
+    font-weight: 500;
+    
+    // Třída pro zobrazení
+    &.visible {
+        display: inline-block;
+    }
+    
+    // Odkaz v userName
+    a {
+        color: inherit;
+        text-decoration: none;
+        
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+// Orders menu item - skrytý výchozí stav
+#ordersMenuItem {
+    // Výchozí stav: skrytý (zobrazí se po přihlášení)
+    display: none;
+    
+    // Třída pro zobrazení
+    &.visible {
+        display: list-item;
+    }
+}
+
+// Empty cart a cart content - skryté výchozí stavy
+#emptyCart,
+#cartContent {
+    // Výchozí stav: skrytý (zobrazí se pomocí JS)
+    display: none;
+    
+    // Třída pro zobrazení
+    &.visible {
+        display: block;
+    }
+}
+
+// Products container - skrytý výchozí stav
+#productsContainer {
+    // Výchozí stav: skrytý (zobrazí se při výběru kategorie)
+    display: none;
+    
+    // Třída pro zobrazení
+    &.visible {
+        display: block;
+    }
+}
+

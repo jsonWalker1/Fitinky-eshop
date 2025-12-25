@@ -1,0 +1,174 @@
+// ============================================
+// ADMIN SIDEBAR COMPONENT
+// ============================================
+// Sidebar navigace pro admin rozhraní
+// Při hoveru se rozbalí z 65px na 260px
+// Na mobilu se převede na hamburger menu
+//
+// HTML struktura:
+//   <aside class="admin-sidebar">
+//     <div class="sidebar-header">...</div>
+//     <ul class="sidebar-links">...</ul>
+//     <div class="sidebar-user">...</div>
+//   </aside>
+//
+// ============================================
+
+@use '../../adminVariables' as *;
+@use '../../adminMixins' as *;
+
+.admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: $admin-sidebar-width-collapsed;
+    background: $admin-sidebar-bg;
+    padding: $admin-spacing-md $admin-spacing-sm;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none; // Firefox
+    transition: width $admin-transition-slow;
+    z-index: 1000;
+    
+    // Skrýt scrollbar pro Webkit (Chrome, Safari)
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    
+    // Rozbalit při hoveru na desktopu
+    @media (min-width: $admin-breakpoint-mobile + 1px) {
+        &:hover {
+            width: $admin-sidebar-width-expanded;
+            
+            .sidebar-header h2,
+            .sidebar-links li a span:not(.material-symbols-outlined),
+            .sidebar-section-title,
+            .sidebar-user .user-info {
+                opacity: 1;
+            }
+        }
+    }
+    
+    // Na mobilu - hamburger menu
+    @include admin-mobile {
+        width: 0;
+        transform: translateX(-100%);
+        transition: transform $admin-transition-slow;
+        
+        &.open {
+            transform: translateX(0);
+            width: $admin-sidebar-width-expanded;
+        }
+    }
+}
+
+// Sidebar header (logo + název)
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    padding: $admin-spacing-lg 0;
+    margin-bottom: $admin-spacing-lg;
+    border-bottom: 1px solid rgba($admin-text-white, 0.1);
+    
+    img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-left: calc(($admin-sidebar-width-collapsed - 30px) / 2);
+        flex-shrink: 0;
+        transition: margin $admin-transition-slow;
+    }
+    
+    h2 {
+        @include admin-text-heading($admin-font-size-lg, 600);
+        color: $admin-text-white;
+        margin-left: $admin-spacing-lg;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity $admin-transition-slow;
+    }
+}
+
+// Sidebar links
+.sidebar-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    
+    .sidebar-section-title {
+        @include admin-text-body($admin-font-size-xs, rgba($admin-text-white, 0.7));
+        font-weight: 600;
+        text-transform: uppercase;
+        padding: $admin-spacing-md;
+        margin-top: $admin-spacing-lg;
+        margin-bottom: $admin-spacing-sm;
+        opacity: 0;
+        transition: opacity $admin-transition-slow;
+        white-space: nowrap;
+    }
+    
+    li {
+        margin-bottom: $admin-spacing-xs;
+        
+        a {
+            @include admin-sidebar-link;
+        }
+    }
+}
+
+// Sidebar user account (dole)
+.sidebar-user {
+    margin-top: auto;
+    padding-top: $admin-spacing-lg;
+    border-top: 1px solid rgba($admin-text-white, 0.1);
+    padding: $admin-spacing-lg $admin-spacing-sm;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: $admin-sidebar-bg;
+    
+    .user-profile {
+        display: flex;
+        align-items: center;
+        
+        img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-left: calc(($admin-sidebar-width-collapsed - 40px) / 2);
+            transition: margin $admin-transition-slow;
+        }
+        
+        .user-info {
+            margin-left: $admin-spacing-md;
+            opacity: 0;
+            transition: opacity $admin-transition-slow;
+            white-space: nowrap;
+            
+            h3 {
+                @include admin-text-body($admin-font-size-base, $admin-text-white);
+                font-weight: 500;
+                margin: 0;
+            }
+            
+            span {
+                @include admin-text-body($admin-font-size-xs, rgba($admin-text-white, 0.7));
+            }
+        }
+    }
+}
+
+// Opravit header a user info při hoveru
+.admin-sidebar:hover {
+    .sidebar-header img {
+        margin-left: 0;
+    }
+    
+    .sidebar-user .user-profile img {
+        margin-left: 0;
+    }
+}
+

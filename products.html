@@ -28,7 +28,7 @@
                         <li><a href="/products">Produkty</a></li>
                         <li><a href="#about">O nás</a></li>
                         <li><a href="#contact">Kontakt</a></li>
-                        <li id="ordersMenuItem" style="display: none;"><a href="/orders">Moje objednávky</a></li>
+                        <li id="ordersMenuItem"><a href="/orders">Moje objednávky</a></li>
                     </ul>
                 </nav>
             </div>
@@ -45,13 +45,13 @@
                     <img src="/assets/pic/personalicon.bmp" alt="profil">
                 </a>
                 
-                <button class="login" id="loginButton" style="display: none;">
+                <button class="login" id="loginButton">
                     <a href="/login">Přihlášení</a>
                 </button>
-                <button class="login" id="logoutButton" style="display: none;">
+                <button class="login" id="logoutButton">
                     <a href="#" onclick="handleLogout(event)">Odhlásit se</a>
                 </button>
-                <span id="userName" style="display: none; margin-right: 1rem; color: #333; font-weight: 500;"></span>
+                <span id="userName"></span>
             </div>
         </header>
         
@@ -67,7 +67,7 @@
                     </div>
                     
                     <!-- Produkty podle kategorie -->
-                    <div id="productsContainer" style="display: none;">
+                    <div id="productsContainer">
                         <div class="products-header">
                             <button class="btn-back" onclick="backToCategories()">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

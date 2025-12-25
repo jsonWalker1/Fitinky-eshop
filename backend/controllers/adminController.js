@@ -2,6 +2,7 @@ import fs from 'fs';
 import { paths } from '../config/paths.js';
 import path from 'path';
 import * as productsService from '../services/productsService.js';
+import * as userRepo from '../repositories/userRepository.js';
 
 /**
  * Controller pro admin rozhraní
@@ -27,7 +28,7 @@ export const getAdminLogin = (req, res) => {
 };
 
 /**
- * Načte admin dashboard
+ * Načte admin dashboard (homepage s statistikami)
  */
 export const getAdminDashboard = (req, res) => {
     try {
@@ -41,6 +42,25 @@ export const getAdminDashboard = (req, res) => {
         }
     } catch (error) {
         console.error('Chyba při načítání admin dashboard:', error);
+        res.status(500).send('Chyba při načítání stránky');
+    }
+};
+
+/**
+ * Načte admin products stránku (správa produktů)
+ */
+export const getAdminProducts = (req, res) => {
+    try {
+        const productsPath = path.join(paths.root, 'backend', 'views', 'admin-products.html');
+        if (fs.existsSync(productsPath)) {
+            const productsContent = fs.readFileSync(productsPath, 'utf8');
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
+            res.send(productsContent);
+        } else {
+            res.status(404).send('Admin products stránka nenalezena');
+        }
+    } catch (error) {
+        console.error('Chyba při načítání admin products:', error);
         res.status(500).send('Chyba při načítání stránky');
     }
 };
@@ -177,6 +197,78 @@ export const deleteProduct = async (req, res) => {
         res.status(500).json({
             success: false,
             error: 'Chyba při mazání produktu'
+        });
+    }
+};
+
+/**
+ * Získá statistiky pro dashboard
+ * GET /admin/api/dashboard
+ */
+export const getDashboardStats = async (req, res) => {
+    try {
+        // Získat všechny produkty
+        const products = await productsService.getAllProducts();
+        
+        // Získat všechny objednávky
+        const orders = await userRepo.getAllOrders();
+        const activeOrders = orders.filter(o => 
+            o.status === 'pending' || o.status === 'processing'
+        );
+        
+        // Získat všechny uživatele
+        const users = await userRepo.getAllUsers();
+        
+        // Spočítat tržby dnes
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const todayOrders = orders.filter(o => {
+            const orderDate = new Date(o.createdAt);
+            orderDate.setHours(0, 0, 0, 0);
+            return orderDate.getTime() === today.getTime() && 
+                   (o.status === 'delivered' || o.status === 'shipped');
+        });
+        const todayRevenue = todayOrders.reduce((sum, o) => sum + (parseFloat(o.total) || 0), 0);
+        
+        // Poslední objednávky (5 nejnovějších)
+        const recentOrders = orders
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .slice(0, 5);
+        
+        // Poslední produkty (5 nejnovějších)
+        const recentProducts = products
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .slice(0, 5);
+        
+        res.json({
+            success: true,
+            stats: {
+                products: {
+                    total: products.length,
+                    change: 0 // TODO: Implementovat změnu oproti předchozímu období
+                },
+                orders: {
+                    active: activeOrders.length,
+                    total: orders.length,
+                    change: 0
+                },
+                users: {
+                    total: users.length,
+                    change: 0
+                },
+                revenue: {
+                    today: todayRevenue,
+                    change: 0
+                }
+            },
+            recentOrders,
+            recentProducts
+        });
+    } catch (error) {
+        console.error('Chyba při načítání statistik dashboardu:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Chyba při načítání statistik'
         });
     }
 };

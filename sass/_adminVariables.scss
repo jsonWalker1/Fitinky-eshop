@@ -1,0 +1,71 @@
+// ============================================
+// ADMIN VARIABLES
+// ============================================
+// Proměnné specifické pro admin rozhraní
+// Použití: @use 'adminVariables' as *;
+//
+// ============================================
+
+// Barvy
+$admin-sidebar-bg: #161a2d;
+$admin-sidebar-hover: #ffffff2d;
+$admin-sidebar-width-collapsed: 65px;
+$admin-sidebar-width-expanded: 260px;
+
+$admin-header-bg: #ffffff;
+$admin-header-height: 70px;
+
+$admin-content-bg: #f5f7fa;
+$admin-card-bg: #ffffff;
+
+// Text barvy
+$admin-text-primary: #333333;
+$admin-text-secondary: #666666;
+$admin-text-light: #999999;
+$admin-text-white: #ffffff;
+
+// Accent barvy
+$admin-primary: #667eea;
+$admin-primary-hover: #5568d3;
+$admin-success: #27ae60;
+$admin-warning: #f39c12;
+$admin-danger: #e74c3c;
+$admin-info: #3498db;
+
+// Spacing
+$admin-spacing-xs: 0.25rem;  // 4px
+$admin-spacing-sm: 0.5rem;   // 8px
+$admin-spacing-md: 1rem;     // 16px
+$admin-spacing-lg: 1.5rem;   // 24px
+$admin-spacing-xl: 2rem;     // 32px
+$admin-spacing-xxl: 3rem;    // 48px
+
+// Border radius
+$admin-radius-sm: 4px;
+$admin-radius-md: 8px;
+$admin-radius-lg: 12px;
+
+// Shadows
+$admin-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+$admin-shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+$admin-shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+
+// Typography
+$admin-font-family: 'Poppins', sans-serif;
+$admin-font-size-xs: 0.75rem;   // 12px
+$admin-font-size-sm: 0.875rem;  // 14px
+$admin-font-size-base: 1rem;    // 16px
+$admin-font-size-lg: 1.125rem;  // 18px
+$admin-font-size-xl: 1.25rem;   // 20px
+$admin-font-size-2xl: 1.5rem;   // 24px
+$admin-font-size-3xl: 2rem;     // 32px
+
+// Transitions
+$admin-transition-fast: 0.2s ease;
+$admin-transition-base: 0.3s ease;
+$admin-transition-slow: 0.4s ease;
+
+// Breakpoints
+$admin-breakpoint-mobile: 768px;
+$admin-breakpoint-tablet: 1024px;
+

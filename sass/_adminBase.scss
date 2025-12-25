@@ -1,0 +1,22 @@
+// ============================================
+// ADMIN BASE STYLES
+// ============================================
+// Základní styly pro admin rozhraní
+//
+// ============================================
+
+@use 'adminVariables' as *;
+
+body {
+    font-family: $admin-font-family;
+    margin: 0;
+    padding: 0;
+    background: $admin-content-bg;
+    color: $admin-text-primary;
+    min-height: 100vh;
+}
+
+* {
+    box-sizing: border-box;
+}
+

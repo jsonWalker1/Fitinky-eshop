@@ -11,22 +11,67 @@
 
 @use '../../mixins' as *;
 
-// Admin header
-.admin-header {
-    background: white;
-    padding: 1rem 2rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+// Product status barvy
+.product-status,
+.status-badge {
+    font-weight: 600;
     
-    h1 {
-        @include text-heading(1.5rem, 600, #333, 0);
+    &.status-in_stock,
+    &[data-status="in_stock"] {
+        color: #27ae60;
     }
     
-    a {
-        @include text-link(#667eea, #5568d3);
-        font-weight: 500;
+    &.status-on_order,
+    &[data-status="on_order"] {
+        color: #f39c12;
+    }
+    
+    &.status-out_of_stock,
+    &[data-status="out_of_stock"] {
+        color: #e74c3c;
+    }
+    
+    // Order status barvy
+    &.status-pending,
+    &[data-status="pending"] {
+        color: #f39c12;
+    }
+    
+    &.status-processing,
+    &[data-status="processing"] {
+        color: #3498db;
+    }
+    
+    &.status-shipped,
+    &[data-status="shipped"] {
+        color: #9b59b6;
+    }
+    
+    &.status-delivered,
+    &[data-status="delivered"] {
+        color: #27ae60;
+    }
+    
+    &.status-cancelled,
+    &[data-status="cancelled"] {
+        color: #e74c3c;
+    }
+}
+
+// Admin select styly
+.admin-select {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+    
+    &:focus {
+        outline: none;
+        border-color: #667eea;
     }
 }
 

@@ -21,7 +21,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
     const generalError = document.getElementById('generalError');
     
     // Skrýt chybové zprávy
-    generalError.style.display = 'none';
+    generalError.classList.remove('show');
     
     try {
         const response = await fetch(`${API_BASE}/auth/login`, {
@@ -47,12 +47,12 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
             window.location.href = '/';
         } else {
             generalError.textContent = data.error || 'Chyba při přihlašování';
-            generalError.style.display = 'block';
+            generalError.classList.add('show');
         }
-    } catch (error) {
-        console.error('Chyba:', error);
-        generalError.textContent = 'Chyba připojení k serveru';
-        generalError.style.display = 'block';
-    }
+        } catch (error) {
+            console.error('Chyba:', error);
+            generalError.textContent = 'Chyba připojení k serveru';
+            generalError.classList.add('show');
+        }
 });
 

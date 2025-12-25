@@ -5,197 +5,348 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Eshop Admin</title>
     <link rel="stylesheet" href="/sass/admin.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="admin-header">
-        <h1>Admin Dashboard</h1>
-        <div>
-            <a href="/admin/users" style="color: #667eea; text-decoration: none; margin-right: 1rem;">Uživatelé</a>
-            <a href="/admin/orders" style="color: #667eea; text-decoration: none; margin-right: 1rem;">Objednávky</a>
-            <a href="/" style="color: #667eea; text-decoration: none;">← Zpět na eshop</a>
-        </div>
-    </div>
-    
-    <div class="admin-container">
-        <!-- Přidání produktu -->
-        <div class="admin-section">
-            <h2>Přidat nový produkt</h2>
-            <div class="message" id="message"></div>
-            <form id="productForm">
-                <div class="form-group">
-                    <label for="name">Název produktu *</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="category">Kategorie *</label>
-                    <select id="category" name="category" required>
-                        <option value="">Vyberte kategorii</option>
-                        <option value="elektronika">Elektronika</option>
-                        <option value="obleceni">Oblečení</option>
-                        <option value="domacnost">Domácnost</option>
-                        <option value="sport">Sport</option>
-                        <option value="knihy">Knihy</option>
-                        <option value="jine">Jiné</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="price">Cena (Kč) *</label>
-                    <input type="number" id="price" name="price" step="0.01" min="0" required>
-                </div>
-                <div class="form-group">
-                    <label for="description">Popis</label>
-                    <textarea id="description" name="description"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="availabilityStatus">Status dostupnosti *</label>
-                    <select id="availabilityStatus" name="availabilityStatus" required>
-                        <option value="in_stock">Skladem</option>
-                        <option value="on_order">Na objednávku</option>
-                        <option value="out_of_stock">Nedostupné</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Přidat produkt</button>
-            </form>
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="/assets/pic/logo.png" alt="logo">
+            <h2>Eshop Admin</h2>
         </div>
         
-        <!-- Seznam produktů -->
-        <div class="admin-section">
-            <h2>Produkty</h2>
-            <div class="products-list" id="productsList">
-                <p>Načítám produkty...</p>
+        <ul class="sidebar-links">
+            <li>
+                <a href="/admin/dashboard" class="active">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            
+            <h4 class="sidebar-section-title">Hlavní menu</h4>
+            
+            <li>
+                <a href="/admin/products">
+                    <span class="material-symbols-outlined">inventory</span>
+                    <span>Produkty</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/categories">
+                    <span class="material-symbols-outlined">folder</span>
+                    <span>Kategorie</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/orders">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                    <span>Objednávky</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/users">
+                    <span class="material-symbols-outlined">people</span>
+                    <span>Uživatelé</span>
+                </a>
+            </li>
+            
+            <h4 class="sidebar-section-title">Další</h4>
+            
+            <li>
+                <a href="/admin/statistics">
+                    <span class="material-symbols-outlined">analytics</span>
+                    <span>Statistiky</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/settings">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span>Nastavení</span>
+                </a>
+            </li>
+            <li>
+                <a href="/" target="_blank">
+                    <span class="material-symbols-outlined">open_in_new</span>
+                    <span>Zobrazit eshop</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/logout">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span>Odhlásit se</span>
+                </a>
+            </li>
+        </ul>
+        
+        <div class="sidebar-user">
+            <div class="user-profile">
+                <img src="/assets/pic/personalicon.bmp" alt="profile">
+                <div class="user-info">
+                    <h3>Admin</h3>
+                    <span>Administrátor</span>
+                </div>
             </div>
         </div>
+    </aside>
+    
+    <!-- Overlay pro mobil -->
+    <div class="admin-sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Main Layout -->
+    <div class="admin-layout">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-left">
+                <button class="hamburger-menu" id="hamburgerMenu" aria-label="Menu">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <h1>Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <a href="/" class="admin-nav-link">← Zpět na eshop</a>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="dashboard-homepage">
+                <!-- Statistiky -->
+                <section class="dashboard-stats">
+                    <div class="stat-card stat-products">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">inventory</span>
+                        </div>
+                        <div class="stat-value" id="statProducts">0</div>
+                        <div class="stat-label">Produkty</div>
+                        <div class="stat-change positive" id="statProductsChange">+0%</div>
+                    </div>
+                    
+                    <div class="stat-card stat-orders">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                        </div>
+                        <div class="stat-value" id="statOrders">0</div>
+                        <div class="stat-label">Aktivní objednávky</div>
+                        <div class="stat-change positive" id="statOrdersChange">+0%</div>
+                    </div>
+                    
+                    <div class="stat-card stat-users">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">people</span>
+                        </div>
+                        <div class="stat-value" id="statUsers">0</div>
+                        <div class="stat-label">Uživatelé</div>
+                        <div class="stat-change positive" id="statUsersChange">+0%</div>
+                    </div>
+                    
+                    <div class="stat-card stat-revenue">
+                        <div class="stat-icon">
+                            <span class="material-symbols-outlined">payments</span>
+                        </div>
+                        <div class="stat-value" id="statRevenue">0 Kč</div>
+                        <div class="stat-label">Tržby dnes</div>
+                        <div class="stat-change positive" id="statRevenueChange">+0%</div>
+                    </div>
+                </section>
+                
+                <!-- Quick Actions -->
+                <section class="dashboard-quick-actions">
+                    <h2>Rychlé akce</h2>
+                    <div class="quick-actions-grid">
+                        <a href="/admin/products" class="quick-action-btn">
+                            <span class="material-symbols-outlined">add</span>
+                            Přidat produkt
+                        </a>
+                        <a href="/admin/orders" class="quick-action-btn">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                            Nové objednávky
+                        </a>
+                        <button class="quick-action-btn" onclick="exportData()">
+                            <span class="material-symbols-outlined">download</span>
+                            Export dat
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- Grafy placeholder -->
+                <section class="dashboard-charts">
+                    <h2>Statistiky a grafy</h2>
+                    <div class="chart-placeholder">
+                        Grafy budou implementovány později
+                    </div>
+                </section>
+                
+                <!-- Recent Activity -->
+                <section class="dashboard-activity">
+                    <div class="activity-section">
+                        <h2>Poslední objednávky</h2>
+                        <ul class="activity-list" id="recentOrders">
+                            <li>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <span class="material-symbols-outlined">shopping_cart</span>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">Načítám...</div>
+                                        <div class="activity-time">-</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="activity-section">
+                        <h2>Poslední produkty</h2>
+                        <ul class="activity-list" id="recentProducts">
+                            <li>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <span class="material-symbols-outlined">inventory</span>
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">Načítám...</div>
+                                        <div class="activity-time">-</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </main>
     </div>
     
     <script>
         const API_BASE = '/admin/api';
         
-        // Načtení produktů
-        async function loadProducts() {
+        // Hamburger menu pro mobil
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+        
+        if (hamburgerMenu) {
+            hamburgerMenu.addEventListener('click', toggleSidebar);
+        }
+        
+        if (overlay) {
+            overlay.addEventListener('click', toggleSidebar);
+        }
+        
+        // Načtení statistik z API
+        async function loadStats() {
             try {
-                const response = await fetch(`${API_BASE}/products`);
+                const response = await fetch(`${API_BASE}/dashboard`);
                 const data = await response.json();
                 
-                if (data.success) {
-                    displayProducts(data.products);
-                } else {
-                    showMessage('Chyba při načítání produktů', 'error');
+                if (data.success && data.stats) {
+                    const stats = data.stats;
+                    
+                    // Produkty
+                    document.getElementById('statProducts').textContent = stats.products.total;
+                    if (stats.products.change !== 0) {
+                        const changeEl = document.getElementById('statProductsChange');
+                        changeEl.textContent = `${stats.products.change > 0 ? '+' : ''}${stats.products.change}%`;
+                        changeEl.className = `stat-change ${stats.products.change > 0 ? 'positive' : 'negative'}`;
+                    }
+                    
+                    // Objednávky
+                    document.getElementById('statOrders').textContent = stats.orders.active;
+                    if (stats.orders.change !== 0) {
+                        const changeEl = document.getElementById('statOrdersChange');
+                        changeEl.textContent = `${stats.orders.change > 0 ? '+' : ''}${stats.orders.change}%`;
+                        changeEl.className = `stat-change ${stats.orders.change > 0 ? 'positive' : 'negative'}`;
+                    }
+                    
+                    // Uživatelé
+                    document.getElementById('statUsers').textContent = stats.users.total;
+                    if (stats.users.change !== 0) {
+                        const changeEl = document.getElementById('statUsersChange');
+                        changeEl.textContent = `${stats.users.change > 0 ? '+' : ''}${stats.users.change}%`;
+                        changeEl.className = `stat-change ${stats.users.change > 0 ? 'positive' : 'negative'}`;
+                    }
+                    
+                    // Tržby
+                    const revenue = typeof stats.revenue.today === 'number' ? stats.revenue.today : 0;
+                    document.getElementById('statRevenue').textContent = `${revenue.toFixed(2)} Kč`;
+                    if (stats.revenue.change !== 0) {
+                        const changeEl = document.getElementById('statRevenueChange');
+                        changeEl.textContent = `${stats.revenue.change > 0 ? '+' : ''}${stats.revenue.change}%`;
+                        changeEl.className = `stat-change ${stats.revenue.change > 0 ? 'positive' : 'negative'}`;
+                    }
                 }
             } catch (error) {
-                showMessage('Chyba připojení k serveru', 'error');
+                console.error('Chyba při načítání statistik:', error);
             }
         }
         
-        // Zobrazení produktů
-        function displayProducts(products) {
-            const list = document.getElementById('productsList');
-            
-            if (products.length === 0) {
-                list.innerHTML = '<p>Žádné produkty. Přidejte první produkt výše.</p>';
-                return;
-            }
-            
-            const statusLabels = {
-                'in_stock': 'Skladem',
-                'on_order': 'Na objednávku',
-                'out_of_stock': 'Nedostupné'
-            };
-            const statusColors = {
-                'in_stock': '#27ae60',
-                'on_order': '#f39c12',
-                'out_of_stock': '#e74c3c'
-            };
-            
-            list.innerHTML = products.map(product => {
-                const status = product.availabilityStatus || (product.inStock ? 'in_stock' : 'out_of_stock');
-                return `
-                <div class="product-item">
-                    <div class="product-info">
-                        <h3>${product.name}</h3>
-                        <p><strong>Kategorie:</strong> ${product.category}</p>
-                        <p><strong>Cena:</strong> ${product.price} Kč</p>
-                        <p><strong>Status:</strong> <span style="color: ${statusColors[status] || '#333'}; font-weight: 600;">${statusLabels[status] || status}</span></p>
-                        ${product.description ? `<p>${product.description}</p>` : ''}
-                    </div>
-                    <div class="product-actions">
-                        <button class="btn btn-danger" onclick="deleteProduct('${product.id}')">Smazat</button>
-                    </div>
-                </div>
-            `;
-            }).join('');
-        }
-        
-        // Přidání produktu
-        document.getElementById('productForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const formData = {
-                name: document.getElementById('name').value,
-                category: document.getElementById('category').value,
-                price: document.getElementById('price').value,
-                description: document.getElementById('description').value,
-                availabilityStatus: document.getElementById('availabilityStatus').value
-            };
-            
+        // Načtení recent activity z API
+        async function loadRecentActivity() {
             try {
-                const response = await fetch(`${API_BASE}/products`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
+                const response = await fetch(`${API_BASE}/dashboard`);
                 const data = await response.json();
                 
                 if (data.success) {
-                    showMessage('Produkt úspěšně přidán!', 'success');
-                    document.getElementById('productForm').reset();
-                    loadProducts();
-                } else {
-                    showMessage(data.error || 'Chyba při přidávání produktu', 'error');
+                    // Recent orders
+                    if (data.recentOrders && data.recentOrders.length > 0) {
+                        const ordersList = document.getElementById('recentOrders');
+                        ordersList.innerHTML = data.recentOrders.map(order => {
+                            const date = new Date(order.createdAt).toLocaleDateString('cs-CZ');
+                            return `
+                                <li>
+                                    <div class="activity-item">
+                                        <div class="activity-icon">
+                                            <span class="material-symbols-outlined">shopping_cart</span>
+                                        </div>
+                                        <div class="activity-content">
+                                            <div class="activity-text">Objednávka #${order.id.substring(0, 8)}</div>
+                                            <div class="activity-time">${date}</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            `;
+                        }).join('');
+                    }
+                    
+                    // Recent products
+                    if (data.recentProducts && data.recentProducts.length > 0) {
+                        const productsList = document.getElementById('recentProducts');
+                        productsList.innerHTML = data.recentProducts.map(product => {
+                            return `
+                                <li>
+                                    <div class="activity-item">
+                                        <div class="activity-icon">
+                                            <span class="material-symbols-outlined">inventory</span>
+                                        </div>
+                                        <div class="activity-content">
+                                            <div class="activity-text">${product.name}</div>
+                                            <div class="activity-time">Přidáno nedávno</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            `;
+                        }).join('');
+                    }
                 }
             } catch (error) {
-                showMessage('Chyba připojení k serveru', 'error');
+                console.error('Chyba při načítání recent activity:', error);
             }
-        });
-        
-        // Smazání produktu
-        window.deleteProduct = async function(id) {
-            if (!confirm('Opravdu chcete smazat tento produkt?')) {
-                return;
-            }
-            
-            try {
-                const response = await fetch(`${API_BASE}/products/${id}`, {
-                    method: 'DELETE'
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    showMessage('Produkt úspěšně smazán!', 'success');
-                    loadProducts();
-                } else {
-                    showMessage(data.error || 'Chyba při mazání produktu', 'error');
-                }
-            } catch (error) {
-                showMessage('Chyba připojení k serveru', 'error');
-            }
-        };
-        
-        // Zobrazení zprávy
-        function showMessage(text, type) {
-            const messageEl = document.getElementById('message');
-            messageEl.textContent = text;
-            messageEl.className = `message ${type} show`;
-            setTimeout(() => {
-                messageEl.classList.remove('show');
-            }, 3000);
         }
         
-        // Načtení produktů při načtení stránky
-        loadProducts();
+        function exportData() {
+            alert('Export dat bude implementován později');
+        }
+        
+        // Načtení při startu
+        loadStats();
+        loadRecentActivity();
     </script>
 </body>
 </html>

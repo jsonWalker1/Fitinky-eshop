@@ -10,9 +10,9 @@
     <div class="admin-header">
         <h1>Správa objednávek</h1>
         <div>
-            <a href="/admin/dashboard" style="color: #667eea; text-decoration: none; margin-right: 1rem;">Dashboard</a>
-            <a href="/admin/users" style="color: #667eea; text-decoration: none; margin-right: 1rem;">Uživatelé</a>
-            <a href="/" style="color: #667eea; text-decoration: none;">← Zpět na eshop</a>
+            <a href="/admin/dashboard" class="admin-nav-link">Dashboard</a>
+            <a href="/admin/users" class="admin-nav-link">Uživatelé</a>
+            <a href="/" class="admin-nav-link">← Zpět na eshop</a>
         </div>
     </div>
     
@@ -84,13 +84,13 @@
                         ${order.company ? `<p><strong>Firma:</strong> ${order.company.name} (IČO: ${order.company.ico})</p>` : ''}
                         <p>
                             <strong>Status:</strong> 
-                            <span style="color: ${statusColors[order.status] || '#333'}; font-weight: 600;">
+                            <span class="product-status status-${order.status}" data-status="${order.status}">
                                 ${statusLabels[order.status] || order.status}
                             </span>
                         </p>
                     </div>
                     <div class="order-actions">
-                        <select id="status-${order.id}" onchange="updateStatus('${order.id}')" style="padding: 0.5rem; margin-bottom: 0.5rem; width: 100%;">
+                        <select id="status-${order.id}" onchange="updateStatus('${order.id}')" class="admin-select">
                             <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Čeká</option>
                             <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>Zpracovává se</option>
                             <option value="shipped" ${order.status === 'shipped' ? 'selected' : ''}>Odesláno</option>

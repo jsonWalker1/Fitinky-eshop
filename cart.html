@@ -28,7 +28,7 @@
                         <li><a href="/products">Produkty</a></li>
                         <li><a href="#about">O nás</a></li>
                         <li><a href="#contact">Kontakt</a></li>
-                        <li id="ordersMenuItem" style="display: none;"><a href="/orders">Moje objednávky</a></li>
+                        <li id="ordersMenuItem"><a href="/orders">Moje objednávky</a></li>
                     </ul>
                 </nav>
             </div>
@@ -45,13 +45,13 @@
                     <img src="/assets/pic/personalicon.bmp" alt="profil">
                 </a>
                 
-                <button class="login" id="loginButton" style="display: none;">
+                <button class="login" id="loginButton">
                     <a href="/login">Přihlášení</a>
                 </button>
-                <button class="login" id="logoutButton" style="display: none;">
+                <button class="login" id="logoutButton">
                     <a href="#" onclick="handleLogout(event)">Odhlásit se</a>
                 </button>
-                <span id="userName" style="display: none; margin-right: 1rem; color: #333; font-weight: 500;"></span>
+                <span id="userName"></span>
             </div>
         </header>
         
@@ -69,13 +69,13 @@
                     </div>
                     
                     <!-- Prázdný košík -->
-                    <div id="emptyCart" class="empty-cart" style="display: none;">
+                    <div id="emptyCart" class="empty-cart">
                         <p>Váš košík je prázdný</p>
                         <a href="/products" class="btn btn-primary">Pokračovat v nákupu</a>
                     </div>
                     
                     <!-- Košík s produkty -->
-                    <div id="cartContent" style="display: none;">
+                    <div id="cartContent">
                         <div class="cart-items" id="cartItems">
                             <!-- Produkty se načtou přes JavaScript -->
                         </div>

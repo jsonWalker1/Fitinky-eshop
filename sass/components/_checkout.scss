@@ -1,0 +1,190 @@
+// ============================================
+// CHECKOUT COMPONENT
+// ============================================
+// Styly pro stránku dokončení objednávky (checkout).
+//
+// HTML struktura:
+//   <div class="checkout-container">...</div>
+//   <div class="checkout-grid">...</div>
+//   <div class="form-section">...</div>
+//
+// ============================================
+
+@use '../mixins' as *;
+
+.checkout-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 2rem;
+    
+    @media (max-width: 768px) {
+        padding: 1rem;
+    }
+    
+    h1 {
+        @include text-heading(2rem, 700, #333, 2rem);
+    }
+}
+
+.checkout-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.checkout-form {
+    // Formulář je vlevo
+}
+
+.form-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    
+    h2 {
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        color: #333;
+        @include text-heading(1.5rem, 600, #333, 1.5rem);
+    }
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    
+    label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #666;
+    }
+    
+    input,
+    select,
+    textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-family: inherit;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        
+        &:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+    }
+    
+    textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+    input[type="checkbox"] {
+        width: auto;
+    }
+}
+
+.company-fields {
+    display: none;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #ddd;
+    
+    &.show {
+        display: block;
+    }
+}
+
+.order-summary {
+    background: #f5f5f5;
+    padding: 2rem;
+    border-radius: 8px;
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+    
+    @media (max-width: 768px) {
+        position: static;
+    }
+    
+    h2 {
+        @include text-heading(1.5rem, 600, #333, 1.5rem);
+        margin-top: 0;
+    }
+    
+    #orderSummaryItems {
+        margin-bottom: 1rem;
+    }
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #ddd;
+    
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.summary-total {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 2px solid #333;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 1rem;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background 0.3s ease;
+    
+    &:hover:not(:disabled) {
+        background: #5568d3;
+    }
+    
+    &:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+    }
+}
+
+.error-message {
+    color: #e74c3c;
+    margin-top: 0.5rem;
+    display: none;
+    
+    &.show {
+        display: block;
+    }
+}
+

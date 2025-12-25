@@ -13,11 +13,13 @@ import express from 'express';
 import {
     getAdminLogin,
     getAdminDashboard,
+    getAdminProducts,
     getAdminUsers,
     getAdminOrders,
     getProducts,
     addProduct,
-    deleteProduct
+    deleteProduct,
+    getDashboardStats
 } from '../controllers/adminController.js';
 
 const router = express.Router();
@@ -26,8 +28,12 @@ const router = express.Router();
 router.get('/admin', getAdminLogin);
 router.get('/admin/login', getAdminLogin);
 router.get('/admin/dashboard', getAdminDashboard);
+router.get('/admin/products', getAdminProducts);
 router.get('/admin/users', getAdminUsers);
 router.get('/admin/orders', getAdminOrders);
+
+// Admin API - Dashboard
+router.get('/admin/api/dashboard', getDashboardStats);
 
 // Admin API - Produkty
 router.get('/admin/api/products', getProducts);

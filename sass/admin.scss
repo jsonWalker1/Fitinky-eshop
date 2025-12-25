@@ -4,16 +4,24 @@
 // Hlavní Sass soubor pro admin rozhraní
 //
 // Struktura:
-// 1. Variables - proměnné
-// 2. Mixins - znovupoužitelné mixiny
+// 1. Variables - proměnné (hlavní + admin specifické)
+// 2. Mixins - znovupoužitelné mixiny (hlavní + admin specifické)
 // 3. Base - základní styly
-// 4. Components - admin komponenty
+// 4. Layout - admin layout (sidebar, header, main)
+// 5. Components - admin komponenty
 //
 // ============================================
 
 @use 'variables';
 @use 'mixins';
 @use 'base';
+@use 'adminVariables';
+@use 'adminMixins';
+@use 'adminBase';
+@use 'components/admin/layout';
+@use 'components/admin/sidebar';
 @use 'components/admin/login';
 @use 'components/admin/dashboard';
+@use 'components/admin/dashboardHomepage';
+@use 'components/adminNavigation';
 

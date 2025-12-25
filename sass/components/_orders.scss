@@ -172,6 +172,32 @@
         border-radius: 20px;
         background: rgba(255, 255, 255, 0.8);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        
+        // Barvy podle statusu (používá se data atribut nebo třída)
+        &[data-status="pending"],
+        &.status-pending {
+            color: #f39c12;
+        }
+        
+        &[data-status="processing"],
+        &.status-processing {
+            color: #3498db;
+        }
+        
+        &[data-status="shipped"],
+        &.status-shipped {
+            color: #9b59b6;
+        }
+        
+        &[data-status="delivered"],
+        &.status-delivered {
+            color: #27ae60;
+        }
+        
+        &[data-status="cancelled"],
+        &.status-cancelled {
+            color: #e74c3c;
+        }
     }
 }
 

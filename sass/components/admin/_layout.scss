@@ -1,0 +1,99 @@
+// ============================================
+// ADMIN LAYOUT COMPONENT
+// ============================================
+// Hlavní layout pro admin rozhraní
+// Obsahuje header a main content area
+//
+// HTML struktura:
+//   <div class="admin-layout">
+//     <header class="admin-header">...</header>
+//     <main class="admin-main">...</main>
+//   </div>
+//
+// ============================================
+
+@use '../../adminVariables' as *;
+@use '../../adminMixins' as *;
+
+.admin-layout {
+    min-height: 100vh;
+    background: $admin-content-bg;
+    margin-left: $admin-sidebar-width-collapsed;
+    transition: margin-left $admin-transition-slow;
+    
+    @include admin-mobile {
+        margin-left: 0;
+    }
+}
+
+// Admin header (top bar)
+.admin-header {
+    height: $admin-header-height;
+    background: $admin-header-bg;
+    box-shadow: $admin-shadow-sm;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 $admin-spacing-xl;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: $admin-spacing-lg;
+        
+        .hamburger-menu {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: $admin-spacing-sm;
+            
+            @include admin-mobile {
+                display: block;
+            }
+        }
+        
+        h1 {
+            @include admin-text-heading($admin-font-size-xl, 600);
+            margin: 0;
+        }
+    }
+    
+    .header-right {
+        display: flex;
+        align-items: center;
+        gap: $admin-spacing-md;
+    }
+}
+
+// Admin main content
+.admin-main {
+    padding: $admin-spacing-xl;
+    
+    @include admin-mobile {
+        padding: $admin-spacing-md;
+    }
+}
+
+// Mobile overlay pro sidebar
+.admin-sidebar-overlay {
+    display: none;
+    
+    @include admin-mobile {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        
+        &.active {
+            display: block;
+        }
+    }
+}
+

@@ -1,0 +1,53 @@
+// ============================================
+// ADMIN NAVIGATION COMPONENT
+// ============================================
+// Styly pro admin navigační odkazy v admin headeru.
+//
+// HTML struktura:
+//   <div class="admin-header">
+//     <a href="..." class="admin-nav-link">Uživatelé</a>
+//     <a href="..." class="admin-nav-link">Objednávky</a>
+//     <a href="/" class="admin-nav-link">← Zpět na eshop</a>
+//   </div>
+//
+// ============================================
+
+@use '../mixins' as *;
+@use '../variables' as *;
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    
+    h1 {
+        margin: 0;
+        font-size: 1.75rem;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    // Navigační odkazy
+    .admin-nav-link,
+    a[href*="/admin"]:not(.btn),
+    a[href="/"]:not(.btn) {
+        color: #667eea;
+        text-decoration: none;
+        margin-right: 1rem;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        
+        &:hover {
+            color: #5568d3;
+            text-decoration: underline;
+        }
+        
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}
+
