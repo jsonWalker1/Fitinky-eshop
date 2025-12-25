@@ -138,6 +138,18 @@ body {
     transform: translateX(0);
     width: 260px;
   }
+  .admin-sidebar.open .sidebar-header h2,
+  .admin-sidebar.open .sidebar-links li a span:not(.material-symbols-outlined),
+  .admin-sidebar.open .sidebar-section-title,
+  .admin-sidebar.open .sidebar-user .user-info {
+    opacity: 1;
+  }
+  .admin-sidebar.open .sidebar-header img {
+    margin-left: 0;
+  }
+  .admin-sidebar.open .sidebar-user .user-profile img {
+    margin-left: 0;
+  }
 }
 
 .sidebar-header {

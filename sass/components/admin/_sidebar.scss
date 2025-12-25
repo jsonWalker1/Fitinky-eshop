@@ -59,6 +59,23 @@
         &.open {
             transform: translateX(0);
             width: $admin-sidebar-width-expanded;
+            
+            // Zobrazit texty při otevření na mobilu
+            .sidebar-header h2,
+            .sidebar-links li a span:not(.material-symbols-outlined),
+            .sidebar-section-title,
+            .sidebar-user .user-info {
+                opacity: 1;
+            }
+            
+            // Opravit pozici obrázků
+            .sidebar-header img {
+                margin-left: 0;
+            }
+            
+            .sidebar-user .user-profile img {
+                margin-left: 0;
+            }
         }
     }
 }

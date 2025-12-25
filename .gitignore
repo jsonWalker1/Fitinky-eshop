@@ -8,3 +8,4 @@ dist/
 .env.production
 railway-multi-service.json
 *.css.map
+vzor-GUI/
