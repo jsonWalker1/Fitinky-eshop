@@ -315,6 +315,98 @@ export const getCategoriesWithProductCount = async (searchQuery = null) => {
 };
 
 /**
+ * Vytvoří novou kategorii
+ */
+export const addCategory = async (categoryData) => {
+    try {
+        const { name, slug, description, image } = categoryData;
+        
+        // Generovat ID pokud není poskytnuto
+        const id = categoryData.id || `cat-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        
+        // Validovat slug - pokud není poskytnut, vytvořit z názvu
+        const finalSlug = slug || name.toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+        
+        const result = await pool.query(
+            `INSERT INTO categories (id, name, slug, description, image)
+             VALUES ($1, $2, $3, $4, $5)
+             RETURNING *`,
+            [id, name, finalSlug, description || null, image || null]
+        );
+        
+        return result.rows[0];
+    } catch (error) {
+        console.error('Chyba při vytváření kategorie:', error);
+        throw error;
+    }
+};
+
+/**
+ * Aktualizuje kategorii
+ */
+export const updateCategory = async (id, categoryData) => {
+    try {
+        const updates = [];
+        const values = [];
+        let paramIndex = 1;
+        
+        if (categoryData.name !== undefined) {
+            updates.push(`name = $${paramIndex++}`);
+            values.push(categoryData.name);
+        }
+        if (categoryData.slug !== undefined) {
+            updates.push(`slug = $${paramIndex++}`);
+            values.push(categoryData.slug);
+        }
+        if (categoryData.description !== undefined) {
+            updates.push(`description = $${paramIndex++}`);
+            values.push(categoryData.description);
+        }
+        if (categoryData.image !== undefined) {
+            updates.push(`image = $${paramIndex++}`);
+            values.push(categoryData.image);
+        }
+        
+        if (updates.length === 0) {
+            return await getCategoryById(id);
+        }
+        
+        values.push(id);
+        const result = await pool.query(
+            `UPDATE categories 
+             SET ${updates.join(', ')}
+             WHERE id = $${paramIndex}
+             RETURNING *`,
+            values
+        );
+        
+        return result.rows[0] || null;
+    } catch (error) {
+        console.error('Chyba při aktualizaci kategorie:', error);
+        throw error;
+    }
+};
+
+/**
+ * Smaže kategorii
+ */
+export const deleteCategory = async (id) => {
+    try {
+        // Nejdříve nastavit category_id na NULL u všech produktů v této kategorii
+        await pool.query('UPDATE products SET category_id = NULL WHERE category_id = $1', [id]);
+        
+        // Pak smazat kategorii
+        const result = await pool.query('DELETE FROM categories WHERE id = $1 RETURNING id', [id]);
+        return result.rows.length > 0;
+    } catch (error) {
+        console.error('Chyba při mazání kategorie:', error);
+        throw error;
+    }
+};
+
+/**
  * Mapuje SQL řádek na JSON formát (pro kompatibilitu s frontendem)
  */
 function mapProductToJSON(row) {

@@ -328,3 +328,195 @@ export const getDashboardStats = async (req, res) => {
     }
 };
 
+/**
+ * Načte admin categories stránku
+ */
+export const getAdminCategories = (req, res) => {
+    try {
+        const categoriesPath = path.join(paths.root, 'backend', 'views', 'admin-categories.html');
+        if (fs.existsSync(categoriesPath)) {
+            const categoriesContent = fs.readFileSync(categoriesPath, 'utf8');
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
+            res.send(categoriesContent);
+        } else {
+            res.status(404).send('Admin categories stránka nenalezena');
+        }
+    } catch (error) {
+        console.error('Chyba při načítání admin categories:', error);
+        res.status(500).send('Chyba při načítání stránky');
+    }
+};
+
+/**
+ * Získá všechny kategorie (pro admin API)
+ * GET /admin/api/categories?search=query
+ */
+export const getAdminCategoriesAPI = async (req, res) => {
+    try {
+        const searchQuery = req.query.search || null;
+        const categories = await productsService.getCategoriesWithProductCount(searchQuery);
+        res.json({
+            success: true,
+            categories
+        });
+    } catch (error) {
+        console.error('Chyba při načítání kategorií:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Chyba při načítání kategorií'
+        });
+    }
+};
+
+/**
+ * Vytvoří novou kategorii
+ * POST /admin/api/categories
+ */
+export const createCategory = async (req, res) => {
+    try {
+        const { name, slug, description, image } = req.body;
+        
+        if (!name) {
+            return res.status(400).json({
+                success: false,
+                error: 'Název kategorie je povinný'
+            });
+        }
+        
+        const categoryData = {
+            name,
+            slug,
+            description: description || null,
+            image: image || null
+        };
+        
+        const newCategory = await productsService.addCategory(categoryData);
+        
+        res.json({
+            success: true,
+            category: newCategory,
+            message: 'Kategorie úspěšně vytvořena'
+        });
+    } catch (error) {
+        console.error('Chyba při vytváření kategorie:', error);
+        
+        // Kontrola na duplicitní slug
+        if (error.code === '23505' || error.message.includes('unique')) {
+            return res.status(400).json({
+                success: false,
+                error: 'Kategorie s tímto slug již existuje'
+            });
+        }
+        
+        res.status(500).json({
+            success: false,
+            error: 'Chyba při vytváření kategorie'
+        });
+    }
+};
+
+/**
+ * Aktualizuje kategorii
+ * PUT /admin/api/categories/:id
+ */
+export const updateAdminCategory = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, slug, description, image } = req.body;
+        
+        const categoryData = {};
+        if (name !== undefined) categoryData.name = name;
+        if (slug !== undefined) categoryData.slug = slug;
+        if (description !== undefined) categoryData.description = description;
+        if (image !== undefined) categoryData.image = image;
+        
+        const updatedCategory = await productsService.updateCategory(id, categoryData);
+        
+        if (!updatedCategory) {
+            return res.status(404).json({
+                success: false,
+                error: 'Kategorie nenalezena'
+            });
+        }
+        
+        res.json({
+            success: true,
+            category: updatedCategory,
+            message: 'Kategorie úspěšně aktualizována'
+        });
+    } catch (error) {
+        console.error('Chyba při aktualizaci kategorie:', error);
+        
+        if (error.code === '23505' || error.message.includes('unique')) {
+            return res.status(400).json({
+                success: false,
+                error: 'Kategorie s tímto slug již existuje'
+            });
+        }
+        
+        res.status(500).json({
+            success: false,
+            error: 'Chyba při aktualizaci kategorie'
+        });
+    }
+};
+
+/**
+ * Smaže kategorii
+ * DELETE /admin/api/categories/:id
+ */
+export const deleteAdminCategory = async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const deleted = await productsService.deleteCategory(id);
+        
+        if (!deleted) {
+            return res.status(404).json({
+                success: false,
+                error: 'Kategorie nenalezena'
+            });
+        }
+        
+        res.json({
+            success: true,
+            message: 'Kategorie úspěšně smazána'
+        });
+    } catch (error) {
+        console.error('Chyba při mazání kategorie:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Chyba při mazání kategorie'
+        });
+    }
+};
+
+/**
+ * Získá kategorii podle ID (pro admin API)
+ * GET /admin/api/categories/:id
+ */
+export const getAdminCategory = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const category = await productsService.getCategoryById(id);
+        
+        if (!category) {
+            return res.status(404).json({
+                success: false,
+                error: 'Kategorie nenalezena'
+            });
+        }
+        
+        res.json({
+            success: true,
+            category
+        });
+    } catch (error) {
+        console.error('Chyba při načítání kategorie:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Chyba při načítání kategorie'
+        });
+    }
+};
+

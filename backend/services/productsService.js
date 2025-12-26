@@ -87,6 +87,54 @@ export const getCategoriesWithProductCount = async (searchQuery = null) => {
 };
 
 /**
+ * Vytvoří novou kategorii
+ */
+export const addCategory = async (categoryData) => {
+    try {
+        return await productRepo.addCategory(categoryData);
+    } catch (error) {
+        console.error('Chyba při vytváření kategorie:', error);
+        throw error;
+    }
+};
+
+/**
+ * Aktualizuje kategorii
+ */
+export const updateCategory = async (id, categoryData) => {
+    try {
+        return await productRepo.updateCategory(id, categoryData);
+    } catch (error) {
+        console.error('Chyba při aktualizaci kategorie:', error);
+        throw error;
+    }
+};
+
+/**
+ * Smaže kategorii
+ */
+export const deleteCategory = async (id) => {
+    try {
+        return await productRepo.deleteCategory(id);
+    } catch (error) {
+        console.error('Chyba při mazání kategorie:', error);
+        throw error;
+    }
+};
+
+/**
+ * Načte kategorii podle ID
+ */
+export const getCategoryById = async (id) => {
+    try {
+        return await productRepo.getCategoryById(id);
+    } catch (error) {
+        console.error('Chyba při načítání kategorie:', error);
+        return null;
+    }
+};
+
+/**
  * Přidá nový produkt
  */
 export const addProduct = async (productData) => {

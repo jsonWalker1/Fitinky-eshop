@@ -1,0 +1,152 @@
+// ============================================
+// ADMIN CATEGORIES COMPONENT
+// ============================================
+// Styly pro správu kategorií v admin rozhraní
+// ============================================
+
+@use '../../adminVariables' as *;
+@use '../../adminMixins' as *;
+
+// Categories list
+.categories-list {
+    display: flex;
+    flex-direction: column;
+    gap: $admin-spacing-md;
+    
+    .categories-empty {
+        text-align: center;
+        padding: $admin-spacing-xxl;
+        background: white;
+        border-radius: $admin-radius-md;
+        box-shadow: $admin-shadow-sm;
+        
+        .empty-icon {
+            font-size: 4rem;
+            color: $admin-text-light;
+            margin-bottom: $admin-spacing-md;
+        }
+        
+        .empty-text {
+            @include admin-text-heading($admin-font-size-xl, 600);
+            color: $admin-text-secondary;
+            margin-bottom: $admin-spacing-lg;
+        }
+        
+        .empty-action {
+            margin-top: $admin-spacing-md;
+        }
+    }
+}
+
+// Category item
+.category-item {
+    background: white;
+    border-radius: $admin-radius-md;
+    box-shadow: $admin-shadow-sm;
+    padding: $admin-spacing-lg;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $admin-spacing-lg;
+    transition: box-shadow 0.2s ease;
+    
+    &:hover {
+        box-shadow: $admin-shadow-md;
+    }
+    
+    .category-header {
+        display: flex;
+        align-items: center;
+        gap: $admin-spacing-md;
+        flex: 1;
+        min-width: 0;
+        
+        .category-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: $admin-radius-sm;
+            flex-shrink: 0;
+            background: $admin-content-bg;
+            
+            &.no-image {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                color: $admin-text-light;
+                font-size: 2rem;
+                
+                .material-symbols-outlined {
+                    font-size: 2rem;
+                }
+            }
+        }
+        
+        .category-info {
+            flex: 1;
+            min-width: 0;
+            
+            h3 {
+                @include admin-text-heading($admin-font-size-lg, 600);
+                margin: 0 0 $admin-spacing-xs 0;
+                color: $admin-text-primary;
+            }
+            
+            .category-slug {
+                @include admin-text-body($admin-font-size-sm, $admin-text-light);
+                margin: 0 0 $admin-spacing-xs 0;
+                font-family: 'Courier New', monospace;
+            }
+            
+            .category-description {
+                @include admin-text-body($admin-font-size-base, $admin-text-secondary);
+                margin: $admin-spacing-xs 0;
+            }
+            
+            .category-meta {
+                @include admin-text-body($admin-font-size-sm, $admin-text-light);
+                margin: $admin-spacing-xs 0 0 0;
+            }
+        }
+    }
+    
+    .category-actions {
+        display: flex;
+        gap: $admin-spacing-sm;
+        flex-shrink: 0;
+        
+        @include admin-mobile {
+            flex-direction: column;
+            width: 100%;
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    }
+    
+    @include admin-mobile {
+        flex-direction: column;
+        align-items: stretch;
+        
+        .category-header {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+}
+
+// Section header
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $admin-spacing-lg;
+    
+    h2 {
+        @include admin-text-heading($admin-font-size-2xl, 600);
+        margin: 0;
+    }
+}
+

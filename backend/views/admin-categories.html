@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Správa kategorií - Admin</title>
+    <link rel="stylesheet" href="/sass/admin.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="/assets/pic/logo.png" alt="logo">
+            <h2>Eshop Admin</h2>
+        </div>
+        
+        <ul class="sidebar-links">
+            <li>
+                <a href="/admin/dashboard">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            
+            <h4 class="sidebar-section-title">Hlavní menu</h4>
+            
+            <li>
+                <a href="/admin/products">
+                    <span class="material-symbols-outlined">inventory</span>
+                    <span>Produkty</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/categories" class="active">
+                    <span class="material-symbols-outlined">folder</span>
+                    <span>Kategorie</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/orders">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                    <span>Objednávky</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/users">
+                    <span class="material-symbols-outlined">people</span>
+                    <span>Uživatelé</span>
+                </a>
+            </li>
+            
+            <h4 class="sidebar-section-title">Další</h4>
+            
+            <li>
+                <a href="/admin/statistics">
+                    <span class="material-symbols-outlined">analytics</span>
+                    <span>Statistiky</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/settings">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span>Nastavení</span>
+                </a>
+            </li>
+            <li>
+                <a href="/" target="_blank">
+                    <span class="material-symbols-outlined">open_in_new</span>
+                    <span>Zobrazit eshop</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/logout">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span>Odhlásit se</span>
+                </a>
+            </li>
+        </ul>
+        
+        <div class="sidebar-user">
+            <div class="user-profile">
+                <img src="/assets/pic/personalicon.bmp" alt="profile">
+                <div class="user-info">
+                    <h3>Admin</h3>
+                    <span>Administrátor</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+    
+    <!-- Overlay pro mobil -->
+    <div class="admin-sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Main Layout -->
+    <div class="admin-layout">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-left">
+                <button class="hamburger-menu" id="hamburgerMenu" aria-label="Menu">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <h1>Kategorie</h1>
+            </div>
+            <div class="header-right">
+                <!-- Globální vyhledávání -->
+                <div class="global-search-wrapper">
+                    <div class="global-search-input-wrapper">
+                        <input 
+                            type="search" 
+                            id="globalSearchInput" 
+                            placeholder="Hledat produkty, objednávky, uživatele..." 
+                            autocomplete="off"
+                        >
+                        <span class="search-icon">🔍</span>
+                    </div>
+                    <div class="global-search-results" id="globalSearchResults"></div>
+                </div>
+                <a href="/" class="admin-nav-link">← Zpět na eshop</a>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="admin-container">
+                <div class="admin-section">
+                    <div class="section-header">
+                        <h2>Seznam kategorií</h2>
+                        <button class="btn btn-primary" id="addCategoryBtn">
+                            <span class="material-symbols-outlined">add</span>
+                            Přidat kategorii
+                        </button>
+                    </div>
+                    
+                    <!-- Vyhledávací pole -->
+                    <div class="search-bar">
+                        <div class="search-input-wrapper">
+                            <input 
+                                type="search" 
+                                id="searchInput" 
+                                placeholder="Hledat kategorie..." 
+                                autocomplete="off"
+                            >
+                            <span class="search-icon">🔍</span>
+                        </div>
+                    </div>
+                    
+                    <div class="message" id="message"></div>
+                    <div class="categories-list" id="categoriesList">
+                        <p>Načítám kategorie...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal pro přidání/editaci kategorie -->
+    <div class="modal" id="categoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Přidat kategorii</h2>
+                <button class="modal-close" id="modalClose">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="categoryForm">
+                    <input type="hidden" id="categoryId" name="categoryId">
+                    
+                    <div class="form-group">
+                        <label for="categoryName">Název kategorie *</label>
+                        <input type="text" id="categoryName" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="categorySlug">Slug (URL) *</label>
+                        <input type="text" id="categorySlug" name="slug" required>
+                        <small>URL-friendly název (např. "spojky-redukce")</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="categoryDescription">Popis</label>
+                        <textarea id="categoryDescription" name="description" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="categoryImage">URL obrázku</label>
+                        <input type="text" id="categoryImage" name="image">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="modalCancel">Zrušit</button>
+                        <button type="submit" class="btn btn-primary">Uložit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE = '/admin/api';
+        let allCategories = [];
+        
+        // Hamburger menu pro mobil
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+        
+        if (hamburgerMenu) {
+            hamburgerMenu.addEventListener('click', toggleSidebar);
+        }
+        
+        if (overlay) {
+            overlay.addEventListener('click', toggleSidebar);
+        }
+        
+        // Načtení kategorií
+        async function loadCategories(searchQuery = null) {
+            try {
+                let url = `${API_BASE}/categories`;
+                if (searchQuery && searchQuery.trim()) {
+                    url += `?search=${encodeURIComponent(searchQuery.trim())}`;
+                }
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.success) {
+                    allCategories = data.categories;
+                    displayCategories(allCategories);
+                } else {
+                    showError('Chyba při načítání kategorií');
+                }
+            } catch (error) {
+                console.error('Chyba při načítání kategorií:', error);
+                showError('Chyba připojení k serveru');
+            }
+        }
+        
+        // Zobrazení kategorií
+        function displayCategories(categories) {
+            const list = document.getElementById('categoriesList');
+            
+            if (categories.length === 0) {
+                list.innerHTML = `
+                    <div class="categories-empty">
+                        <div class="empty-icon">
+                            <span class="material-symbols-outlined">folder</span>
+                        </div>
+                        <div class="empty-text">Žádné kategorie</div>
+                        <button class="btn btn-primary empty-action" id="addFirstCategoryBtn">
+                            Přidat první kategorii
+                        </button>
+                    </div>
+                `;
+                document.getElementById('addFirstCategoryBtn')?.addEventListener('click', openAddModal);
+                return;
+            }
+            
+            list.innerHTML = categories.map(category => `
+                <div class="category-item">
+                    <div class="category-header">
+                        ${category.image 
+                            ? `<img src="${category.image}" alt="${category.name}" class="category-image">`
+                            : `<div class="category-image no-image"><span class="material-symbols-outlined">folder</span></div>`
+                        }
+                        <div class="category-info">
+                            <h3>${escapeHtml(category.name)}</h3>
+                            <p class="category-slug">/${escapeHtml(category.slug)}</p>
+                            ${category.description ? `<p class="category-description">${escapeHtml(category.description)}</p>` : ''}
+                            <p class="category-meta">Produktů: ${category.productCount || category.product_count || 0}</p>
+                        </div>
+                    </div>
+                    <div class="category-actions">
+                        <button class="btn btn-secondary" onclick="editCategory('${category.id}')">
+                            <span class="material-symbols-outlined">edit</span>
+                            Upravit
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteCategory('${category.id}', '${escapeHtml(category.name)}')">
+                            <span class="material-symbols-outlined">delete</span>
+                            Smazat
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Edit category
+        window.editCategory = function(categoryId) {
+            const category = allCategories.find(c => c.id === categoryId);
+            if (!category) return;
+            
+            document.getElementById('categoryId').value = category.id;
+            document.getElementById('categoryName').value = category.name;
+            document.getElementById('categorySlug').value = category.slug;
+            document.getElementById('categoryDescription').value = category.description || '';
+            document.getElementById('categoryImage').value = category.image || '';
+            
+            document.getElementById('modalTitle').textContent = 'Upravit kategorii';
+            document.getElementById('categoryModal').classList.add('active');
+        };
+        
+        // Delete category
+        window.deleteCategory = async function(id, name) {
+            if (!confirm(`Opravdu chcete smazat kategorii "${name}"? Produkty v této kategorii budou přesunuty do kategorie "Bez kategorie".`)) return;
+            
+            try {
+                const response = await fetch(`${API_BASE}/categories/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showSuccess('Kategorie úspěšně smazána');
+                    loadCategories();
+                } else {
+                    showError(data.error || 'Chyba při mazání kategorie');
+                }
+            } catch (error) {
+                showError('Chyba připojení k serveru');
+            }
+        };
+        
+        // Modal functions
+        function openAddModal() {
+            document.getElementById('categoryForm').reset();
+            document.getElementById('categoryId').value = '';
+            document.getElementById('modalTitle').textContent = 'Přidat kategorii';
+            document.getElementById('categoryModal').classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('categoryModal').classList.remove('active');
+        }
+        
+        document.getElementById('addCategoryBtn')?.addEventListener('click', openAddModal);
+        document.getElementById('modalClose')?.addEventListener('click', closeModal);
+        document.getElementById('modalCancel')?.addEventListener('click', closeModal);
+        
+        // Auto-generate slug from name
+        document.getElementById('categoryName')?.addEventListener('input', (e) => {
+            const slugInput = document.getElementById('categorySlug');
+            if (slugInput && !slugInput.dataset.manualEdit) {
+                const slug = e.target.value
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-+|-+$/g, '');
+                slugInput.value = slug;
+            }
+        });
+        
+        // Mark slug as manually edited
+        document.getElementById('categorySlug')?.addEventListener('input', (e) => {
+            e.target.dataset.manualEdit = 'true';
+        });
+        
+        // Category form submit
+        document.getElementById('categoryForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const form = e.target;
+            const categoryId = document.getElementById('categoryId').value;
+            const formData = {
+                name: form.name.value,
+                slug: form.slug.value,
+                description: form.description.value || null,
+                image: form.image.value || null
+            };
+            
+            try {
+                const url = categoryId 
+                    ? `${API_BASE}/categories/${categoryId}`
+                    : `${API_BASE}/categories`;
+                const method = categoryId ? 'PUT' : 'POST';
+                
+                const response = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showSuccess(categoryId ? 'Kategorie úspěšně aktualizována' : 'Kategorie úspěšně přidána');
+                    closeModal();
+                    loadCategories();
+                    document.getElementById('categorySlug').dataset.manualEdit = '';
+                } else {
+                    showError(data.error || 'Chyba při ukládání kategorie');
+                }
+            } catch (error) {
+                showError('Chyba připojení k serveru');
+            }
+        });
+        
+        // Search
+        let searchTimeout;
+        document.getElementById('searchInput')?.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            const query = e.target.value;
+            searchTimeout = setTimeout(() => {
+                loadCategories(query);
+            }, 300);
+        });
+        
+        // Helper functions
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text || '';
+            return div.innerHTML;
+        }
+        
+        function showSuccess(message) {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = message;
+            messageEl.className = 'message success show';
+            setTimeout(() => {
+                messageEl.classList.remove('show');
+            }, 3000);
+        }
+        
+        function showError(message) {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = message;
+            messageEl.className = 'message error show';
+            setTimeout(() => {
+                messageEl.classList.remove('show');
+            }, 3000);
+        }
+        
+        // ============================================
+        // GLOBÁLNÍ VYHLEDÁVÁNÍ
+        // ============================================
+        
+        const globalSearchInput = document.getElementById('globalSearchInput');
+        const globalSearchResults = document.getElementById('globalSearchResults');
+        let globalSearchTimeout;
+        
+        if (globalSearchInput && globalSearchResults) {
+            globalSearchInput.addEventListener('input', (e) => {
+                const query = e.target.value.trim();
+                
+                clearTimeout(globalSearchTimeout);
+                
+                if (query.length < 2) {
+                    globalSearchResults.classList.remove('active');
+                    globalSearchResults.innerHTML = '';
+                    return;
+                }
+                
+                globalSearchResults.innerHTML = '<div class="search-results-loading">Načítám výsledky...</div>';
+                globalSearchResults.classList.add('active');
+                
+                globalSearchTimeout = setTimeout(() => {
+                    performGlobalSearch(query);
+                }, 300);
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!globalSearchInput.contains(e.target) && !globalSearchResults.contains(e.target)) {
+                    globalSearchResults.classList.remove('active');
+                }
+            });
+            
+            globalSearchInput.addEventListener('focus', () => {
+                if (globalSearchInput.value.trim().length >= 2 && globalSearchResults.innerHTML) {
+                    globalSearchResults.classList.add('active');
+                }
+            });
+        }
+        
+        async function performGlobalSearch(query) {
+            try {
+                const response = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    displaySearchResults(data.results, query);
+                } else {
+                    globalSearchResults.innerHTML = '<div class="search-results-empty">Chyba při vyhledávání</div>';
+                }
+            } catch (error) {
+                console.error('Chyba při globálním vyhledávání:', error);
+                globalSearchResults.innerHTML = '<div class="search-results-empty">Chyba připojení k serveru</div>';
+            }
+        }
+        
+        function displaySearchResults(results, query) {
+            const { products = [], orders = [], users = [], categories = [] } = results || {};
+            const hasResults = products.length > 0 || orders.length > 0 || users.length > 0 || categories.length > 0;
+            
+            if (!hasResults) {
+                globalSearchResults.innerHTML = `<div class="search-results-empty">Žádné výsledky pro "${query}"</div>`;
+                return;
+            }
+            
+            let html = '';
+            
+            if (orders.length > 0) {
+                html += '<div class="search-results-section"><div class="section-header">🛒 Objednávky</div><div class="section-results">';
+                html += orders.map(order => `
+                    <a href="${order.url}" class="search-result-item">
+                        <div class="result-icon icon-order"><span class="material-symbols-outlined">shopping_cart</span></div>
+                        <div class="result-content">
+                            <div class="result-title">${escapeHtml(order.title)}</div>
+                            <div class="result-subtitle">${escapeHtml(order.subtitle || '')}</div>
+                        </div>
+                        ${order.amount ? `<div class="result-amount">${(typeof order.amount === 'number' ? order.amount : parseFloat(order.amount) || 0).toFixed(2)} Kč</div>` : ''}
+                    </a>
+                `).join('');
+                html += '</div></div>';
+            }
+            
+            if (products.length > 0) {
+                html += '<div class="search-results-section"><div class="section-header">📦 Produkty</div><div class="section-results">';
+                html += products.map(product => `
+                    <a href="${product.url}" class="search-result-item">
+                        <div class="result-icon icon-product">${product.image ? `<img src="${product.image}" alt="${product.title}">` : '<span class="material-symbols-outlined">inventory</span>'}</div>
+                        <div class="result-content">
+                            <div class="result-title">${escapeHtml(product.title)}</div>
+                            <div class="result-subtitle">${escapeHtml(product.subtitle || '')}</div>
+                        </div>
+                        ${product.price ? `<div class="result-amount">${(typeof product.price === 'number' ? product.price : parseFloat(product.price) || 0).toFixed(2)} Kč</div>` : ''}
+                    </a>
+                `).join('');
+                html += '</div></div>';
+            }
+            
+            if (users.length > 0) {
+                html += '<div class="search-results-section"><div class="section-header">👥 Uživatelé</div><div class="section-results">';
+                html += users.map(user => `
+                    <a href="${user.url}" class="search-result-item">
+                        <div class="result-icon icon-user"><span class="material-symbols-outlined">person</span></div>
+                        <div class="result-content">
+                            <div class="result-title">${escapeHtml(user.title)}</div>
+                            <div class="result-subtitle">${escapeHtml(user.subtitle || '')}</div>
+                        </div>
+                    </a>
+                `).join('');
+                html += '</div></div>';
+            }
+            
+            if (categories.length > 0) {
+                html += '<div class="search-results-section"><div class="section-header">📁 Kategorie</div><div class="section-results">';
+                html += categories.map(category => `
+                    <a href="${category.url}" class="search-result-item">
+                        <div class="result-icon icon-category"><span class="material-symbols-outlined">folder</span></div>
+                        <div class="result-content">
+                            <div class="result-title">${escapeHtml(category.title)}</div>
+                            ${category.subtitle ? `<div class="result-subtitle">${escapeHtml(category.subtitle)}</div>` : ''}
+                        </div>
+                    </a>
+                `).join('');
+                html += '</div></div>';
+            }
+            
+            globalSearchResults.innerHTML = html;
+        }
+        
+        // Initialize
+        loadCategories();
+    </script>
+</body>
+</html>
+

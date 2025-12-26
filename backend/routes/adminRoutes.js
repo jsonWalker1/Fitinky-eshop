@@ -16,11 +16,17 @@ import {
     getAdminProducts,
     getAdminUsers,
     getAdminOrders,
+    getAdminCategories,
     getProducts,
     addProduct,
     updateProduct,
     deleteProduct,
-    getDashboardStats
+    getDashboardStats,
+    getAdminCategoriesAPI,
+    createCategory,
+    updateAdminCategory,
+    deleteAdminCategory,
+    getAdminCategory
 } from '../controllers/adminController.js';
 import { globalSearch } from '../controllers/globalSearchController.js';
 import { uploadImage, upload } from '../controllers/uploadController.js';
@@ -32,6 +38,7 @@ router.get('/admin', getAdminLogin);
 router.get('/admin/login', getAdminLogin);
 router.get('/admin/dashboard', getAdminDashboard);
 router.get('/admin/products', getAdminProducts);
+router.get('/admin/categories', getAdminCategories);
 router.get('/admin/users', getAdminUsers);
 router.get('/admin/orders', getAdminOrders);
 
@@ -43,6 +50,13 @@ router.get('/admin/api/search', globalSearch);
 
 // Admin API - Upload obrázků
 router.post('/admin/api/upload/image', upload.single('image'), uploadImage);
+
+// Admin API - Kategorie
+router.get('/admin/api/categories', getAdminCategoriesAPI);
+router.get('/admin/api/categories/:id', getAdminCategory);
+router.post('/admin/api/categories', createCategory);
+router.put('/admin/api/categories/:id', updateAdminCategory);
+router.delete('/admin/api/categories/:id', deleteAdminCategory);
 
 // Admin API - Produkty
 router.get('/admin/api/products', getProducts);
