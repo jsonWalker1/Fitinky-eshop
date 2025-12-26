@@ -113,70 +113,117 @@
         <!-- Main Content -->
         <main class="admin-main">
             <div class="admin-container">
-                <!-- Přidání produktu -->
-                <div class="admin-section">
-                    <h2>Přidat nový produkt</h2>
-                    <div class="message" id="message"></div>
-                    <form id="productForm">
-                        <div class="form-group">
-                            <label for="name">Název produktu *</label>
-                            <input type="text" id="name" name="name" required>
+                <div class="products-management">
+                    <!-- Header s akcemi -->
+                    <div class="products-header">
+                        <div class="header-left">
+                            <h1>Produkty</h1>
                         </div>
-                        <div class="form-group">
-                            <label for="category">Kategorie *</label>
-                            <select id="category" name="category" required>
-                                <option value="">Vyberte kategorii</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="price">Cena (Kč) *</label>
-                            <input type="number" id="price" name="price" step="0.01" min="0" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="description">Popis</label>
-                            <textarea id="description" name="description"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="availabilityStatus">Status dostupnosti *</label>
-                            <select id="availabilityStatus" name="availabilityStatus" required>
-                                <option value="in_stock">Skladem</option>
-                                <option value="on_order">Na objednávku</option>
-                                <option value="out_of_stock">Nedostupné</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Přidat produkt</button>
-                    </form>
-                </div>
-                
-                <!-- Seznam produktů -->
-                <div class="admin-section">
-                    <h2>Produkty</h2>
-                    
-                    <!-- Vyhledávací pole -->
-                    <div class="search-bar">
-                        <div class="search-input-wrapper">
-                            <input 
-                                type="search" 
-                                id="searchInput" 
-                                placeholder="Hledat podle názvu produktu, popisu nebo kategorie..." 
-                                autocomplete="off"
-                            >
-                            <span class="search-icon">🔍</span>
+                        <div class="header-right">
+                            <button class="btn btn-primary" id="addProductBtn">
+                                <span class="material-symbols-outlined">add</span>
+                                Přidat produkt
+                            </button>
                         </div>
                     </div>
                     
-                    <div class="products-list" id="productsList">
-                        <p>Načítám produkty...</p>
+                    <!-- Toolbar s vyhledáváním a bulk akcemi -->
+                    <div class="products-toolbar">
+                        <div class="toolbar-left">
+                            <div class="search-bar">
+                                <div class="search-input-wrapper">
+                                    <input 
+                                        type="search" 
+                                        id="searchInput" 
+                                        placeholder="Hledat produkty..." 
+                                        autocomplete="off"
+                                    >
+                                    <span class="search-icon">🔍</span>
+                                </div>
+                            </div>
+                            
+                            <div class="bulk-actions hidden" id="bulkActions">
+                                <span class="bulk-count" id="bulkCount">0 vybráno</span>
+                                <button class="btn btn-danger" id="bulkDeleteBtn">
+                                    <span class="material-symbols-outlined">delete</span>
+                                    Smazat
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Seznam produktů -->
+                    <div class="products-grid" id="productsGrid">
+                        <div class="products-loading">Načítám produkty...</div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
     
+    <!-- Modal pro přidání/editaci produktu -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Přidat produkt</h2>
+                <button class="modal-close" id="modalClose">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="productForm">
+                    <input type="hidden" id="productId" name="productId">
+                    
+                    <div class="form-group">
+                        <label for="productName">Název produktu *</label>
+                        <input type="text" id="productName" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productCategory">Kategorie *</label>
+                        <select id="productCategory" name="category" required></select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productPrice">Cena (Kč) *</label>
+                        <input type="number" id="productPrice" name="price" step="0.01" min="0" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productImage">URL obrázku</label>
+                        <input type="text" id="productImage" name="image">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productDescription">Popis</label>
+                        <textarea id="productDescription" name="description" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productStatus">Status dostupnosti *</label>
+                        <select id="productStatus" name="availabilityStatus" required>
+                            <option value="in_stock">Skladem</option>
+                            <option value="on_order">Na objednávku</option>
+                            <option value="out_of_stock">Nedostupné</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="modalCancel">Zrušit</button>
+                        <button type="submit" class="btn btn-primary">Uložit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
     <script>
         const API_BASE = '/admin/api';
+        let selectedProducts = new Set();
+        let categories = [];
+        let allProducts = [];
         
-        // Hamburger menu pro mobil
+        // Hamburger menu
         const hamburgerMenu = document.getElementById('hamburgerMenu');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebarOverlay');
@@ -186,32 +233,34 @@
             overlay.classList.toggle('active');
         }
         
-        if (hamburgerMenu) {
-            hamburgerMenu.addEventListener('click', toggleSidebar);
-        }
+        if (hamburgerMenu) hamburgerMenu.addEventListener('click', toggleSidebar);
+        if (overlay) overlay.addEventListener('click', toggleSidebar);
         
-        if (overlay) {
-            overlay.addEventListener('click', toggleSidebar);
-        }
-        
-        // Načtení kategorií pro formulář
-        async function loadCategoriesForForm() {
+        // Načtení kategorií
+        async function loadCategories() {
             try {
                 const response = await fetch('/api/categories');
                 const data = await response.json();
                 if (data.success) {
-                    const categorySelect = document.getElementById('category');
-                    categorySelect.innerHTML = '<option value="">Vyberte kategorii</option>';
-                    data.categories.forEach(category => {
-                        const option = document.createElement('option');
-                        option.value = category.id;
-                        option.textContent = category.name;
-                        categorySelect.appendChild(option);
-                    });
+                    categories = data.categories;
+                    populateCategorySelects();
                 }
             } catch (error) {
                 console.error('Chyba při načítání kategorií:', error);
             }
+        }
+        
+        function populateCategorySelects() {
+            const selects = document.querySelectorAll('#productCategory');
+            selects.forEach(select => {
+                select.innerHTML = '<option value="">Vyberte kategorii</option>';
+                categories.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.id;
+                    option.textContent = category.name;
+                    select.appendChild(option);
+                });
+            });
         }
         
         // Načtení produktů
@@ -226,36 +275,34 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    displayProducts(data.products);
+                    allProducts = data.products;
+                    displayProducts(allProducts);
                 } else {
-                    showMessage('Chyba při načítání produktů', 'error');
+                    showError('Chyba při načítání produktů');
                 }
             } catch (error) {
                 console.error('Chyba při načítání produktů:', error);
-                showMessage('Chyba připojení k serveru', 'error');
+                showError('Chyba připojení k serveru');
             }
-        }
-        
-        // Debounce funkce pro vyhledávání
-        let searchTimeout;
-        const searchInput = document.getElementById('searchInput');
-        if (searchInput) {
-            searchInput.addEventListener('input', (e) => {
-                clearTimeout(searchTimeout);
-                const query = e.target.value;
-                
-                searchTimeout = setTimeout(() => {
-                    loadProducts(query);
-                }, 300); // Čeká 300ms po posledním zadání znaku
-            });
         }
         
         // Zobrazení produktů
         function displayProducts(products) {
-            const list = document.getElementById('productsList');
+            const grid = document.getElementById('productsGrid');
             
             if (products.length === 0) {
-                list.innerHTML = '<p>Žádné produkty. Přidejte první produkt výše.</p>';
+                grid.innerHTML = `
+                    <div class="products-empty">
+                        <div class="empty-icon">
+                            <span class="material-symbols-outlined">inventory_2</span>
+                        </div>
+                        <div class="empty-text">Žádné produkty</div>
+                        <button class="btn btn-primary empty-action" id="addFirstProductBtn">
+                            Přidat první produkt
+                        </button>
+                    </div>
+                `;
+                document.getElementById('addFirstProductBtn')?.addEventListener('click', openAddModal);
                 return;
             }
             
@@ -265,65 +312,216 @@
                 'out_of_stock': 'Nedostupné'
             };
             
-            list.innerHTML = products.map(product => {
-                const status = product.availabilityStatus || (product.inStock ? 'in_stock' : 'out_of_stock');
+            grid.innerHTML = products.map(product => {
+                const status = product.availabilityStatus || 'in_stock';
+                const category = categories.find(c => c.id === product.categoryId || c.slug === product.categorySlug);
+                const categoryName = category?.name || product.categoryName || 'Bez kategorie';
+                
                 return `
-                <div class="product-item">
-                    <div class="product-info">
-                        <h3>${product.name}</h3>
-                        <p><strong>Kategorie:</strong> ${product.categorySlug || product.category}</p>
-                        <p><strong>Cena:</strong> ${product.price} Kč</p>
-                        <p><strong>Status:</strong> <span class="product-status status-${status}">${statusLabels[status] || status}</span></p>
-                        ${product.description ? `<p>${product.description}</p>` : ''}
+                    <div class="product-card" data-product-id="${product.id}">
+                        <div class="product-card-header">
+                            <input 
+                                type="checkbox" 
+                                class="product-checkbox" 
+                                data-product-id="${product.id}"
+                                onchange="toggleProductSelection('${product.id}')"
+                            >
+                            ${product.image 
+                                ? `<img src="${product.image}" alt="${product.name}" class="product-image">`
+                                : `<div class="product-image no-image"><span class="material-symbols-outlined">image</span></div>`
+                            }
+                            <span class="product-status-badge status-${status}">${statusLabels[status]}</span>
+                        </div>
+                        
+                        <div class="product-card-body">
+                            <h3 class="product-title">${escapeHtml(product.name)}</h3>
+                            <div class="product-category">
+                                <span class="category-name" onclick="filterByCategory('${category?.id || ''}')">
+                                    ${escapeHtml(categoryName)}
+                                </span>
+                                <span class="material-symbols-outlined category-edit-icon" onclick="editCategory('${product.id}', '${category?.id || ''}')">
+                                    edit
+                                </span>
+                            </div>
+                            <div class="product-price">${(typeof product.price === 'number' ? product.price : parseFloat(product.price) || 0).toFixed(2)} Kč</div>
+                        </div>
+                        
+                        <div class="product-card-footer">
+                            <div class="product-actions">
+                                <button class="btn-icon" onclick="editProduct('${product.id}')" title="Editovat">
+                                    <span class="material-symbols-outlined">edit</span>
+                                </button>
+                                <button class="btn-icon" onclick="deleteProduct('${product.id}')" title="Smazat">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
+                            </div>
+                            <button class="expand-toggle" onclick="toggleProductDetails('${product.id}')">
+                                <span>Detail</span>
+                                <span class="material-symbols-outlined expand-icon">expand_more</span>
+                            </button>
+                        </div>
+                        
+                        <div class="product-details" id="product-details-${product.id}">
+                            <div class="product-details-content">
+                                <div class="details-section">
+                                    <h4 class="section-title">Popis</h4>
+                                    <div class="product-description">${product.description || 'Žádný popis'}</div>
+                                </div>
+                                
+                                <div class="details-section">
+                                    <h4 class="section-title">Upravit produkt</h4>
+                                    <form class="product-edit-form" id="edit-form-${product.id}" onsubmit="saveProduct(event, '${product.id}')">
+                                        <div class="form-group">
+                                            <label>Název</label>
+                                            <input type="text" name="name" value="${escapeHtml(product.name)}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Kategorie</label>
+                                            <select name="category" required>
+                                                ${categories.map(cat => 
+                                                    `<option value="${cat.id}" ${(cat.id === (category?.id || product.categoryId)) ? 'selected' : ''}>${escapeHtml(cat.name)}</option>`
+                                                ).join('')}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Cena (Kč)</label>
+                                            <input type="number" name="price" step="0.01" min="0" value="${product.price}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>URL obrázku</label>
+                                            <input type="text" name="image" value="${escapeHtml(product.image || '')}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Popis</label>
+                                            <textarea name="description" rows="3">${escapeHtml(product.description || '')}</textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Status</label>
+                                            <select name="availabilityStatus" required>
+                                                <option value="in_stock" ${status === 'in_stock' ? 'selected' : ''}>Skladem</option>
+                                                <option value="on_order" ${status === 'on_order' ? 'selected' : ''}>Na objednávku</option>
+                                                <option value="out_of_stock" ${status === 'out_of_stock' ? 'selected' : ''}>Nedostupné</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-actions">
+                                            <button type="submit" class="btn btn-primary">Uložit změny</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="product-actions">
-                        <button class="btn btn-danger" onclick="deleteProduct('${product.id}')">Smazat</button>
-                    </div>
-                </div>
-            `;
+                `;
             }).join('');
         }
         
-        // Přidání produktu
-        document.getElementById('productForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        // Toggle produkt selection
+        window.toggleProductSelection = function(productId) {
+            if (selectedProducts.has(productId)) {
+                selectedProducts.delete(productId);
+            } else {
+                selectedProducts.add(productId);
+            }
+            updateBulkActions();
+        };
+        
+        function updateBulkActions() {
+            const bulkActions = document.getElementById('bulkActions');
+            const bulkCount = document.getElementById('bulkCount');
+            const count = selectedProducts.size;
             
-            const formData = {
-                name: document.getElementById('name').value,
-                category: document.getElementById('category').value,
-                price: document.getElementById('price').value,
-                description: document.getElementById('description').value,
-                availabilityStatus: document.getElementById('availabilityStatus').value
-            };
+            if (count > 0) {
+                bulkActions.classList.remove('hidden');
+                bulkCount.textContent = `${count} vybráno`;
+            } else {
+                bulkActions.classList.add('hidden');
+            }
+            
+            // Update checkboxy
+            document.querySelectorAll('.product-checkbox').forEach(checkbox => {
+                const productId = checkbox.dataset.productId;
+                checkbox.checked = selectedProducts.has(productId);
+            });
+        }
+        
+        // Bulk delete
+        document.getElementById('bulkDeleteBtn')?.addEventListener('click', async () => {
+            if (selectedProducts.size === 0) return;
+            
+            if (!confirm(`Opravdu chcete smazat ${selectedProducts.size} produktů?`)) return;
             
             try {
-                const response = await fetch(`${API_BASE}/products`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
+                const promises = Array.from(selectedProducts).map(id => 
+                    fetch(`${API_BASE}/products/${id}`, { method: 'DELETE' })
+                );
                 
-                const data = await response.json();
-                
-                if (data.success) {
-                    showMessage('Produkt úspěšně přidán!', 'success');
-                    document.getElementById('productForm').reset();
-                    loadProducts();
-                } else {
-                    showMessage(data.error || 'Chyba při přidávání produktu', 'error');
-                }
+                await Promise.all(promises);
+                selectedProducts.clear();
+                updateBulkActions();
+                loadProducts();
+                showSuccess('Produkty úspěšně smazány');
             } catch (error) {
-                showMessage('Chyba připojení k serveru', 'error');
+                showError('Chyba při mazání produktů');
             }
         });
         
-        // Smazání produktu
-        window.deleteProduct = async function(id) {
-            if (!confirm('Opravdu chcete smazat tento produkt?')) {
+        // Toggle product details
+        window.toggleProductDetails = function(productId) {
+            const details = document.getElementById(`product-details-${productId}`);
+            const icon = details.previousElementSibling.querySelector('.expand-icon');
+            
+            details.classList.toggle('expanded');
+            icon.classList.toggle('expanded');
+        };
+        
+        // Edit product
+        window.editProduct = function(productId) {
+            const product = allProducts.find(p => p.id === productId);
+            if (!product) return;
+            
+            document.getElementById('productId').value = product.id;
+            document.getElementById('productName').value = product.name;
+            document.getElementById('productPrice').value = product.price;
+            document.getElementById('productImage').value = product.image || '';
+            document.getElementById('productDescription').value = product.description || '';
+            document.getElementById('productStatus').value = product.availabilityStatus || 'in_stock';
+            
+            const category = categories.find(c => c.id === product.categoryId || c.slug === product.categorySlug);
+            if (category) {
+                document.getElementById('productCategory').value = category.id;
+            }
+            
+            document.getElementById('modalTitle').textContent = 'Upravit produkt';
+            document.getElementById('productModal').classList.add('active');
+        };
+        
+        // Edit category
+        window.editCategory = function(productId, categoryId) {
+            // Implementovat editaci kategorie produktu
+            const product = allProducts.find(p => p.id === productId);
+            if (!product) return;
+            
+            // Otevřít modal s možností změny kategorie
+            editProduct(productId);
+            document.getElementById('productCategory').focus();
+        };
+        
+        // Filter by category
+        window.filterByCategory = function(categoryId) {
+            if (!categoryId) {
+                loadProducts();
                 return;
             }
+            const category = categories.find(c => c.id === categoryId);
+            if (category) {
+                document.getElementById('searchInput').value = category.name;
+                loadProducts(category.name);
+            }
+        };
+        
+        // Delete product
+        window.deleteProduct = async function(id) {
+            if (!confirm('Opravdu chcete smazat tento produkt?')) return;
             
             try {
                 const response = await fetch(`${API_BASE}/products/${id}`, {
@@ -333,30 +531,136 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    showMessage('Produkt úspěšně smazán!', 'success');
+                    showSuccess('Produkt úspěšně smazán');
                     loadProducts();
                 } else {
-                    showMessage(data.error || 'Chyba při mazání produktu', 'error');
+                    showError(data.error || 'Chyba při mazání produktu');
                 }
             } catch (error) {
-                showMessage('Chyba připojení k serveru', 'error');
+                showError('Chyba připojení k serveru');
             }
         };
         
-        // Zobrazení zprávy
-        function showMessage(text, type) {
-            const messageEl = document.getElementById('message');
-            messageEl.textContent = text;
-            messageEl.className = `message ${type} show`;
-            setTimeout(() => {
-                messageEl.classList.remove('show');
-            }, 3000);
+        // Save product (from inline form)
+        window.saveProduct = async function(event, productId) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = {
+                name: form.name.value,
+                category: form.category.value,
+                price: parseFloat(form.price.value),
+                image: form.image.value,
+                description: form.description.value,
+                availabilityStatus: form.availabilityStatus.value
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE}/products/${productId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showSuccess('Produkt úspěšně aktualizován');
+                    loadProducts();
+                } else {
+                    showError(data.error || 'Chyba při aktualizaci produktu');
+                }
+            } catch (error) {
+                showError('Chyba připojení k serveru');
+            }
+        };
+        
+        // Modal functions
+        function openAddModal() {
+            document.getElementById('productForm').reset();
+            document.getElementById('productId').value = '';
+            document.getElementById('modalTitle').textContent = 'Přidat produkt';
+            document.getElementById('productModal').classList.add('active');
         }
         
-        // Načtení při startu
-        loadCategoriesForForm();
+        function closeModal() {
+            document.getElementById('productModal').classList.remove('active');
+        }
+        
+        document.getElementById('addProductBtn')?.addEventListener('click', openAddModal);
+        document.getElementById('modalClose')?.addEventListener('click', closeModal);
+        document.getElementById('modalCancel')?.addEventListener('click', closeModal);
+        
+        // Product form submit
+        document.getElementById('productForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const form = e.target;
+            const productId = document.getElementById('productId').value;
+            const formData = {
+                name: form.name.value,
+                category: form.category.value,
+                price: parseFloat(form.price.value),
+                image: form.image.value,
+                description: form.description.value,
+                availabilityStatus: form.availabilityStatus.value
+            };
+            
+            try {
+                const url = productId 
+                    ? `${API_BASE}/products/${productId}`
+                    : `${API_BASE}/products`;
+                const method = productId ? 'PUT' : 'POST';
+                
+                const response = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showSuccess(productId ? 'Produkt úspěšně aktualizován' : 'Produkt úspěšně přidán');
+                    closeModal();
+                    loadProducts();
+                } else {
+                    showError(data.error || 'Chyba při ukládání produktu');
+                }
+            } catch (error) {
+                showError('Chyba připojení k serveru');
+            }
+        });
+        
+        // Search
+        let searchTimeout;
+        document.getElementById('searchInput')?.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            const query = e.target.value;
+            searchTimeout = setTimeout(() => {
+                loadProducts(query);
+            }, 300);
+        });
+        
+        // Helper functions
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text || '';
+            return div.innerHTML;
+        }
+        
+        function showSuccess(message) {
+            // TODO: Implementovat toast notifikace
+            alert(message);
+        }
+        
+        function showError(message) {
+            alert(message);
+        }
+        
+        // Initialize
+        loadCategories();
         loadProducts();
     </script>
 </body>
 </html>
-

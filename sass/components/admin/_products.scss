@@ -1,0 +1,504 @@
+// ============================================
+// ADMIN PRODUCTS COMPONENT
+// ============================================
+// Komponenta pro správu produktů v admin rozhraní
+//
+// HTML struktura:
+//   <div class="products-management">
+//     <div class="products-header">...</div>
+//     <div class="products-grid">...</div>
+//   </div>
+//
+// ============================================
+
+@use '../../adminVariables' as *;
+@use '../../adminMixins' as *;
+
+// Products management container
+.products-management {
+    .products-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: $admin-spacing-xl;
+        flex-wrap: wrap;
+        gap: $admin-spacing-md;
+        
+        .header-left {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .header-right {
+            display: flex;
+            gap: $admin-spacing-md;
+            align-items: center;
+        }
+        
+        h1 {
+            @include admin-text-heading($admin-font-size-2xl, 700);
+            margin: 0;
+        }
+    }
+    
+    .products-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: $admin-spacing-lg;
+        padding: $admin-spacing-md;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        flex-wrap: wrap;
+        gap: $admin-spacing-md;
+        
+        .toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: $admin-spacing-md;
+            flex: 1;
+            
+            .bulk-actions {
+                display: flex;
+                gap: $admin-spacing-sm;
+                align-items: center;
+                
+                &.hidden {
+                    display: none;
+                }
+            }
+        }
+        
+        .toolbar-right {
+            display: flex;
+            gap: $admin-spacing-md;
+            align-items: center;
+        }
+    }
+}
+
+// Products grid
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: $admin-spacing-lg;
+    
+    @include admin-mobile {
+        grid-template-columns: 1fr;
+    }
+}
+
+// Product card
+.product-card {
+    background: white;
+    border-radius: $admin-radius-md;
+    box-shadow: $admin-shadow-sm;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: $admin-shadow-md;
+    }
+    
+    .product-card-header {
+        position: relative;
+        
+        .product-checkbox {
+            position: absolute;
+            top: $admin-spacing-sm;
+            left: $admin-spacing-sm;
+            z-index: 10;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: $admin-primary;
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: $admin-content-bg;
+            display: block;
+            
+            &.no-image {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                color: #999;
+                font-size: 3rem;
+            }
+        }
+        
+        .product-status-badge {
+            position: absolute;
+            top: $admin-spacing-sm;
+            right: $admin-spacing-sm;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9);
+        }
+    }
+    
+    .product-card-body {
+        padding: $admin-spacing-md;
+        
+        .product-title {
+            @include admin-text-heading($admin-font-size-lg, 600);
+            margin: 0 0 $admin-spacing-xs 0;
+            line-height: 1.3;
+            
+            a {
+                color: inherit;
+                text-decoration: none;
+                
+                &:hover {
+                    color: $admin-primary;
+                }
+            }
+        }
+        
+        .product-category {
+            display: flex;
+            align-items: center;
+            gap: $admin-spacing-xs;
+            margin-bottom: $admin-spacing-sm;
+            font-size: 0.875rem;
+            color: $admin-text-secondary;
+            
+            .category-name {
+                cursor: pointer;
+                
+                &:hover {
+                    color: $admin-primary;
+                    text-decoration: underline;
+                }
+            }
+            
+            .category-edit-icon {
+                opacity: 0;
+                transition: opacity 0.2s ease;
+                cursor: pointer;
+                color: $admin-primary;
+                font-size: 1rem;
+            }
+            
+            &:hover .category-edit-icon {
+                opacity: 1;
+            }
+        }
+        
+        .product-price {
+            @include admin-text-heading($admin-font-size-xl, 700);
+            color: $admin-primary;
+            margin: $admin-spacing-sm 0;
+        }
+        
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: $admin-spacing-sm;
+            padding-top: $admin-spacing-sm;
+            border-top: 1px solid #e0e0e0;
+            font-size: 0.875rem;
+            color: $admin-text-secondary;
+        }
+    }
+    
+    .product-card-footer {
+        padding: $admin-spacing-md;
+        border-top: 1px solid #e0e0e0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: $admin-spacing-sm;
+        
+        .product-actions {
+            display: flex;
+            gap: $admin-spacing-xs;
+            
+            .btn-icon {
+                padding: 0.5rem;
+                background: none;
+                border: 1px solid #e0e0e0;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: $admin-text-secondary;
+                
+                &:hover {
+                    background: $admin-content-bg;
+                    border-color: $admin-primary;
+                    color: $admin-primary;
+                }
+            }
+        }
+        
+        .expand-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: $admin-text-secondary;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: color 0.2s ease;
+            
+            &:hover {
+                color: $admin-primary;
+            }
+            
+            .expand-icon {
+                transition: transform 0.3s ease;
+                
+                &.expanded {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+    }
+}
+
+// Product expandable details
+.product-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: $admin-content-bg;
+    
+    &.expanded {
+        max-height: 2000px;
+    }
+    
+    .product-details-content {
+        padding: $admin-spacing-lg;
+        
+        .details-section {
+            margin-bottom: $admin-spacing-lg;
+            
+            &:last-child {
+                margin-bottom: 0;
+            }
+            
+            .section-title {
+                    @include admin-text-heading($admin-font-size-lg, 600);
+                margin-bottom: $admin-spacing-md;
+                color: $admin-text-primary;
+            }
+        }
+        
+        .product-description {
+            @include admin-text-body;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+        
+        .product-edit-form {
+            display: grid;
+            gap: $admin-spacing-md;
+            
+            .form-group {
+                label {
+                    display: block;
+                    margin-bottom: $admin-spacing-xs;
+                    font-weight: 500;
+                    color: $admin-text-primary;
+                }
+                
+                input,
+                select,
+                textarea {
+                    width: 100%;
+                    padding: $admin-spacing-sm;
+                    border: 1px solid #e0e0e0;
+                    border-radius: 4px;
+                    font-size: 0.9rem;
+                    font-family: inherit;
+                    transition: border-color 0.2s ease;
+                    
+                    &:focus {
+                        outline: none;
+                        border-color: $admin-primary;
+                        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+                    }
+                }
+                
+                textarea {
+                    min-height: 100px;
+                    resize: vertical;
+                }
+            }
+            
+            .form-actions {
+                display: flex;
+                gap: $admin-spacing-sm;
+                justify-content: flex-end;
+            }
+        }
+    }
+}
+
+// Status badges
+.status-in_stock {
+    color: $admin-success;
+}
+
+.status-on_order {
+    color: $admin-warning;
+}
+
+.status-out_of_stock {
+    color: $admin-danger;
+}
+
+// Empty state
+.products-empty {
+    text-align: center;
+    padding: $admin-spacing-xxl;
+    color: $admin-text-secondary;
+    
+    .empty-icon {
+        font-size: 4rem;
+        margin-bottom: $admin-spacing-md;
+        opacity: 0.5;
+    }
+    
+    .empty-text {
+        @include admin-text-heading($admin-font-size-lg, 500);
+        margin-bottom: $admin-spacing-sm;
+    }
+    
+    .empty-action {
+        margin-top: $admin-spacing-lg;
+    }
+}
+
+// Loading state
+.products-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: $admin-spacing-xxl;
+    color: $admin-text-secondary;
+}
+
+// Buttons (if not already defined)
+.btn {
+    padding: $admin-spacing-sm $admin-spacing-md;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: inherit;
+    
+    &.btn-primary {
+        background: $admin-primary;
+        color: white;
+        
+        &:hover {
+            background: $admin-primary-hover;
+        }
+    }
+    
+    &.btn-secondary {
+        background: #f5f5f5;
+        color: $admin-text-primary;
+        border: 1px solid #e0e0e0;
+        
+        &:hover {
+            background: #eeeeee;
+        }
+    }
+    
+    &.btn-danger {
+        background: $admin-danger;
+        color: white;
+        
+        &:hover {
+            background: #c0392b;
+        }
+    }
+}
+
+// Modal
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: $admin-spacing-lg;
+    
+    &.active {
+        display: flex;
+    }
+    
+    .modal-content {
+        background: white;
+        border-radius: 8px;
+        max-width: 600px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: $admin-spacing-lg;
+            border-bottom: 1px solid #e0e0e0;
+            
+            h2 {
+                @include admin-text-heading($admin-font-size-xl, 600);
+                margin: 0;
+            }
+            
+            .modal-close {
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: $admin-spacing-xs;
+                color: $admin-text-secondary;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 4px;
+                transition: all 0.2s ease;
+                
+                &:hover {
+                    background: $admin-content-bg;
+                    color: $admin-text-primary;
+                }
+            }
+        }
+        
+        .modal-body {
+            padding: $admin-spacing-lg;
+        }
+    }
+}
+

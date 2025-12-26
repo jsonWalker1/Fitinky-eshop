@@ -175,6 +175,54 @@ export const addProduct = async (req, res) => {
 };
 
 /**
+ * Aktualizuje produkt
+ * PUT /admin/api/products/:id
+ */
+export const updateProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, category, price, description, availabilityStatus, image } = req.body;
+        
+        const productData = {};
+        if (name !== undefined) productData.name = name;
+        if (category !== undefined) {
+            productData.categoryId = category;
+            productData.categorySlug = category;
+        }
+        if (price !== undefined) productData.price = parseFloat(price);
+        if (description !== undefined) productData.description = description;
+        if (image !== undefined) productData.image = image;
+        if (availabilityStatus !== undefined) {
+            const validStatuses = ['in_stock', 'on_order', 'out_of_stock'];
+            if (validStatuses.includes(availabilityStatus)) {
+                productData.availabilityStatus = availabilityStatus;
+            }
+        }
+        
+        const updatedProduct = await productsService.updateProduct(id, productData);
+        
+        if (!updatedProduct) {
+            return res.status(404).json({
+                success: false,
+                error: 'Produkt nenalezen'
+            });
+        }
+        
+        res.json({
+            success: true,
+            product: updatedProduct,
+            message: 'Produkt úspěšně aktualizován'
+        });
+    } catch (error) {
+        console.error('Chyba při aktualizaci produktu:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Chyba při aktualizaci produktu'
+        });
+    }
+};
+
+/**
  * Smaže produkt
  */
 export const deleteProduct = async (req, res) => {

@@ -18,6 +18,7 @@ import {
     getAdminOrders,
     getProducts,
     addProduct,
+    updateProduct,
     deleteProduct,
     getDashboardStats
 } from '../controllers/adminController.js';
@@ -42,6 +43,7 @@ router.get('/admin/api/search', globalSearch);
 // Admin API - Produkty
 router.get('/admin/api/products', getProducts);
 router.post('/admin/api/products', addProduct);
+router.put('/admin/api/products/:id', updateProduct);
 router.delete('/admin/api/products/:id', deleteProduct);
 
 export default router;
