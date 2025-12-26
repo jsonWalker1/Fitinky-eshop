@@ -22,6 +22,7 @@
     "db:init": "node backend/db/init-db.js",
     "db:migrate": "node backend/db/migrate.js",
     "db:setup": "npm run db:init && npm run db:migrate",
+    "db:add-fitinky": "node backend/db/add-fitinky.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
