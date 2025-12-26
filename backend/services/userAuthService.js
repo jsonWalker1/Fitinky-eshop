@@ -177,10 +177,11 @@ export const createOrder = async (userId, orderData) => {
 
 /**
  * Získá všechny objednávky
+ * @param {string} searchQuery - Volitelný vyhledávací dotaz pro filtrování objednávek
  */
-export const getAllOrders = async () => {
+export const getAllOrders = async (searchQuery = null) => {
     try {
-        return await userRepo.getAllOrders();
+        return await userRepo.getAllOrders(searchQuery);
     } catch (error) {
         console.error('Chyba při načítání objednávek:', error);
         return [];

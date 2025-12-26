@@ -11,11 +11,12 @@ import * as userRepo from '../repositories/userRepository.js';
 
 /**
  * Získá všechny objednávky
- * GET /admin/api/orders
+ * GET /admin/api/orders?search=query
  */
 export const getAllOrders = async (req, res) => {
     try {
-        const orders = await userAuthService.getAllOrders();
+        const searchQuery = req.query.search || null;
+        const orders = await userAuthService.getAllOrders(searchQuery);
         
         // Obohať objednávky o informace o uživateli
         const ordersWithUsers = await Promise.all(orders.map(async (order) => {

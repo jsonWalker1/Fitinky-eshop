@@ -11,11 +11,12 @@ import * as userRepo from '../repositories/userRepository.js';
 
 /**
  * Získá všechny uživatele
- * GET /admin/api/users
+ * GET /admin/api/users?search=query
  */
 export const getAllUsers = async (req, res) => {
     try {
-        const users = await userRepo.getAllUsers();
+        const searchQuery = req.query.search || null;
+        const users = await userRepo.getAllUsers(searchQuery);
         
         // Vrátit uživatele bez hesel
         const usersWithoutPasswords = users.map(user => {

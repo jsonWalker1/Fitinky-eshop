@@ -19,6 +19,20 @@
     <div class="admin-container">
         <div class="admin-section">
             <h2>Seznam uživatelů</h2>
+            
+            <!-- Vyhledávací pole -->
+            <div class="search-bar">
+                <div class="search-input-wrapper">
+                    <input 
+                        type="search" 
+                        id="searchInput" 
+                        placeholder="Hledat podle jména, emailu nebo telefonu..." 
+                        autocomplete="off"
+                    >
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+            
             <div class="message" id="message"></div>
             <div class="users-list" id="usersList">
                 <p>Načítám uživatele...</p>
@@ -30,9 +44,14 @@
         const API_BASE = '/admin/api';
         
         // Načtení uživatelů
-        async function loadUsers() {
+        async function loadUsers(searchQuery = null) {
             try {
-                const response = await fetch(`${API_BASE}/users`);
+                let url = `${API_BASE}/users`;
+                if (searchQuery && searchQuery.trim()) {
+                    url += `?search=${encodeURIComponent(searchQuery.trim())}`;
+                }
+                
+                const response = await fetch(url);
                 const data = await response.json();
                 
                 if (data.success) {
@@ -41,8 +60,23 @@
                     showMessage('Chyba při načítání uživatelů', 'error');
                 }
             } catch (error) {
+                console.error('Chyba při načítání uživatelů:', error);
                 showMessage('Chyba připojení k serveru', 'error');
             }
+        }
+        
+        // Debounce funkce pro vyhledávání
+        let searchTimeout;
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                const query = e.target.value;
+                
+                searchTimeout = setTimeout(() => {
+                    loadUsers(query);
+                }, 300); // Čeká 300ms po posledním zadání znaku
+            });
         }
         
         // Zobrazení uživatelů

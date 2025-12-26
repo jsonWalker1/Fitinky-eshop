@@ -17,12 +17,13 @@ import {
 } from '../services/productsService.js';
 
 /**
- * GET /api/categories
+ * GET /api/categories?search=query
  * Vrací všechny kategorie s počtem produktů
  */
 export const getCategories = async (req, res) => {
     try {
-        const categories = await getCategoriesWithProductCount();
+        const searchQuery = req.query.search || null;
+        const categories = await getCategoriesWithProductCount(searchQuery);
         res.json({
             success: true,
             categories

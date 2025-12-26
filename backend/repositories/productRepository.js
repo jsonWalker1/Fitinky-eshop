@@ -11,10 +11,26 @@ import pool from '../db/connection.js';
 
 /**
  * Načte všechny kategorie
+ * @param {string} searchQuery - Volitelný vyhledávací dotaz pro filtrování kategorií
  */
-export const getAllCategories = async () => {
+export const getAllCategories = async (searchQuery = null) => {
     try {
-        const result = await pool.query('SELECT * FROM categories ORDER BY name');
+        let query = 'SELECT * FROM categories';
+        const params = [];
+        
+        if (searchQuery && searchQuery.trim()) {
+            const searchPattern = `%${searchQuery.trim()}%`;
+            query += `
+                WHERE name ILIKE $1
+                   OR slug ILIKE $1
+                   OR description ILIKE $1
+            `;
+            params.push(searchPattern);
+        }
+        
+        query += ' ORDER BY name';
+        
+        const result = await pool.query(query, params);
         return result.rows;
     } catch (error) {
         console.error('Chyba při načítání kategorií:', error);
@@ -50,15 +66,30 @@ export const getCategoryById = async (id) => {
 
 /**
  * Načte všechny produkty
+ * @param {string} searchQuery - Volitelný vyhledávací dotaz pro filtrování produktů
  */
-export const getAllProducts = async () => {
+export const getAllProducts = async (searchQuery = null) => {
     try {
-        const result = await pool.query(`
+        let query = `
             SELECT p.*, c.name as category_name, c.slug as category_slug_db
             FROM products p
             LEFT JOIN categories c ON p.category_id = c.id
-            ORDER BY p.name
-        `);
+        `;
+        const params = [];
+        
+        if (searchQuery && searchQuery.trim()) {
+            const searchPattern = `%${searchQuery.trim()}%`;
+            query += `
+                WHERE p.name ILIKE $1
+                   OR p.description ILIKE $1
+                   OR c.name ILIKE $1
+            `;
+            params.push(searchPattern);
+        }
+        
+        query += ' ORDER BY p.name';
+        
+        const result = await pool.query(query, params);
         return result.rows.map(mapProductToJSON);
     } catch (error) {
         console.error('Chyba při načítání produktů:', error);
@@ -221,18 +252,35 @@ export const deleteProduct = async (id) => {
 
 /**
  * Načte kategorie s počtem produktů
+ * @param {string} searchQuery - Volitelný vyhledávací dotaz pro filtrování kategorií
  */
-export const getCategoriesWithProductCount = async () => {
+export const getCategoriesWithProductCount = async (searchQuery = null) => {
     try {
-        const result = await pool.query(`
+        let query = `
             SELECT 
                 c.*,
                 COUNT(p.id) as product_count
             FROM categories c
             LEFT JOIN products p ON c.id = p.category_id
+        `;
+        const params = [];
+        
+        if (searchQuery && searchQuery.trim()) {
+            const searchPattern = `%${searchQuery.trim()}%`;
+            query += `
+                WHERE c.name ILIKE $1
+                   OR c.slug ILIKE $1
+                   OR c.description ILIKE $1
+            `;
+            params.push(searchPattern);
+        }
+        
+        query += `
             GROUP BY c.id
             ORDER BY c.name
-        `);
+        `;
+        
+        const result = await pool.query(query, params);
         return result.rows.map(row => ({
             ...row,
             productCount: parseInt(row.product_count) || 0

@@ -151,6 +151,20 @@
                 <!-- Seznam produktů -->
                 <div class="admin-section">
                     <h2>Produkty</h2>
+                    
+                    <!-- Vyhledávací pole -->
+                    <div class="search-bar">
+                        <div class="search-input-wrapper">
+                            <input 
+                                type="search" 
+                                id="searchInput" 
+                                placeholder="Hledat podle názvu produktu, popisu nebo kategorie..." 
+                                autocomplete="off"
+                            >
+                            <span class="search-icon">🔍</span>
+                        </div>
+                    </div>
+                    
                     <div class="products-list" id="productsList">
                         <p>Načítám produkty...</p>
                     </div>
@@ -201,9 +215,14 @@
         }
         
         // Načtení produktů
-        async function loadProducts() {
+        async function loadProducts(searchQuery = null) {
             try {
-                const response = await fetch(`${API_BASE}/products`);
+                let url = `${API_BASE}/products`;
+                if (searchQuery && searchQuery.trim()) {
+                    url += `?search=${encodeURIComponent(searchQuery.trim())}`;
+                }
+                
+                const response = await fetch(url);
                 const data = await response.json();
                 
                 if (data.success) {
@@ -212,8 +231,23 @@
                     showMessage('Chyba při načítání produktů', 'error');
                 }
             } catch (error) {
+                console.error('Chyba při načítání produktů:', error);
                 showMessage('Chyba připojení k serveru', 'error');
             }
+        }
+        
+        // Debounce funkce pro vyhledávání
+        let searchTimeout;
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                const query = e.target.value;
+                
+                searchTimeout = setTimeout(() => {
+                    loadProducts(query);
+                }, 300); // Čeká 300ms po posledním zadání znaku
+            });
         }
         
         // Zobrazení produktů

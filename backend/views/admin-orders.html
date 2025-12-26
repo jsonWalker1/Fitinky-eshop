@@ -19,6 +19,20 @@
     <div class="admin-container">
         <div class="admin-section">
             <h2>Seznam objednávek</h2>
+            
+            <!-- Vyhledávací pole -->
+            <div class="search-bar">
+                <div class="search-input-wrapper">
+                    <input 
+                        type="search" 
+                        id="searchInput" 
+                        placeholder="Hledat podle ID objednávky, jména, emailu nebo produktu..." 
+                        autocomplete="off"
+                    >
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+            
             <div class="message" id="message"></div>
             <div class="orders-list" id="ordersList">
                 <p>Načítám objednávky...</p>
@@ -46,9 +60,14 @@
         };
         
         // Načtení objednávek
-        async function loadOrders() {
+        async function loadOrders(searchQuery = null) {
             try {
-                const response = await fetch(`${API_BASE}/orders`);
+                let url = `${API_BASE}/orders`;
+                if (searchQuery && searchQuery.trim()) {
+                    url += `?search=${encodeURIComponent(searchQuery.trim())}`;
+                }
+                
+                const response = await fetch(url);
                 const data = await response.json();
                 
                 if (data.success) {
@@ -57,8 +76,23 @@
                     showMessage('Chyba při načítání objednávek', 'error');
                 }
             } catch (error) {
+                console.error('Chyba při načítání objednávek:', error);
                 showMessage('Chyba připojení k serveru', 'error');
             }
+        }
+        
+        // Debounce funkce pro vyhledávání
+        let searchTimeout;
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                const query = e.target.value;
+                
+                searchTimeout = setTimeout(() => {
+                    loadOrders(query);
+                }, 300); // Čeká 300ms po posledním zadání znaku
+            });
         }
         
         // Zobrazení objednávek

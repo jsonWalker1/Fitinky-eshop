@@ -13,10 +13,11 @@ import * as productRepo from '../repositories/productRepository.js';
 
 /**
  * Načte všechny kategorie
+ * @param {string} searchQuery - Volitelný vyhledávací dotaz pro filtrování kategorií
  */
-export const getAllCategories = async () => {
+export const getAllCategories = async (searchQuery = null) => {
     try {
-        return await productRepo.getAllCategories();
+        return await productRepo.getAllCategories(searchQuery);
     } catch (error) {
         console.error('Chyba při načítání kategorií:', error);
         return [];
@@ -37,10 +38,11 @@ export const getCategoryBySlug = async (slug) => {
 
 /**
  * Načte všechny produkty
+ * @param {string} searchQuery - Volitelný vyhledávací dotaz pro filtrování produktů
  */
-export const getAllProducts = async () => {
+export const getAllProducts = async (searchQuery = null) => {
     try {
-        return await productRepo.getAllProducts();
+        return await productRepo.getAllProducts(searchQuery);
     } catch (error) {
         console.error('Chyba při načítání produktů:', error);
         return [];
@@ -73,10 +75,11 @@ export const getProductById = async (id) => {
 
 /**
  * Načte kategorie s počtem produktů
+ * @param {string} searchQuery - Volitelný vyhledávací dotaz pro filtrování kategorií
  */
-export const getCategoriesWithProductCount = async () => {
+export const getCategoriesWithProductCount = async (searchQuery = null) => {
     try {
-        return await productRepo.getCategoriesWithProductCount();
+        return await productRepo.getCategoriesWithProductCount(searchQuery);
     } catch (error) {
         console.error('Chyba při načítání kategorií s počtem produktů:', error);
         return [];

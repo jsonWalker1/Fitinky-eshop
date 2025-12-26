@@ -141,10 +141,28 @@ export const updateUser = async (userId, userData) => {
 
 /**
  * Získá všechny uživatele
+ * @param {string} searchQuery - Volitelný vyhledávací dotaz pro filtrování uživatelů
  */
-export const getAllUsers = async () => {
+export const getAllUsers = async (searchQuery = null) => {
     try {
-        const result = await pool.query('SELECT * FROM users ORDER BY created_at DESC');
+        let query = 'SELECT * FROM users';
+        const params = [];
+        
+        if (searchQuery && searchQuery.trim()) {
+            const searchPattern = `%${searchQuery.trim()}%`;
+            query += `
+                WHERE email ILIKE $1
+                   OR first_name ILIKE $1
+                   OR last_name ILIKE $1
+                   OR (first_name || ' ' || last_name) ILIKE $1
+                   OR phone ILIKE $1
+            `;
+            params.push(searchPattern);
+        }
+        
+        query += ' ORDER BY created_at DESC';
+        
+        const result = await pool.query(query, params);
         return result.rows.map(mapUserToJSON);
     } catch (error) {
         console.error('Chyba při načítání uživatelů:', error);
@@ -342,13 +360,41 @@ export const createOrder = async (orderData) => {
 
 /**
  * Získá všechny objednávky
+ * @param {string} searchQuery - Volitelný vyhledávací dotaz pro filtrování objednávek
  */
-export const getAllOrders = async () => {
+export const getAllOrders = async (searchQuery = null) => {
     try {
-        const result = await pool.query(`
-            SELECT * FROM orders 
-            ORDER BY created_at DESC
-        `);
+        let query;
+        const params = [];
+        
+        if (searchQuery && searchQuery.trim()) {
+            const searchPattern = `%${searchQuery.trim()}%`;
+            // Pro vyhledávání používáme EXISTS pro produktové jméno, abychom se vyhnuli duplikátům
+            query = `
+                SELECT DISTINCT orders.* 
+                FROM orders
+                LEFT JOIN users ON orders.user_id = users.id
+                WHERE orders.id::text ILIKE $1
+                   OR users.email ILIKE $1
+                   OR users.first_name ILIKE $1
+                   OR users.last_name ILIKE $1
+                   OR (users.first_name || ' ' || users.last_name) ILIKE $1
+                   OR EXISTS (
+                       SELECT 1 FROM order_items 
+                       WHERE order_items.order_id = orders.id 
+                       AND order_items.product_name ILIKE $1
+                   )
+                ORDER BY orders.created_at DESC
+            `;
+            params.push(searchPattern);
+        } else {
+            query = `
+                SELECT * FROM orders 
+                ORDER BY created_at DESC
+            `;
+        }
+        
+        const result = await pool.query(query, params);
         return result.rows.map(mapOrderToJSON);
     } catch (error) {
         console.error('Chyba při načítání objednávek:', error);
