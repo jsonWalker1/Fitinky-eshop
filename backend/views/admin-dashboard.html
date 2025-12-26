@@ -106,6 +106,19 @@
                 <h1>Dashboard</h1>
             </div>
             <div class="header-right">
+                <!-- Globální vyhledávání -->
+                <div class="global-search-wrapper">
+                    <div class="global-search-input-wrapper">
+                        <input 
+                            type="search" 
+                            id="globalSearchInput" 
+                            placeholder="Hledat produkty, objednávky, uživatele..." 
+                            autocomplete="off"
+                        >
+                        <span class="search-icon">🔍</span>
+                    </div>
+                    <div class="global-search-results" id="globalSearchResults"></div>
+                </div>
                 <a href="/" class="admin-nav-link">← Zpět na eshop</a>
             </div>
         </header>
@@ -342,6 +355,195 @@
         
         function exportData() {
             alert('Export dat bude implementován později');
+        }
+        
+        // ============================================
+        // GLOBÁLNÍ VYHLEDÁVÁNÍ
+        // ============================================
+        
+        const globalSearchInput = document.getElementById('globalSearchInput');
+        const globalSearchResults = document.getElementById('globalSearchResults');
+        let searchTimeout;
+        
+        if (globalSearchInput && globalSearchResults) {
+            // Vyhledávání při psaní
+            globalSearchInput.addEventListener('input', (e) => {
+                const query = e.target.value.trim();
+                
+                clearTimeout(searchTimeout);
+                
+                if (query.length < 2) {
+                    globalSearchResults.classList.remove('active');
+                    globalSearchResults.innerHTML = '';
+                    return;
+                }
+                
+                // Zobrazit loading
+                globalSearchResults.innerHTML = '<div class="search-results-loading">Načítám výsledky...</div>';
+                globalSearchResults.classList.add('active');
+                
+                // Debounce - počkat 300ms po posledním zadání
+                searchTimeout = setTimeout(() => {
+                    performGlobalSearch(query);
+                }, 300);
+            });
+            
+            // Skrýt výsledky při kliknutí mimo
+            document.addEventListener('click', (e) => {
+                if (!globalSearchInput.contains(e.target) && !globalSearchResults.contains(e.target)) {
+                    globalSearchResults.classList.remove('active');
+                }
+            });
+            
+            // Zobrazit výsledky při focus na input
+            globalSearchInput.addEventListener('focus', () => {
+                if (globalSearchInput.value.trim().length >= 2 && globalSearchResults.innerHTML) {
+                    globalSearchResults.classList.add('active');
+                }
+            });
+        }
+        
+        async function performGlobalSearch(query) {
+            try {
+                const response = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    displaySearchResults(data.results, query);
+                } else {
+                    globalSearchResults.innerHTML = '<div class="search-results-empty">Chyba při vyhledávání</div>';
+                }
+            } catch (error) {
+                console.error('Chyba při globálním vyhledávání:', error);
+                globalSearchResults.innerHTML = '<div class="search-results-empty">Chyba připojení k serveru</div>';
+            }
+        }
+        
+        function displaySearchResults(results, query) {
+            const { products, orders, users, categories } = results;
+            
+            // Zkontrolovat, zda jsou nějaké výsledky
+            const hasResults = products.length > 0 || orders.length > 0 || users.length > 0 || categories.length > 0;
+            
+            if (!hasResults) {
+                globalSearchResults.innerHTML = `<div class="search-results-empty">Žádné výsledky pro "${query}"</div>`;
+                return;
+            }
+            
+            let html = '';
+            
+            // Produkty
+            if (products.length > 0) {
+                html += '<div class="search-results-section">';
+                html += '<div class="section-header">📦 Produkty</div>';
+                html += '<div class="section-results">';
+                html += products.map(product => `
+                    <a href="${product.url}" class="search-result-item">
+                        <div class="result-icon icon-product">
+                            ${product.image ? `<img src="${product.image}" alt="${product.title}">` : '<span class="material-symbols-outlined">inventory</span>'}
+                        </div>
+                        <div class="result-content">
+                            <div class="result-title">${escapeHtml(product.title)}</div>
+                            <div class="result-subtitle">${escapeHtml(product.subtitle || '')}</div>
+                        </div>
+                        ${product.price ? `<div class="result-amount">${(typeof product.price === 'number' ? product.price : parseFloat(product.price) || 0).toFixed(2)} Kč</div>` : ''}
+                    </a>
+                `).join('');
+                html += '</div></div>';
+            }
+            
+            // Objednávky
+            if (orders.length > 0) {
+                html += '<div class="search-results-section">';
+                html += '<div class="section-header">🛒 Objednávky</div>';
+                html += '<div class="section-results">';
+                html += orders.map(order => `
+                    <a href="${order.url}" class="search-result-item">
+                        <div class="result-icon icon-order">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-title">${escapeHtml(order.title)}</div>
+                            <div class="result-subtitle">${escapeHtml(order.subtitle || '')}</div>
+                            <div class="result-meta">${formatDate(order.date)} • ${getStatusLabel(order.status)}</div>
+                        </div>
+                        ${order.amount ? `<div class="result-amount">${(typeof order.amount === 'number' ? order.amount : parseFloat(order.amount) || 0).toFixed(2)} Kč</div>` : ''}
+                    </a>
+                `).join('');
+                html += '</div></div>';
+            }
+            
+            // Uživatelé
+            if (users.length > 0) {
+                html += '<div class="search-results-section">';
+                html += '<div class="section-header">👥 Uživatelé</div>';
+                html += '<div class="section-results">';
+                html += users.map(user => `
+                    <a href="${user.url}" class="search-result-item">
+                        <div class="result-icon icon-user">
+                            <span class="material-symbols-outlined">person</span>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-title">${escapeHtml(user.title)}</div>
+                            <div class="result-subtitle">${escapeHtml(user.subtitle || '')}</div>
+                            ${user.date ? `<div class="result-meta">Registrován: ${formatDate(user.date)}</div>` : ''}
+                        </div>
+                    </a>
+                `).join('');
+                html += '</div></div>';
+            }
+            
+            // Kategorie
+            if (categories.length > 0) {
+                html += '<div class="search-results-section">';
+                html += '<div class="section-header">📁 Kategorie</div>';
+                html += '<div class="section-results">';
+                html += categories.map(category => `
+                    <a href="${category.url}" class="search-result-item">
+                        <div class="result-icon icon-category">
+                            <span class="material-symbols-outlined">folder</span>
+                        </div>
+                        <div class="result-content">
+                            <div class="result-title">${escapeHtml(category.title)}</div>
+                            ${category.subtitle ? `<div class="result-subtitle">${escapeHtml(category.subtitle)}</div>` : ''}
+                        </div>
+                    </a>
+                `).join('');
+                html += '</div></div>';
+            }
+            
+            globalSearchResults.innerHTML = html;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('cs-CZ', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric' 
+                });
+            } catch (e) {
+                return '';
+            }
+        }
+        
+        function getStatusLabel(status) {
+            const labels = {
+                'pending': 'Čeká',
+                'processing': 'Zpracovává se',
+                'shipped': 'Odesláno',
+                'delivered': 'Doručeno',
+                'cancelled': 'Zrušeno'
+            };
+            return labels[status] || status;
         }
         
         // Načtení při startu

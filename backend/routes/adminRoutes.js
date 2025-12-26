@@ -21,6 +21,7 @@ import {
     deleteProduct,
     getDashboardStats
 } from '../controllers/adminController.js';
+import { globalSearch } from '../controllers/globalSearchController.js';
 
 const router = express.Router();
 
@@ -34,6 +35,9 @@ router.get('/admin/orders', getAdminOrders);
 
 // Admin API - Dashboard
 router.get('/admin/api/dashboard', getDashboardStats);
+
+// Admin API - Globální vyhledávání
+router.get('/admin/api/search', globalSearch);
 
 // Admin API - Produkty
 router.get('/admin/api/products', getProducts);

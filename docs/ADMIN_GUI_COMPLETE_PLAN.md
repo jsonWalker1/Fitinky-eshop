@@ -40,12 +40,12 @@
 ```
 
 **Features:**
-- [ ] Collapsible sidebar (skrýt/ukázat)
+- [1] Collapsible sidebar (skrýt/ukázat)
 - [ ] Active state (označit aktuální stránku)
-- [ ] Icons pro každou sekci
+- [1] Icons pro každou sekci
 - [ ] Badge s počtem (např. "Objednávky (5)" pro nové)
-- [ ] Responsive (na mobilu hamburger menu)
-- [ ] Logo/název eshopu v headeru
+- [1] Responsive (na mobilu hamburger menu)
+- [1] Logo/název eshopu v headeru
 
 #### 1.2 Top Header Bar
 ```
@@ -55,7 +55,7 @@
 ```
 
 **Features:**
-- [ ] Logo/Název aplikace
+- [1] Logo/Název aplikace
 - [ ] Notifikace (badge s počtem nových objednávek)
 - [ ] Uživatelský menu (profil, odhlásit se)
 - [ ] Search bar (globální vyhledávání)
