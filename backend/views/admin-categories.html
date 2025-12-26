@@ -348,7 +348,7 @@
         
         // Delete category
         window.deleteCategory = async function(id, name) {
-            if (!confirm(`Opravdu chcete smazat kategorii "${name}"? Produkty v této kategorii budou přesunuty do kategorie "Bez kategorie".`)) return;
+            if (!confirm(`Opravdu chcete smazat kategorii "${name}"?`)) return;
             
             try {
                 const response = await fetch(`${API_BASE}/categories/${id}`, {
@@ -367,6 +367,112 @@
                 showError('Chyba připojení k serveru');
             }
         };
+        
+        // Image upload functions for categories
+        window.toggleCategoryImageSource = function() {
+            const urlRadio = document.querySelector('input[name="imageSource"][value="url"]');
+            const fileRadio = document.querySelector('input[name="imageSource"][value="file"]');
+            const urlInput = document.getElementById('categoryImageUrlInput');
+            const fileInput = document.getElementById('categoryImageFileInput');
+            
+            if (urlRadio && urlRadio.checked) {
+                if (urlInput) urlInput.style.display = 'block';
+                if (fileInput) fileInput.style.display = 'none';
+                const fileInputEl = document.getElementById('categoryImageFile');
+                if (fileInputEl) fileInputEl.value = '';
+                removeCategoryImagePreview();
+            } else if (fileRadio && fileRadio.checked) {
+                if (urlInput) urlInput.style.display = 'none';
+                if (fileInput) fileInput.style.display = 'block';
+                const urlInputEl = document.getElementById('categoryImage');
+                if (urlInputEl) urlInputEl.value = '';
+            }
+        };
+        
+        window.handleCategoryImageFileSelect = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const preview = document.getElementById('categoryImagePreview');
+                const previewImg = document.getElementById('categoryPreviewImg');
+                if (previewImg) previewImg.src = e.target.result;
+                if (preview) preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        };
+        
+        window.removeCategoryImagePreview = function() {
+            const preview = document.getElementById('categoryImagePreview');
+            const previewImg = document.getElementById('categoryPreviewImg');
+            const fileInput = document.getElementById('categoryImageFile');
+            if (preview) preview.style.display = 'none';
+            if (previewImg) previewImg.src = '';
+            if (fileInput) fileInput.value = '';
+        };
+        
+        async function uploadCategoryImageFile(file) {
+            const formData = new FormData();
+            formData.append('image', file);
+            
+            const progressBar = document.getElementById('categoryProgressFill');
+            const progressText = document.getElementById('categoryProgressText');
+            const uploadProgress = document.getElementById('categoryUploadProgress');
+            
+            if (uploadProgress) uploadProgress.style.display = 'block';
+            if (progressBar) progressBar.style.width = '0%';
+            if (progressText) progressText.textContent = 'Nahrávání...';
+            
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                
+                xhr.upload.addEventListener('progress', (e) => {
+                    if (e.lengthComputable && progressBar && progressText) {
+                        const percentComplete = (e.loaded / e.total) * 100;
+                        progressBar.style.width = percentComplete + '%';
+                        progressText.textContent = `Nahrávání... ${Math.round(percentComplete)}%`;
+                    }
+                });
+                
+                xhr.addEventListener('load', () => {
+                    if (xhr.status === 200) {
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            if (response.success) {
+                                if (progressText) progressText.textContent = 'Nahráno úspěšně!';
+                                setTimeout(() => {
+                                    if (uploadProgress) uploadProgress.style.display = 'none';
+                                }, 1000);
+                                resolve(response.url);
+                            } else {
+                                if (uploadProgress) uploadProgress.style.display = 'none';
+                                reject(new Error(response.error || 'Chyba při nahrávání'));
+                            }
+                        } catch (e) {
+                            if (uploadProgress) uploadProgress.style.display = 'none';
+                            reject(new Error('Chyba při parsování odpovědi'));
+                        }
+                    } else {
+                        if (uploadProgress) uploadProgress.style.display = 'none';
+                        reject(new Error('Chyba při nahrávání obrázku'));
+                    }
+                });
+                
+                xhr.addEventListener('error', () => {
+                    if (uploadProgress) uploadProgress.style.display = 'none';
+                    reject(new Error('Chyba připojení k serveru'));
+                });
+                
+                xhr.addEventListener('abort', () => {
+                    if (uploadProgress) uploadProgress.style.display = 'none';
+                    reject(new Error('Nahrávání zrušeno'));
+                });
+                
+                xhr.open('POST', `${API_BASE}/upload/image`);
+                xhr.send(formData);
+            });
+        }
         
         // Modal functions
         function openAddModal() {
