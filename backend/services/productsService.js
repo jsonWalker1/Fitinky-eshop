@@ -112,12 +112,14 @@ export const updateCategory = async (id, categoryData) => {
 
 /**
  * Smaže kategorii
+ * @throws {Error} Pokud kategorie obsahuje produkty
  */
 export const deleteCategory = async (id) => {
     try {
         return await productRepo.deleteCategory(id);
     } catch (error) {
         console.error('Chyba při mazání kategorie:', error);
+        // Propasujeme error dál, aby controller mohl vrátit správnou chybovou hlášku
         throw error;
     }
 };

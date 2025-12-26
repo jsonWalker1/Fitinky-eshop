@@ -484,6 +484,15 @@ export const deleteAdminCategory = async (req, res) => {
         });
     } catch (error) {
         console.error('Chyba při mazání kategorie:', error);
+        
+        // Pokud error obsahuje zprávu o produktech, vrátit ji
+        if (error.message && error.message.includes('produkt')) {
+            return res.status(400).json({
+                success: false,
+                error: error.message
+            });
+        }
+        
         res.status(500).json({
             success: false,
             error: 'Chyba při mazání kategorie'

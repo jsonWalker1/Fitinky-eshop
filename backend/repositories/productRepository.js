@@ -391,13 +391,22 @@ export const updateCategory = async (id, categoryData) => {
 
 /**
  * Smaže kategorii
+ * @throws {Error} Pokud kategorie obsahuje produkty
  */
 export const deleteCategory = async (id) => {
     try {
-        // Nejdříve nastavit category_id na NULL u všech produktů v této kategorii
-        await pool.query('UPDATE products SET category_id = NULL WHERE category_id = $1', [id]);
+        // Zkontrolovat, zda kategorie obsahuje produkty
+        const productsResult = await pool.query(
+            'SELECT COUNT(*) as count FROM products WHERE category_id = $1',
+            [id]
+        );
+        const productCount = parseInt(productsResult.rows[0].count) || 0;
         
-        // Pak smazat kategorii
+        if (productCount > 0) {
+            throw new Error(`Kategorie obsahuje ${productCount} produktů. Nelze smazat kategorii, která obsahuje produkty.`);
+        }
+        
+        // Kategorie neobsahuje produkty - smazat ji
         const result = await pool.query('DELETE FROM categories WHERE id = $1 RETURNING id', [id]);
         return result.rows.length > 0;
     } catch (error) {

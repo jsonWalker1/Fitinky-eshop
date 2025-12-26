@@ -187,8 +187,40 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="categoryImage">URL obrázku</label>
-                        <input type="text" id="categoryImage" name="image">
+                        <label for="categoryImage">Obrázek kategorie</label>
+                        <div class="image-upload-section">
+                            <div class="image-upload-options">
+                                <label class="upload-option">
+                                    <input type="radio" name="imageSource" value="url" checked onchange="toggleCategoryImageSource()">
+                                    <span>URL obrázku</span>
+                                </label>
+                                <label class="upload-option">
+                                    <input type="radio" name="imageSource" value="file" onchange="toggleCategoryImageSource()">
+                                    <span>Nahrát z počítače</span>
+                                </label>
+                            </div>
+                            
+                            <div id="categoryImageUrlInput" class="image-input-wrapper">
+                                <input type="text" id="categoryImage" name="image" placeholder="https://example.com/image.jpg">
+                            </div>
+                            
+                            <div id="categoryImageFileInput" class="image-input-wrapper" style="display: none;">
+                                <input type="file" id="categoryImageFile" name="imageFile" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp" onchange="handleCategoryImageFileSelect(event)">
+                                <div class="image-preview" id="categoryImagePreview" style="display: none;">
+                                    <img id="categoryPreviewImg" src="" alt="Náhled">
+                                    <button type="button" class="btn-remove-preview" onclick="removeCategoryImagePreview()">
+                                        <span class="material-symbols-outlined">close</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="upload-progress" id="categoryUploadProgress" style="display: none;">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="categoryProgressFill"></div>
+                                </div>
+                                <span class="progress-text" id="categoryProgressText">Nahrávání...</span>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="form-actions">
@@ -304,6 +336,12 @@
             document.getElementById('categoryDescription').value = category.description || '';
             document.getElementById('categoryImage').value = category.image || '';
             
+            const urlRadio = document.querySelector('input[name="imageSource"][value="url"]');
+            if (urlRadio) urlRadio.checked = true;
+            toggleCategoryImageSource();
+            removeCategoryImagePreview();
+            document.getElementById('categoryUploadProgress').style.display = 'none';
+            
             document.getElementById('modalTitle').textContent = 'Upravit kategorii';
             document.getElementById('categoryModal').classList.add('active');
         };
@@ -336,10 +374,18 @@
             document.getElementById('categoryId').value = '';
             document.getElementById('modalTitle').textContent = 'Přidat kategorii';
             document.getElementById('categoryModal').classList.add('active');
+            const urlRadio = document.querySelector('input[name="imageSource"][value="url"]');
+            if (urlRadio) urlRadio.checked = true;
+            toggleCategoryImageSource();
+            removeCategoryImagePreview();
+            document.getElementById('categoryUploadProgress').style.display = 'none';
         }
         
         function closeModal() {
             document.getElementById('categoryModal').classList.remove('active');
+            removeCategoryImagePreview();
+            const uploadProgress = document.getElementById('categoryUploadProgress');
+            if (uploadProgress) uploadProgress.style.display = 'none';
         }
         
         document.getElementById('addCategoryBtn')?.addEventListener('click', openAddModal);
@@ -369,11 +415,30 @@
             
             const form = e.target;
             const categoryId = document.getElementById('categoryId').value;
+            const imageSource = document.querySelector('input[name="imageSource"]:checked')?.value;
+            
+            let imageUrl = form.image.value;
+            
+            // Pokud je vybrán file upload, nejdříve nahrát obrázek
+            if (imageSource === 'file') {
+                const fileInput = document.getElementById('categoryImageFile');
+                const file = fileInput.files[0];
+                
+                if (file) {
+                    try {
+                        imageUrl = await uploadCategoryImageFile(file);
+                    } catch (error) {
+                        showError('Chyba při nahrávání obrázku: ' + error.message);
+                        return;
+                    }
+                }
+            }
+            
             const formData = {
                 name: form.name.value,
                 slug: form.slug.value,
                 description: form.description.value || null,
-                image: form.image.value || null
+                image: imageUrl || null
             };
             
             try {
@@ -394,7 +459,8 @@
                     showSuccess(categoryId ? 'Kategorie úspěšně aktualizována' : 'Kategorie úspěšně přidána');
                     closeModal();
                     loadCategories();
-                    document.getElementById('categorySlug').dataset.manualEdit = '';
+                    const slugInput = document.getElementById('categorySlug');
+                    if (slugInput) slugInput.dataset.manualEdit = '';
                 } else {
                     showError(data.error || 'Chyba při ukládání kategorie');
                 }
