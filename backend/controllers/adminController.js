@@ -110,12 +110,17 @@ export const getAdminOrders = (req, res) => {
 
 /**
  * Získá všechny produkty
- * GET /admin/api/products?search=query
+ * GET /admin/api/products?search=query&categoryId=id&availabilityStatus=status
  */
 export const getProducts = async (req, res) => {
     try {
-        const searchQuery = req.query.search || null;
-        const products = await productsService.getAllProducts(searchQuery);
+        const filters = {
+            search: req.query.search || null,
+            categoryId: req.query.categoryId || null,
+            availabilityStatus: req.query.availabilityStatus || null
+        };
+        
+        const products = await productsService.getAllProducts(filters);
         res.json({
             success: true,
             products

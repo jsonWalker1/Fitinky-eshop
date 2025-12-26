@@ -66,9 +66,9 @@ export const getCategoryById = async (id) => {
 
 /**
  * Načte všechny produkty
- * @param {string} searchQuery - Volitelný vyhledávací dotaz pro filtrování produktů
+ * @param {object} filters - Objekt s filtry: { search, categoryId, availabilityStatus }
  */
-export const getAllProducts = async (searchQuery = null) => {
+export const getAllProducts = async (filters = {}) => {
     try {
         let query = `
             SELECT p.*, c.name as category_name, c.slug as category_slug_db
@@ -76,15 +76,38 @@ export const getAllProducts = async (searchQuery = null) => {
             LEFT JOIN categories c ON p.category_id = c.id
         `;
         const params = [];
+        const conditions = [];
+        let paramIndex = 1;
         
-        if (searchQuery && searchQuery.trim()) {
-            const searchPattern = `%${searchQuery.trim()}%`;
-            query += `
-                WHERE p.name ILIKE $1
-                   OR p.description ILIKE $1
-                   OR c.name ILIKE $1
-            `;
+        // Vyhledávání
+        if (filters.search && filters.search.trim()) {
+            const searchPattern = `%${filters.search.trim()}%`;
+            conditions.push(`(
+                p.name ILIKE $${paramIndex}
+                OR p.description ILIKE $${paramIndex}
+                OR c.name ILIKE $${paramIndex}
+            )`);
             params.push(searchPattern);
+            paramIndex++;
+        }
+        
+        // Filtr podle kategorie
+        if (filters.categoryId) {
+            conditions.push(`(p.category_id = $${paramIndex} OR c.id = $${paramIndex})`);
+            params.push(filters.categoryId);
+            paramIndex++;
+        }
+        
+        // Filtr podle dostupnosti
+        if (filters.availabilityStatus) {
+            conditions.push(`p.availability_status = $${paramIndex}`);
+            params.push(filters.availabilityStatus);
+            paramIndex++;
+        }
+        
+        // Přidat WHERE klauzuli pokud jsou podmínky
+        if (conditions.length > 0) {
+            query += ' WHERE ' + conditions.join(' AND ');
         }
         
         query += ' ORDER BY p.name';

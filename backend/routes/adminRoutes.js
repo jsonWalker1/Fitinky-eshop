@@ -23,6 +23,7 @@ import {
     getDashboardStats
 } from '../controllers/adminController.js';
 import { globalSearch } from '../controllers/globalSearchController.js';
+import { uploadImage, upload } from '../controllers/uploadController.js';
 
 const router = express.Router();
 
@@ -39,6 +40,9 @@ router.get('/admin/api/dashboard', getDashboardStats);
 
 // Admin API - Globální vyhledávání
 router.get('/admin/api/search', globalSearch);
+
+// Admin API - Upload obrázků
+router.post('/admin/api/upload/image', upload.single('image'), uploadImage);
 
 // Admin API - Produkty
 router.get('/admin/api/products', getProducts);

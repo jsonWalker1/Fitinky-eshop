@@ -38,11 +38,11 @@ export const getCategoryBySlug = async (slug) => {
 
 /**
  * Načte všechny produkty
- * @param {string} searchQuery - Volitelný vyhledávací dotaz pro filtrování produktů
+ * @param {object} filters - Objekt s filtry: { search, categoryId, availabilityStatus }
  */
-export const getAllProducts = async (searchQuery = null) => {
+export const getAllProducts = async (filters = {}) => {
     try {
-        return await productRepo.getAllProducts(searchQuery);
+        return await productRepo.getAllProducts(filters);
     } catch (error) {
         console.error('Chyba při načítání produktů:', error);
         return [];
