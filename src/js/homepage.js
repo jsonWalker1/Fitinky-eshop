@@ -144,12 +144,11 @@ function initHeroSwiper() {
         return;
     }
     
-    const heroSwiper = new Swiper('.heroSwiper', {
+    new Swiper('.heroSwiper', {
         loop: true,
         autoplay: {
             delay: 5000,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true
+            disableOnInteraction: false
         },
         navigation: {
             nextEl: '.swiper-button-next',
@@ -157,34 +156,29 @@ function initHeroSwiper() {
         },
         pagination: {
             el: '.swiper-pagination',
-            clickable: true,
-            dynamicBullets: true,
+            clickable: true
         },
-        effect: 'slide',
-        speed: 600,
+        speed: 500,
         slidesPerView: 1,
         spaceBetween: 0
     });
-    
-    return heroSwiper;
 }
 
 // Inicializace při načtení stránky
 document.addEventListener('DOMContentLoaded', () => {
     loadCategories();
     loadBestsellers();
-    
-    // Inicializovat Swiper - počkat až bude Swiper načten (je to script tag před </body>)
-    const initSwiper = () => {
+});
+
+// Inicializovat Swiper po načtení všech scriptů
+window.addEventListener('load', () => {
+    // Počkat chvilku, aby se Swiper script stihl načíst
+    setTimeout(() => {
         if (typeof Swiper !== 'undefined') {
             initHeroSwiper();
         } else {
-            // Pokud Swiper není ještě načten, zkusit znovu po krátké době
-            setTimeout(initSwiper, 100);
+            console.error('Swiper.js se nepodařilo načíst');
         }
-    };
-    
-    // Začít inicializaci po malém zpoždění, aby se ujistil, že Swiper script je načten
-    setTimeout(initSwiper, 100);
+    }, 100);
 });
 

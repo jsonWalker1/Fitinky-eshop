@@ -1051,7 +1051,7 @@ header {
   opacity: 1;
   transition: background-color 0.3s ease;
 }
-.hero-slider .heroSwiper .swiper-pagination .swiper-pagination-bullet-active {
+.hero-slider .heroSwiper .swiper-pagination .swiper-pagination-bullet.swiper-pagination-bullet-active {
   background-color: #fff;
 }
 
