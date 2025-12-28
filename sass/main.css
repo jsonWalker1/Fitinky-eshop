@@ -549,17 +549,7 @@ header {
 main {
   width: 100vw;
   min-height: 100vh;
-  background: url(/assets/pic/28ae60de-7568-4e68-a2f3-5c985597d5af.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  background-attachment: fixed;
-}
-@media (max-width: 768px) {
-  main {
-    background-attachment: scroll;
-    background-size: cover;
-  }
+  background-color: #ffffff;
 }
 
 .homepage-main {
