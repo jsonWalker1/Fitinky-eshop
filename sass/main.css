@@ -576,6 +576,9 @@ main {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   border-color: #3b82f6;
 }
+.homepage-content .products-section .product-card:hover .product-image-wrapper .product-image {
+  transform: scale(1.05);
+}
 .homepage-content .products-section .product-card .product-link {
   display: block;
   text-decoration: none;
@@ -596,9 +599,6 @@ main {
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
-}
-.homepage-content .products-section .product-card .product-image-wrapper:hover .product-image {
-  transform: scale(1.05);
 }
 .homepage-content .products-section .product-card .product-image-wrapper .product-status {
   position: absolute;
