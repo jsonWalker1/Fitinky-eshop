@@ -328,13 +328,21 @@ export const addProduct = async (productData) => {
  */
 export const updateProduct = async (id, productData) => {
     try {
-        // Najít category_id pokud je poskytnut categorySlug nebo category
+        // Najít category_id a slug podle category ID nebo slug
         let categoryId = null;
-        if (productData.categorySlug || productData.category) {
+        let categorySlug = null;
+        if (productData.categoryId) {
+            const category = await getCategoryById(productData.categoryId);
+            if (category) {
+                categoryId = category.id;
+                categorySlug = category.slug;
+            }
+        } else if (productData.categorySlug || productData.category) {
             const category = await getCategoryBySlug(productData.categorySlug || productData.category);
-            categoryId = category?.id || null;
-        } else if (productData.categoryId) {
-            categoryId = productData.categoryId;
+            if (category) {
+                categoryId = category.id;
+                categorySlug = category.slug;
+            }
         }
 
         const updates = [];
