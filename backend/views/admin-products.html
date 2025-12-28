@@ -923,19 +923,23 @@
         
         // Modal functions
         function openAddModal() {
+            editingProductId = null;
             document.getElementById('productForm').reset();
             document.getElementById('productId').value = '';
             document.getElementById('modalTitle').textContent = 'Přidat produkt';
-            document.getElementById('productModal').classList.add('active');
+            currentProductGallery = [];
+            displayProductGallery();
             document.querySelector('input[name="imageSource"][value="url"]').checked = true;
             toggleImageSource();
-            removeImagePreview();
+            document.getElementById('productModal').classList.add('active');
         }
         
         function closeModal() {
             document.getElementById('productModal').classList.remove('active');
-            removeImagePreview();
-            document.getElementById('uploadProgress').style.display = 'none';
+            editingProductId = null;
+            currentProductGallery = [];
+            const uploadProgress = document.getElementById('uploadProgress');
+            if (uploadProgress) uploadProgress.style.display = 'none';
         }
         
         document.getElementById('addProductBtn')?.addEventListener('click', openAddModal);
