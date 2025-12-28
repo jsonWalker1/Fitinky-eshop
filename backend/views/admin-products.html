@@ -1092,7 +1092,7 @@
         }
         
         // Modal functions
-        function openAddModal() {
+        async function openAddModal() {
             editingProductId = null;
             document.getElementById('productForm').reset();
             document.getElementById('productId').value = '';
@@ -1101,6 +1101,9 @@
             displayProductGallery();
             document.querySelector('input[name="imageSource"][value="url"]').checked = true;
             toggleImageSource();
+            
+            // Načíst hodnoty atributů z API před otevřením modalu
+            await loadAttributeValues();
             
             // Vyčistit atributy
             document.getElementById('attributeDiameter').value = '';
