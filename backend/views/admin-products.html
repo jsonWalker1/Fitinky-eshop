@@ -726,7 +726,7 @@
         };
         
         // Edit product
-        window.editProduct = function(productId) {
+        window.editProduct = async function(productId) {
             editingProductId = productId;
             const product = allProducts.find(p => p.id === productId);
             if (!product) return;
@@ -742,16 +742,9 @@
                 document.getElementById('productCategory').value = category.id;
             }
             
-            // Load product images
+            // Load product images from API
             currentProductGallery = [];
-            if (product.images && product.images.length > 0) {
-                currentProductGallery = product.images.map((img, index) => ({
-                    id: typeof img === 'string' ? null : img.id,
-                    url: typeof img === 'string' ? img : img.url,
-                    displayOrder: index
-                }));
-            }
-            displayProductGallery();
+            await loadProductImages(productId);
             
             // Nastavit URL jako výchozí při editaci
             document.querySelector('input[name="imageSource"][value="url"]').checked = true;
