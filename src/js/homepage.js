@@ -145,7 +145,7 @@ function initHeroSwiper() {
     }
     
     new Swiper('.heroSwiper', {
-        loop: true,
+        loop: false,
         autoplay: {
             delay: 5000,
             disableOnInteraction: false
@@ -160,8 +160,7 @@ function initHeroSwiper() {
         },
         speed: 500,
         slidesPerView: 1,
-        spaceBetween: 0,
-        loopAdditionalSlides: 1
+        spaceBetween: 0
     });
 }
 
