@@ -3,148 +3,275 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eshop Admin GUI</title>
+  <title>Fitinky - Nerezové armatury a fitinky</title>
   <link rel="stylesheet" href="/sass/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 </head>
 <body>
-  <div class="mainContainer">
-    <header>
-      <div class="logo">
-        <a href="" class="menu-icon">
-          <img src="/assets/pic/logo.png" alt="logo">
-        </a>
+  <!-- Top Contact Bar -->
+  <div class="top-contact-bar">
+    <div class="container">
+      <div class="contact-info">
+        <span class="contact-item">
+          <span>Rychlý kontakt:</span>
+          <a href="tel:+420123456789">603 788 788</a>
+        </span>
+        <span class="contact-item">
+          <a href="mailto:info@fitinky.cz">info@fitinky.cz</a>
+        </span>
       </div>
-      
-      <button class="hamburger" aria-label="Menu" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      
-      <div class="header-menu" id="headerMenu">
-        <nav class="header-menu">
-          <ul>
-            <li><a href="#home">Domů</a></li>
-            <li><a href="#about">O nás</a></li>
-            <li><a href="#services">Služby</a></li>
-            <li><a href="#contact">Kontakt</a></li>
-            <li id="ordersMenuItem" style="display: none;"><a href="/orders">Moje objednávky</a></li>
-          </ul>
-        </nav>
-      </div>
-      
-      <div class="right-menu">
-        <a href="/cart" class="menu-icon cart-icon" id="cartIcon" aria-label="Košík">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M7 18C5.9 18 5.01 18.9 5.01 20C5.01 21.1 5.9 22 7 22C8.1 22 9 21.1 9 20C9 18.9 8.1 18 7 18ZM1 2V4H3L6.6 11.59L5.25 14.04C5.09 14.32 5 14.65 5 15C5 16.1 5.9 17 7 17H19V15H7.42C7.28 15 7.17 14.89 7.17 14.75L7.2 14.63L8.1 13H15.55C16.3 13 16.96 12.59 17.3 11.97L20.88 5.48C20.96 5.34 21 5.17 21 5C21 4.45 20.55 4 20 4H5.21L4.27 2H1ZM17 18C15.9 18 15.01 18.9 15.01 20C15.01 21.1 15.9 22 17 22C18.1 22 19 21.1 19 20C19 18.9 18.1 18 17 18Z" fill="currentColor"/>
-          </svg>
-          <span class="cart-badge" id="cartBadge">0</span>
-        </a>
-        
-        <a href="" class="menu-icon">
-          <img src="/assets/pic/personalicon.bmp" alt="profil">
-        </a>
-        
-        <button class="login" id="loginButton" style="display: none;">
-          <a href="/login">Přihlášení</a>
-        </button>
-        <button class="login" id="logoutButton" style="display: none;">
-          <a href="#" onclick="handleLogout(event)">Odhlásit se</a>
-        </button>
-        <span id="userName" style="display: none; margin-right: 1rem; color: #333; font-weight: 500;"></span>
-      </div>
-    </header>
-    <main>
-      <section class="hero">
-        <div class="hero-content">
-          <h1>Vítejte v našem eshopu</h1>
-          <p>Objevte široký výběr kvalitních produktů za skvělé ceny</p>
-          <a href="/products" class="btn btn-primary">Prohlédnout produkty</a>
-        </div>
-      </section>
-
-      <section class="features" id="about">
-        <div class="container">
-          <h2>Proč si vybrat nás?</h2>
-          <div class="features-grid">
-            <article class="feature-card">
-              <h3>Kvalitní produkty</h3>
-              <p>Všechny naše produkty procházejí přísnou kontrolou kvality</p>
-            </article>
-            <article class="feature-card">
-              <h3>Rychlé dodání</h3>
-              <p>Doručení do 24 hodin po celé České republice</p>
-            </article>
-            <article class="feature-card">
-              <h3>Skvělá podpora</h3>
-              <p>Náš tým je vám k dispozici 24/7</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="cta" id="contact">
-        <div class="container">
-          <h2>Máte otázky?</h2>
-          <p>Kontaktujte nás ještě dnes a my vám rádi pomůžeme</p>
-          <a href="#contact" class="btn btn-secondary">Kontaktovat</a>
-        </div>
-      </section>
-    </main>
-    
-    <footer class="main-footer">
-      <div class="container">
-        <div class="footer-grid">
-          <div class="footer-column">
-            <h3>Fitinky</h3>
-            <p>Váš spolehlivý partner pro vodovodní fitinky a příslušenství z nerezové oceli.</p>
-          </div>
-          
-          <div class="footer-column">
-            <h4>Důležité odkazy</h4>
-            <ul>
-              <li><a href="#about">O nás</a></li>
-              <li><a href="/products">Katalog produktů</a></li>
-              <li><a href="#contact">Kontakt</a></li>
-              <li><a href="/orders">Moje objednávky</a></li>
-            </ul>
-          </div>
-          
-          <div class="footer-column">
-            <h4>K nákupu</h4>
-            <ul>
-              <li><a href="#contact">Doprava a platba</a></li>
-              <li><a href="#contact">Obchodní podmínky</a></li>
-              <li><a href="#contact">Reklamace</a></li>
-              <li><a href="#contact">GDPR</a></li>
-            </ul>
-          </div>
-          
-          <div class="footer-column">
-            <h4>Kontakt</h4>
-            <ul class="footer-contact">
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M22 16.92V19.92C22 20.52 21.52 21 20.92 21C9.4 21 0 11.6 0 0.08C0 -0.52 0.48 -1 1.08 -1H4.08C4.68 -1 5.16 -0.52 5.16 0.08V3.08C5.16 3.68 4.68 4.16 4.08 4.16H2.08C2.08 12.84 9.16 19.92 17.84 19.92V17.92C17.84 17.32 18.32 16.84 18.92 16.84H21.92C22.52 16.84 23 17.32 23 17.92V20.92H22V16.92Z" fill="currentColor"/>
-                </svg>
-                <span>+420 123 456 789</span>
-              </li>
-              <li>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" fill="currentColor"/>
-                </svg>
-                <span>info@fitinky.cz</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        
-        <div class="footer-bottom">
-          <p>&copy; 2024 Fitinky. Všechna práva vyhrazena.</p>
-        </div>
-      </div>
-    </footer>
+      <a href="#contact" class="btn-inquiry">
+        <span class="material-symbols-outlined">send</span>
+        Nezávazná poptávka
+      </a>
+    </div>
   </div>
+
+  <!-- Header Navigation -->
+  <header>
+    <div class="logo">
+      <a href="/" class="menu-icon">
+        <img src="/assets/pic/logo.png" alt="logo">
+        <span class="logo-text">
+          <span class="logo-name">Fitinky</span>
+          <span class="logo-tagline">nerezové armatury a fitinky</span>
+        </span>
+      </a>
+    </div>
+    
+    <button class="hamburger" aria-label="Menu" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    
+    <div class="header-menu" id="headerMenu">
+      <nav>
+        <ul>
+          <li><a href="#about">Kdo jsme?</a><span class="material-symbols-outlined">expand_more</span></li>
+          <li><a href="#tables">Převodní tabulky</a><span class="material-symbols-outlined">expand_more</span></li>
+          <li><a href="#services">Služby</a><span class="material-symbols-outlined">expand_more</span></li>
+          <li><a href="#articles">Články</a><span class="material-symbols-outlined">expand_more</span></li>
+          <li><a href="#contact">Kontakt</a></li>
+        </ul>
+      </nav>
+    </div>
+    
+    <div class="right-menu">
+      <a href="/products" class="menu-icon" title="Vyhledat">
+        <span class="material-symbols-outlined">search</span>
+      </a>
+      <div class="menu-icon" title="Měna: Kč">
+        <span class="material-symbols-outlined">currency_exchange</span>
+        <span class="currency-text">Kč</span>
+      </div>
+      <a href="/login" class="menu-icon" id="loginIcon" title="Přihlásit se">
+        <span class="material-symbols-outlined">person</span>
+      </a>
+      <a href="/cart" class="menu-icon cart-icon" id="cartIcon" aria-label="Košík">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 18C5.9 18 5.01 18.9 5.01 20C5.01 21.1 5.9 22 7 22C8.1 22 9 21.1 9 20C9 18.9 8.1 18 7 18ZM1 2V4H3L6.6 11.59L5.25 14.04C5.09 14.32 5 14.65 5 15C5 16.1 5.9 17 7 17H19V15H7.42C7.28 15 7.17 14.89 7.17 14.75L7.2 14.63L8.1 13H15.55C16.3 13 16.96 12.59 17.3 11.97L20.88 5.48C20.96 5.34 21 5.17 21 5C21 4.45 20.55 4 20 4H5.21L4.27 2H1ZM17 18C15.9 18 15.01 18.9 15.01 20C15.01 21.1 15.9 22 17 22C18.1 22 19 21.1 19 20C19 18.9 18.1 18 17 18Z" fill="currentColor"/>
+        </svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="homepage-main">
+    <!-- Sidebar with Categories -->
+    <aside class="categories-sidebar">
+      <h2 class="sidebar-title">NAŠE NABÍDKA NEREZOVÉHO MATERIÁLU</h2>
+      <nav class="categories-nav" id="categoriesNav">
+        <p>Načítám kategorie...</p>
+      </nav>
+      
+      <a href="#contact" class="btn-inquiry-sidebar">
+        <span class="material-symbols-outlined">send</span>
+        Nezávazná poptávka
+      </a>
+      
+      <div class="quick-contact">
+        <h3>Rychlý kontakt</h3>
+        <div class="contact-person">
+          <div class="contact-photo">
+            <img src="/assets/pic/personalicon.bmp" alt="Kontaktní osoba">
+          </div>
+          <div class="contact-details">
+            <a href="tel:+420603788788" class="contact-phone">
+              <span class="material-symbols-outlined">phone</span>
+              603 788 788
+            </a>
+            <a href="mailto:info@fitinky.cz" class="contact-email">
+              <span class="material-symbols-outlined">email</span>
+              info@fitinky.cz
+            </a>
+          </div>
+        </div>
+        <div class="contact-address">
+          <p>Fitinky s.r.o.</p>
+          <p>Libišany 156</p>
+          <p>533 45 Opatovice nad Labem</p>
+        </div>
+        <a href="#contact" class="btn-all-contacts">Všechny kontakty</a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="homepage-content">
+      <!-- Hero Slider -->
+      <section class="hero-slider">
+        <div class="hero-slide active">
+          <img src="/assets/pic/hero-default.jpg" alt="Hero image" onerror="this.src='https://via.placeholder.com/1200x400/1e3a8a/ffffff?text=Fitinky'">
+        </div>
+        <div class="slider-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </section>
+
+      <!-- Promotional Blocks -->
+      <section class="promotional-blocks">
+        <div class="promo-block">
+          <div class="promo-icon">
+            <span class="material-symbols-outlined">inventory_2</span>
+          </div>
+          <div class="promo-text">
+            <p>NAŠE PRODUKTOVÉ PORTFOLIO</p>
+            <p>STAVEBNICE PRO VAŠE NÁROČNÉ PROJEKTY</p>
+          </div>
+        </div>
+        <div class="promo-block">
+          <div class="promo-icon">
+            <span class="material-symbols-outlined">warehouse</span>
+          </div>
+          <div class="promo-text">
+            <p>NAŠE SKLADOVÉ ZÁSOBY</p>
+            <p>VAŠE JISTOTA RYCHLÉHO DODÁNÍ</p>
+          </div>
+        </div>
+        <div class="promo-block">
+          <div class="promo-icon">
+            <span class="material-symbols-outlined">cut</span>
+          </div>
+          <div class="promo-text">
+            <p>NAŠE OPTIMALIZACE ŘEZU</p>
+            <p>VAŠE OPTIMÁLNÍ CENA</p>
+          </div>
+        </div>
+        <div class="promo-block">
+          <div class="promo-icon">
+            <span class="material-symbols-outlined">engineering</span>
+          </div>
+          <div class="promo-text">
+            <p>NAŠE ZNALOSTI</p>
+            <p>VAŠE VÝHODA</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Section -->
+      <section class="about-section">
+        <div class="about-content">
+          <div class="about-text">
+            <h2>Žijeme nerezem...</h2>
+            <p>Zajišťujeme širokým portfoliem produktů a služeb projekty svých zákazníků. Za více než 10 let této spolupráce jsme umožnili realizaci mnoha náročných a technicky složitých projektů.</p>
+            <a href="#about" class="btn-read-more">
+              Celý příběh
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </a>
+          </div>
+          <div class="about-image">
+            <img src="/assets/pic/personalicon.bmp" alt="O nás">
+          </div>
+        </div>
+      </section>
+
+      <!-- Bestsellers Section -->
+      <section class="bestsellers-section">
+        <h2 class="section-title">Nejprodávanější</h2>
+        <div class="products-grid" id="bestsellersGrid">
+          <p>Načítám produkty...</p>
+        </div>
+      </section>
+
+      <!-- Useful Links Section -->
+      <section class="useful-links-section">
+        <h2 class="section-title">Mohlo by se Vám hodit</h2>
+        <div class="useful-links">
+          <a href="#materials" class="useful-link link-blue">
+            Jakosti nerezových materiálů
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </a>
+          <a href="#calculations" class="useful-link link-red">
+            Výpočet hmotností
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </a>
+          <a href="#pressure" class="useful-link link-yellow">
+            Výpočet tlaku v potrubí
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+    
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <h3>Fitinky</h3>
+          <p>Váš spolehlivý partner pro vodovodní fitinky a příslušenství z nerezové oceli.</p>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Důležité odkazy</h4>
+          <ul>
+            <li><a href="#about">O nás</a></li>
+            <li><a href="/products">Katalog produktů</a></li>
+            <li><a href="#contact">Kontakt</a></li>
+            <li><a href="/orders">Moje objednávky</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h4>K nákupu</h4>
+          <ul>
+            <li><a href="#contact">Doprava a platba</a></li>
+            <li><a href="#contact">Obchodní podmínky</a></li>
+            <li><a href="#contact">Reklamace</a></li>
+            <li><a href="#contact">GDPR</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Kontakt</h4>
+          <ul class="footer-contact">
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22 16.92V19.92C22 20.52 21.52 21 20.92 21C9.4 21 0 11.6 0 0.08C0 -0.52 0.48 -1 1.08 -1H4.08C4.68 -1 5.16 -0.52 5.16 0.08V3.08C5.16 3.68 4.68 4.16 4.08 4.16H2.08C2.08 12.84 9.16 19.92 17.84 19.92V17.92C17.84 17.32 18.32 16.84 18.92 16.84H21.92C22.52 16.84 23 17.32 23 17.92V20.92H22V16.92Z" fill="currentColor"/>
+              </svg>
+              <span>+420 603 788 788</span>
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" fill="currentColor"/>
+              </svg>
+              <span>info@fitinky.cz</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2024 Fitinky. Všechna práva vyhrazena.</p>
+      </div>
+    </div>
+  </footer>
+  
   <script type="module" src="/src/js/main.js"></script>
+  <script type="module" src="/src/js/homepage.js"></script>
 </body>
 </html>
