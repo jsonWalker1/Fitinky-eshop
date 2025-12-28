@@ -13,7 +13,8 @@ import {
     getAllProducts,
     getProductsByCategory,
     getProductById,
-    getCategoriesWithProductCount
+    getCategoriesWithProductCount,
+    getProductImages
 } from '../services/productsService.js';
 
 /**
