@@ -16,6 +16,7 @@
 // ============================================
 
 @use '../mixins' as *;
+@use '../variables' as *;
 
 // Login/Logout tlačítka - výchozí stav je skrytý
 .login {
@@ -43,9 +44,9 @@
 #userName {
     // Výchozí stav: skrytý
     display: none;
-    margin-right: 1rem;
-    color: #333;
-    font-weight: 500;
+    margin-right: $spacing-md;
+    @include text-body($font-size-base, $color-text-primary, $line-height-normal);
+    font-weight: $font-weight-medium;
     
     // Třída pro zobrazení
     &.visible {
@@ -54,12 +55,7 @@
     
     // Odkaz v userName
     a {
-        color: inherit;
-        text-decoration: none;
-        
-        &:hover {
-            text-decoration: underline;
-        }
+        @include text-link($color-text-primary, $color-primary);
     }
 }
 
@@ -96,4 +92,3 @@
         display: block;
     }
 }
-

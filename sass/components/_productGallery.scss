@@ -6,10 +6,13 @@
  * ============================================
  */
 
+@use '../mixins' as *;
+@use '../variables' as *;
+
 // Product image with gallery badge
 .product-image-gallery {
     position: relative;
-    transition: transform 0.2s ease;
+    @include transition-base;
     
     &:hover {
         transform: scale(1.02);
@@ -21,18 +24,17 @@
     bottom: 8px;
     right: 8px;
     background: rgba(0, 0, 0, 0.7);
-    color: white;
+    color: $color-text-white;
     padding: 6px 10px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
+    border-radius: $border-radius-lg;
+    @include flex-center;
     gap: 6px;
-    font-size: 13px;
-    font-weight: 600;
+    @include text-body($font-size-xs, $color-text-white, $line-height-normal);
+    font-weight: $font-weight-semibold;
     backdrop-filter: blur(4px);
     
     .material-symbols-outlined {
-        font-size: 18px;
+        font-size: $font-size-base;
     }
 }
 
@@ -44,9 +46,7 @@
     right: 0;
     bottom: 0;
     z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
     animation: fadeIn 0.2s ease;
 }
 
@@ -83,25 +83,23 @@
     position: absolute;
     top: -50px;
     right: 0;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba($color-bg-white, 0.1);
     border: none;
-    color: white;
+    color: $color-text-white;
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
     cursor: pointer;
-    transition: background 0.2s ease;
+    @include transition-base;
     z-index: 2;
     
     &:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba($color-bg-white, 0.2);
     }
     
     .material-symbols-outlined {
-        font-size: 24px;
+        font-size: $font-size-xl;
     }
 }
 
@@ -109,25 +107,23 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba($color-bg-white, 0.1);
     border: none;
-    color: white;
+    color: $color-text-white;
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
     cursor: pointer;
-    transition: background 0.2s ease;
+    @include transition-base;
     z-index: 2;
     
     &:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba($color-bg-white, 0.2);
     }
     
     .material-symbols-outlined {
-        font-size: 32px;
+        font-size: $font-size-2xl;
     }
     
     &.lightbox-prev {
@@ -141,12 +137,10 @@
 
 .lightbox-image-container {
     flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
     overflow: hidden;
     background: #000;
-    border-radius: 8px;
+    border-radius: $border-radius-lg;
     
     img {
         max-width: 100%;
@@ -180,16 +174,16 @@
     }
     
     &::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba($color-bg-white, 0.1);
         border-radius: 3px;
     }
     
     &::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.3);
+        background: rgba($color-bg-white, 0.3);
         border-radius: 3px;
         
         &:hover {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba($color-bg-white, 0.5);
         }
     }
     
@@ -197,10 +191,10 @@
         width: 80px;
         height: 80px;
         object-fit: cover;
-        border-radius: 6px;
+        border-radius: $border-radius-md;
         cursor: pointer;
         border: 2px solid transparent;
-        transition: border-color 0.2s ease, transform 0.2s ease;
+        @include transition-base;
         opacity: 0.7;
         
         &:hover {
@@ -209,7 +203,7 @@
         }
         
         &.active {
-            border-color: white;
+            border-color: $color-text-white;
             opacity: 1;
             transform: scale(1.1);
         }
@@ -220,13 +214,13 @@
     position: absolute;
     top: -50px;
     left: 0;
-    color: white;
-    font-size: 16px;
-    font-weight: 500;
+    color: $color-text-white;
+    @include text-body($font-size-base, $color-text-white, $line-height-normal);
+    font-weight: $font-weight-medium;
 }
 
 // Responsive
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-md) {
     .lightbox-content {
         width: 100%;
         height: 100vh;
@@ -242,7 +236,7 @@
         height: 40px;
         
         .material-symbols-outlined {
-            font-size: 24px;
+            font-size: $font-size-xl;
         }
         
         &.lightbox-prev {
@@ -268,4 +262,3 @@
         left: 20px;
     }
 }
-

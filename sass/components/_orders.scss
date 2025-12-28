@@ -6,26 +6,22 @@
 // ============================================
 
 @use '../mixins' as *;
+@use '../variables' as *;
 
 .orders-section {
-    padding: 3rem 2rem;
+    @include section-padding;
     min-height: 80vh;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    
-    @media (max-width: 768px) {
-        padding: 2rem 1rem;
-    }
+    background: $color-bg-light;
     
     .container {
-        max-width: 1200px;
-        margin: 0 auto;
+        @include section-container;
     }
     
     h1 {
-        @include text-heading(2.5rem, 700, #333, 2rem);
+        @include text-heading($font-size-2xl, $font-weight-bold, $color-text-primary, $spacing-xl);
         @include text-center;
         position: relative;
-        padding-bottom: 1rem;
+        padding-bottom: $spacing-md;
         
         &::after {
             content: '';
@@ -35,194 +31,183 @@
             transform: translateX(-50%);
             width: 80px;
             height: 4px;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(90deg, $color-primary 0%, $color-primary-light 100%);
             border-radius: 2px;
         }
         
-        @media (max-width: 768px) {
-            @include text-heading(2rem, 700, #333, 1.5rem);
+        @media (max-width: $breakpoint-md) {
+            @include text-heading($font-size-xl, $font-weight-bold, $color-text-primary, $spacing-lg);
         }
     }
 }
 
 .orders-list {
-    margin-top: 3rem;
+    margin-top: $spacing-2xl;
     
     > p {
-        @include text-body(1.1rem, #666, 1.6, 0);
-        text-align: center;
-        padding: 2rem;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        @include text-body($font-size-lg, $color-text-secondary, $line-height-relaxed);
+        @include text-center;
+        padding: $spacing-xl;
+        @include card-base;
     }
 }
 
 .no-orders {
-    text-align: center;
-    padding: 4rem 2rem;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    @include text-center;
+    padding: $spacing-2xl $spacing-xl;
+    @include card-base;
     
     &::before {
         content: '📦';
         font-size: 4rem;
         display: block;
-        margin-bottom: 1rem;
+        margin-bottom: $spacing-md;
     }
     
     p {
-        @include text-body(1.2rem, #666, 1.6, 1.5rem);
-        margin-bottom: 2rem;
+        @include text-body($font-size-lg, $color-text-secondary, $line-height-relaxed, $spacing-lg);
+        margin-bottom: $spacing-xl;
     }
     
     .btn {
-        @include button-primary(#667eea, #5568d3, #fff);
+        @include button-primary;
     }
 }
 
 .order-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    margin-bottom: 2rem;
+    @include card-base;
+    margin-bottom: $spacing-xl;
     overflow: hidden;
-    transition: all 0.3s ease;
+    @include transition-base;
     border-left: 4px solid transparent;
     
     &:hover {
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        box-shadow: $shadow-lg;
         transform: translateY(-2px);
     }
     
     // Barevné ohraničení podle statusu
     &[data-status="pending"] {
-        border-left-color: #f39c12;
+        border-left-color: $color-warning;
     }
     
     &[data-status="processing"] {
-        border-left-color: #3498db;
+        border-left-color: $color-info;
     }
     
     &[data-status="shipped"] {
-        border-left-color: #9b59b6;
+        border-left-color: $color-primary-light;
     }
     
     &[data-status="delivered"] {
-        border-left-color: #27ae60;
+        border-left-color: $color-success;
     }
     
     &[data-status="cancelled"] {
-        border-left-color: #e74c3c;
+        border-left-color: $color-error;
         opacity: 0.85;
     }
 }
 
 .order-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 2rem;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-bottom: 2px solid #e9ecef;
+    @include flex-between;
+    padding: $spacing-lg $spacing-xl;
+    background: $color-bg-light;
+    border-bottom: 2px solid $color-border-light;
     
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
         flex-direction: column;
         align-items: flex-start;
-        gap: 1rem;
-        padding: 1.5rem;
+        gap: $spacing-md;
+        padding: $spacing-lg;
     }
     
     .order-id {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: $spacing-sm;
         
         h3 {
-            @include text-heading(1.5rem, 700, #333, 0);
+            @include text-heading($font-size-xl, $font-weight-bold, $color-text-primary, 0);
             margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            @include flex-center;
+            gap: $spacing-sm;
             
             &::before {
                 content: '📋';
-                font-size: 1.2rem;
+                font-size: $font-size-lg;
             }
         }
         
         .order-date {
-            @include text-body(0.9rem, #666, 1.4, 0);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            @include text-body($font-size-sm, $color-text-secondary, $line-height-normal);
+            @include flex-center;
+            gap: $spacing-sm;
             
             &::before {
                 content: '📅';
-                font-size: 0.9rem;
+                font-size: $font-size-sm;
             }
         }
     }
     
     .order-status {
-        @include text-body(1rem, inherit, 1.4, 0);
-        font-weight: 700;
-        padding: 0.5rem 1rem;
+        @include text-body($font-size-base, inherit, $line-height-normal);
+        font-weight: $font-weight-bold;
+        padding: $spacing-sm $spacing-md;
         border-radius: 20px;
-        background: rgba(255, 255, 255, 0.8);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        background: rgba($color-bg-white, 0.8);
+        box-shadow: $shadow-sm;
         
-        // Barvy podle statusu (používá se data atribut nebo třída)
+        // Barvy podle statusu
         &[data-status="pending"],
         &.status-pending {
-            color: #f39c12;
+            color: $color-warning;
         }
         
         &[data-status="processing"],
         &.status-processing {
-            color: #3498db;
+            color: $color-info;
         }
         
         &[data-status="shipped"],
         &.status-shipped {
-            color: #9b59b6;
+            color: $color-primary-light;
         }
         
         &[data-status="delivered"],
         &.status-delivered {
-            color: #27ae60;
+            color: $color-success;
         }
         
         &[data-status="cancelled"],
         &.status-cancelled {
-            color: #e74c3c;
+            color: $color-error;
         }
     }
 }
 
 .order-content {
-    padding: 2rem;
+    padding: $spacing-xl;
     
-    @media (max-width: 768px) {
-        padding: 1.5rem;
+    @media (max-width: $breakpoint-md) {
+        padding: $spacing-lg;
     }
 }
 
 .order-items {
-    margin-bottom: 2rem;
+    margin-bottom: $spacing-xl;
     
     h4 {
-        @include text-heading(1.2rem, 600, #333, 1rem);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid #f0f0f0;
+        @include text-heading($font-size-lg, $font-weight-semibold, $color-text-primary, $spacing-md);
+        @include flex-center;
+        gap: $spacing-sm;
+        padding-bottom: $spacing-sm;
+        border-bottom: 2px solid $color-border-light;
         
         &::before {
             content: '🛍️';
-            font-size: 1.1rem;
+            font-size: $font-size-base;
         }
     }
     
@@ -234,49 +219,48 @@
         li {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr;
-            gap: 1rem;
+            gap: $spacing-md;
             align-items: center;
-            padding: 1rem;
-            margin-bottom: 0.5rem;
-            background: #f8f9fa;
-            border-radius: 6px;
-            transition: background 0.2s ease;
+            padding: $spacing-md;
+            margin-bottom: $spacing-sm;
+            background: $color-bg-light;
+            border-radius: $border-radius-md;
+            @include transition-base;
             
             &:hover {
-                background: #e9ecef;
+                background: $color-bg-light;
             }
             
-            @media (max-width: 768px) {
+            @media (max-width: $breakpoint-md) {
                 grid-template-columns: 1fr;
-                gap: 0.5rem;
+                gap: $spacing-sm;
             }
             
             .item-name {
-                @include text-body(1rem, #333, 1.4, 0);
-                font-weight: 500;
+                @include text-body($font-size-base, $color-text-primary, $line-height-normal);
+                font-weight: $font-weight-medium;
             }
             
             .item-quantity {
-                @include text-body(0.95rem, #666, 1.4, 0);
-                text-align: center;
-                padding: 0.25rem 0.75rem;
-                background: white;
+                @include text-body($font-size-sm, $color-text-secondary, $line-height-normal);
+                @include text-center;
+                padding: $spacing-xs 0.75rem;
+                background: $color-bg-white;
                 border-radius: 12px;
-                font-weight: 600;
+                font-weight: $font-weight-semibold;
                 
-                @media (max-width: 768px) {
+                @media (max-width: $breakpoint-md) {
                     text-align: left;
                     display: inline-block;
                 }
             }
             
             .item-price {
-                @include text-body(1rem, #333, 1.4, 0);
-                font-weight: 700;
+                @include text-body($font-size-base, $color-primary, $line-height-normal);
+                font-weight: $font-weight-bold;
                 text-align: right;
-                color: #667eea;
                 
-                @media (max-width: 768px) {
+                @media (max-width: $breakpoint-md) {
                     text-align: left;
                 }
             }
@@ -285,65 +269,63 @@
 }
 
 .order-summary {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    border: 1px solid #dee2e6;
+    background: $color-bg-light;
+    padding: $spacing-lg;
+    border-radius: $border-radius-lg;
+    margin-bottom: $spacing-lg;
+    border: $border-width solid $color-border-light;
     
     .summary-row {
-        display: flex;
-        justify-content: space-between;
+        @include flex-between;
         align-items: center;
         padding: 0.75rem 0;
         
         span:first-child {
-            @include text-body(0.95rem, #666, 1.4, 0);
+            @include text-body($font-size-sm, $color-text-secondary, $line-height-normal);
         }
         
         span:last-child {
-            @include text-body(0.95rem, #333, 1.4, 0);
-            font-weight: 600;
+            @include text-body($font-size-sm, $color-text-primary, $line-height-normal);
+            font-weight: $font-weight-semibold;
         }
         
         &.summary-total {
-            border-top: 3px solid #667eea;
+            border-top: 3px solid $color-primary;
             margin-top: 0.75rem;
-            padding-top: 1rem;
+            padding-top: $spacing-md;
             
             span:first-child {
-                @include text-body(1.2rem, #333, 1.4, 0);
-                font-weight: 700;
+                @include text-body($font-size-lg, $color-text-primary, $line-height-normal);
+                font-weight: $font-weight-bold;
             }
             
             span:last-child {
-                @include text-heading(1.3rem, 700, #667eea, 0);
+                @include text-heading($font-size-lg, $font-weight-bold, $color-primary, 0);
             }
         }
     }
 }
 
 .order-address {
-    margin-bottom: 1.5rem;
-    padding: 1.5rem;
-    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
-    border-radius: 8px;
-    border: 1px solid #e9ecef;
+    margin-bottom: $spacing-lg;
+    padding: $spacing-lg;
+    background: linear-gradient(135deg, $color-bg-white 0%, $color-bg-light 100%);
+    border-radius: $border-radius-lg;
+    border: $border-width solid $color-border-light;
     
     h4 {
-        @include text-heading(1rem, 600, #333, 0.75rem);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
+        @include text-heading($font-size-base, $font-weight-semibold, $color-text-primary, 0.75rem);
+        @include flex-center;
+        gap: $spacing-sm;
         
         &::before {
             content: '📍';
-            font-size: 1rem;
+            font-size: $font-size-base;
         }
     }
     
     p {
-        @include text-body(0.95rem, #666, 1.6, 0);
+        @include text-body($font-size-sm, $color-text-secondary, $line-height-relaxed);
         margin: 0;
     }
 }
@@ -351,63 +333,50 @@
 .order-info {
     display: flex;
     flex-wrap: wrap;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background: #f8f9fa;
-    border-radius: 6px;
+    gap: $spacing-lg;
+    margin-bottom: $spacing-lg;
+    padding: $spacing-md;
+    background: $color-bg-light;
+    border-radius: $border-radius-md;
     
     span {
-        @include text-body(0.95rem, #666, 1.4, 0);
+        @include text-body($font-size-sm, $color-text-secondary, $line-height-normal);
         
         strong {
-            color: #333;
-            margin-right: 0.5rem;
+            color: $color-text-primary;
+            margin-right: $spacing-sm;
         }
         
         &::before {
             content: '✓';
-            color: #27ae60;
-            font-weight: 700;
-            margin-right: 0.5rem;
+            color: $color-success;
+            font-weight: $font-weight-bold;
+            margin-right: $spacing-sm;
         }
     }
 }
 
 .btn-outline {
-    @include button-outline(#667eea, #667eea, #667eea, #fff);
-    padding: 0.875rem 2rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 6px;
-    transition: all 0.3s ease;
+    @include button-outline;
     width: 100%;
-    margin-top: 1rem;
+    margin-top: $spacing-md;
     
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-    }
-    
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
         width: 100%;
     }
 }
 
 .error {
-    color: #e74c3c;
-    text-align: center;
-    padding: 3rem 2rem;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    border-left: 4px solid #e74c3c;
+    @include text-body($font-size-base, $color-error, $line-height-normal);
+    @include text-center;
+    padding: $spacing-2xl $spacing-xl;
+    @include card-base;
+    border-left: 4px solid $color-error;
     
     &::before {
         content: '⚠️';
         font-size: 3rem;
         display: block;
-        margin-bottom: 1rem;
+        margin-bottom: $spacing-md;
     }
 }
-

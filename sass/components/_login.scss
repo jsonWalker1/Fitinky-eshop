@@ -10,66 +10,44 @@
 // ============================================
 
 @use '../mixins' as *;
+@use '../variables' as *;
 
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex-center;
     min-height: 80vh;
-    padding: 2rem;
+    padding: $spacing-xl;
     
-    @media (max-width: 768px) {
-        padding: 1.5rem;
+    @media (max-width: $breakpoint-md) {
+        padding: $spacing-lg;
         min-height: 70vh;
     }
 }
 
 .login-box {
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    @include card-base;
     width: 100%;
     max-width: 400px;
     
     h1 {
-        @include text-heading(1.75rem, 600, #333, 1.5rem);
-        text-align: center;
+        @include text-heading($font-size-2xl, $font-weight-semibold, $color-text-primary, $spacing-lg);
+        @include text-center;
     }
 }
 
 .form-group {
-    margin-bottom: 1.5rem;
+    @include form-group;
     
     label {
-        display: block;
-        margin-bottom: 0.5rem;
-        color: #666;
-        font-weight: 500;
+        @include form-label;
     }
     
     input {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 1rem;
-        font-family: inherit;
-        box-sizing: border-box;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        
-        &:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
-        }
+        @include form-input;
     }
 }
 
 .error-message {
-    color: #e74c3c;
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
+    @include text-body($font-size-sm, $color-error, $line-height-normal, $spacing-sm);
     display: none;
     
     &.show {
@@ -78,20 +56,19 @@
 }
 
 .btn-login {
-    @include button-primary(#667eea, #5568d3, #fff);
+    @include button-primary;
     width: 100%;
     padding: 0.75rem;
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
 }
 
 .register-link {
-    text-align: center;
-    margin-top: 1rem;
-    color: #666;
+    @include text-center;
+    margin-top: $spacing-md;
+    @include text-body($font-size-base, $color-text-secondary);
     
     a {
-        @include text-link(#667eea, #5568d3);
+        @include text-link($color-primary, $color-primary-dark);
     }
 }
-

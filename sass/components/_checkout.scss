@@ -11,27 +11,28 @@
 // ============================================
 
 @use '../mixins' as *;
+@use '../variables' as *;
 
 .checkout-container {
     max-width: 1000px;
-    margin: 2rem auto;
-    padding: 2rem;
+    margin: $spacing-xl auto;
+    padding: $spacing-xl;
     
-    @media (max-width: 768px) {
-        padding: 1rem;
+    @media (max-width: $breakpoint-md) {
+        padding: $spacing-md;
     }
     
     h1 {
-        @include text-heading(2rem, 700, #333, 2rem);
+        @include text-heading($font-size-2xl, $font-weight-bold, $color-text-primary, $spacing-xl);
     }
 }
 
 .checkout-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    gap: $spacing-xl;
     
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
         grid-template-columns: 1fr;
     }
 }
@@ -41,47 +42,25 @@
 }
 
 .form-section {
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
+    @include card-base;
+    margin-bottom: $spacing-xl;
     
     h2 {
-        margin-top: 0;
-        margin-bottom: 1.5rem;
-        color: #333;
-        @include text-heading(1.5rem, 600, #333, 1.5rem);
+        @include text-heading($font-size-xl, $font-weight-semibold, $color-text-primary, $spacing-lg);
     }
 }
 
 .form-group {
-    margin-bottom: 1.5rem;
+    @include form-group;
     
     label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-        color: #666;
+        @include form-label;
     }
     
     input,
     select,
     textarea {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 1rem;
-        font-family: inherit;
-        box-sizing: border-box;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        
-        &:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
-        }
+        @include form-input;
     }
     
     textarea {
@@ -91,9 +70,8 @@
 }
 
 .checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    @include flex-center;
+    gap: $spacing-sm;
     
     input[type="checkbox"] {
         width: auto;
@@ -102,9 +80,9 @@
 
 .company-fields {
     display: none;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid #ddd;
+    margin-top: $spacing-md;
+    padding-top: $spacing-md;
+    border-top: $border-width solid $color-border-light;
     
     &.show {
         display: block;
@@ -112,32 +90,30 @@
 }
 
 .order-summary {
-    background: #f5f5f5;
-    padding: 2rem;
-    border-radius: 8px;
+    background: $color-bg-light;
+    padding: $spacing-xl;
+    border-radius: $border-radius-lg;
     height: fit-content;
     position: sticky;
-    top: 2rem;
+    top: $spacing-xl;
     
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
         position: static;
     }
     
     h2 {
-        @include text-heading(1.5rem, 600, #333, 1.5rem);
-        margin-top: 0;
+        @include text-heading($font-size-xl, $font-weight-semibold, $color-text-primary, $spacing-lg);
     }
     
     #orderSummaryItems {
-        margin-bottom: 1rem;
+        margin-bottom: $spacing-md;
     }
 }
 
 .order-item {
-    display: flex;
-    justify-content: space-between;
+    @include flex-between;
     padding: 0.75rem 0;
-    border-bottom: 1px solid #ddd;
+    border-bottom: $border-width solid $color-border-light;
     
     &:last-child {
         border-bottom: none;
@@ -145,46 +121,33 @@
 }
 
 .summary-total {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 2px solid #333;
-    display: flex;
-    justify-content: space-between;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #333;
+    margin-top: $spacing-md;
+    padding-top: $spacing-md;
+    border-top: 2px solid $color-text-primary;
+    @include flex-between;
+    @include text-body($font-size-lg, $color-text-primary, $line-height-normal);
+    font-weight: $font-weight-bold;
 }
 
 .btn-submit {
+    @include button-primary;
     width: 100%;
-    padding: 1rem;
-    background: #667eea;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 1rem;
-    transition: background 0.3s ease;
-    
-    &:hover:not(:disabled) {
-        background: #5568d3;
-    }
+    padding: $spacing-md;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    margin-top: $spacing-md;
     
     &:disabled {
-        background: #ccc;
+        background: $color-text-secondary;
         cursor: not-allowed;
     }
 }
 
 .error-message {
-    color: #e74c3c;
-    margin-top: 0.5rem;
+    @include text-body($font-size-sm, $color-error, $line-height-normal, $spacing-sm);
     display: none;
     
     &.show {
         display: block;
     }
 }
-

@@ -1,22 +1,35 @@
-// Mixins
+// ============================================
+// MIXINS
+// ============================================
+// Znovupoužitelné mixiny pro konzistentní styly
+//
+// Použití:
+//   @use 'mixins' as *;
+//   @include button-primary;
+//
+// ============================================
 
-// Button mixin - základní styl pro všechna tlačítka
+@use 'variables' as *;
+
+// ============================================
+// BUTTON MIXINS
+// ============================================
+
 @mixin button-base {
     display: inline-block;
-    padding: 1rem 2rem;
+    padding: 0.75rem 1.5rem;
     text-decoration: none;
-    border-radius: 5px;
-    font-weight: 600;
-    transition: all 0.3s ease;
+    border-radius: $border-radius-md;
+    font-weight: $font-weight-semibold;
+    transition: all $transition-base;
     border: none;
     cursor: pointer;
     text-align: center;
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: $font-size-base;
+    line-height: $line-height-normal;
 }
 
-// Button varianty
-@mixin button-primary($bg-color: #007bff, $hover-color: #0056b3, $text-color: #fff) {
+@mixin button-primary($bg-color: $color-primary, $hover-color: $color-primary-dark, $text-color: $color-text-white) {
     @include button-base;
     background-color: $bg-color;
     color: $text-color;
@@ -24,7 +37,7 @@
     &:hover {
         background-color: $hover-color;
         transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        box-shadow: $shadow-md;
     }
     
     &:active {
@@ -32,23 +45,19 @@
     }
 }
 
-@mixin button-secondary($bg-color: #fff, $text-color: #667eea, $hover-bg: #f8f9fa) {
+@mixin button-secondary {
     @include button-base;
-    background-color: $bg-color;
-    color: $text-color;
+    background-color: $color-bg-white;
+    color: $color-primary;
+    border: $border-width solid $color-border-light;
     
     &:hover {
-        background-color: $hover-bg;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    
-    &:active {
-        transform: translateY(0);
+        background-color: $color-bg-light;
+        border-color: $color-primary;
     }
 }
 
-@mixin button-outline($border-color: #007bff, $text-color: #007bff, $hover-bg: #007bff, $hover-text: #fff) {
+@mixin button-outline($border-color: $color-primary, $text-color: $color-primary, $hover-bg: $color-primary, $hover-text: $color-text-white) {
     @include button-base;
     background-color: transparent;
     color: $text-color;
@@ -61,26 +70,41 @@
     }
 }
 
-// Text style mixiny
-@mixin text-heading($size: 2rem, $weight: 600, $color: #333, $margin-bottom: 1rem) {
+@mixin button-link {
+    @include button-base;
+    background-color: transparent;
+    color: $color-primary;
+    padding: 0.5rem 1rem;
+    
+    &:hover {
+        color: $color-primary-dark;
+        text-decoration: underline;
+    }
+}
+
+// ============================================
+// TEXT MIXINS
+// ============================================
+
+@mixin text-heading($size: $font-size-2xl, $weight: $font-weight-semibold, $color: $color-text-primary, $margin-bottom: $spacing-md) {
     font-size: $size;
     font-weight: $weight;
     color: $color;
     margin-bottom: $margin-bottom;
-    line-height: 1.2;
+    line-height: $line-height-tight;
 }
 
-@mixin text-body($size: 1rem, $color: #666, $line-height: 1.6, $margin-bottom: 0) {
+@mixin text-body($size: $font-size-base, $color: $color-text-secondary, $line-height: $line-height-relaxed, $margin-bottom: 0) {
     font-size: $size;
     color: $color;
     line-height: $line-height;
     margin-bottom: $margin-bottom;
 }
 
-@mixin text-link($color: #007bff, $hover-color: #0056b3) {
+@mixin text-link($color: $color-primary, $hover-color: $color-primary-dark) {
     color: $color;
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: color $transition-base;
     
     &:hover {
         color: $hover-color;
@@ -94,5 +118,136 @@
 
 @mixin text-uppercase {
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.5px;
+}
+
+// ============================================
+// CARD MIXINS
+// ============================================
+
+@mixin card-base {
+    background-color: $color-bg-white;
+    border-radius: $border-radius-lg;
+    padding: $spacing-xl;
+    box-shadow: $shadow-sm;
+    border: $border-width solid $color-border-light;
+}
+
+@mixin card-dark {
+    background-color: $color-bg-dark;
+    color: $color-text-white;
+    border-radius: $border-radius-lg;
+    padding: $spacing-xl;
+    box-shadow: $shadow-md;
+}
+
+@mixin card-hover {
+    transition: all $transition-base;
+    
+    &:hover {
+        box-shadow: $shadow-md;
+        transform: translateY(-2px);
+    }
+}
+
+// ============================================
+// FORM MIXINS
+// ============================================
+
+@mixin form-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: $border-width solid $color-border-light;
+    border-radius: $border-radius-md;
+    font-size: $font-size-base;
+    font-family: inherit;
+    transition: border-color $transition-base;
+    box-sizing: border-box;
+    
+    &:focus {
+        outline: none;
+        border-color: $color-primary;
+        box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+    }
+}
+
+@mixin form-label {
+    display: block;
+    margin-bottom: $spacing-sm;
+    color: $color-text-primary;
+    font-weight: $font-weight-medium;
+    font-size: $font-size-sm;
+}
+
+@mixin form-group {
+    margin-bottom: $spacing-lg;
+}
+
+// ============================================
+// SECTION MIXINS
+// ============================================
+
+@mixin section-title {
+    @include text-heading($font-size-2xl, $font-weight-semibold, $color-text-primary, $spacing-xl);
+    @include text-uppercase;
+}
+
+@mixin section-container {
+    max-width: $breakpoint-2xl;
+    margin: 0 auto;
+    padding: $spacing-xl $spacing-lg;
+}
+
+@mixin section-padding {
+    padding: $spacing-2xl $spacing-lg;
+    
+    @media (max-width: $breakpoint-md) {
+        padding: $spacing-xl $spacing-md;
+    }
+}
+
+// ============================================
+// LAYOUT MIXINS
+// ============================================
+
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@mixin container {
+    max-width: $breakpoint-2xl;
+    margin: 0 auto;
+    padding: 0 $spacing-lg;
+}
+
+// ============================================
+// UTILITY MIXINS
+// ============================================
+
+@mixin transition-base {
+    transition: all $transition-base;
+}
+
+@mixin hover-lift {
+    transition: transform $transition-base;
+    
+    &:hover {
+        transform: translateY(-2px);
+    }
+}
+
+@mixin hover-scale {
+    transition: transform $transition-base;
+    
+    &:hover {
+        transform: scale(1.05);
+    }
 }

@@ -6,29 +6,26 @@
 // ============================================
 
 @use '../mixins' as *;
+@use '../variables' as *;
 
 .products-section {
-    padding: 4rem 2rem;
+    @include section-padding;
     min-height: 80vh;
     
-    @media (max-width: 768px) {
-        padding: 2rem 1rem;
-    }
-    
     h1 {
-        @include text-heading(2.5rem, 700, #333, 1rem);
+        @include text-heading($font-size-2xl, $font-weight-bold, $color-text-primary, $spacing-md);
         @include text-center;
         
-        @media (max-width: 768px) {
-            @include text-heading(2rem, 700, #333, 1rem);
+        @media (max-width: $breakpoint-md) {
+            @include text-heading($font-size-xl, $font-weight-bold, $color-text-primary, $spacing-md);
         }
     }
     
     .section-description {
-        @include text-body(1.1rem, #666, 1.6, 2rem);
+        @include text-body($font-size-lg, $color-text-secondary, $line-height-relaxed, $spacing-xl);
         @include text-center;
         max-width: 600px;
-        margin: 0 auto 3rem;
+        margin: 0 auto $spacing-2xl;
     }
 }
 
@@ -36,26 +33,24 @@
 .categories-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-bottom: 3rem;
+    gap: $spacing-xl;
+    margin-bottom: $spacing-2xl;
     
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: $spacing-lg;
     }
 }
 
 .category-card {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    @include card-base;
+    @include card-hover;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
     
     &:hover {
         transform: translateY(-5px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        box-shadow: $shadow-md;
     }
 }
 
@@ -63,7 +58,7 @@
     width: 100%;
     height: 200px;
     overflow: hidden;
-    background: #f5f5f5;
+    background: $color-bg-light;
     
     img {
         width: 100%;
@@ -73,19 +68,19 @@
 }
 
 .category-info {
-    padding: 1.5rem;
+    padding: $spacing-lg;
     
     h3 {
-        @include text-heading(1.5rem, 600, #333, 0.5rem);
+        @include text-heading($font-size-xl, $font-weight-semibold, $color-text-primary, $spacing-sm);
     }
     
     p {
-        @include text-body(0.9rem, #666, 1.6, 1rem);
+        @include text-body($font-size-sm, $color-text-secondary, $line-height-relaxed, $spacing-md);
     }
     
     .category-count {
-        @include text-body(0.85rem, #999, 1.4, 1rem);
-        font-weight: 500;
+        @include text-body($font-size-xs, $color-text-secondary, $line-height-normal, $spacing-md);
+        font-weight: $font-weight-medium;
     }
 }
 
@@ -93,31 +88,29 @@
 .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+    gap: $spacing-xl;
+    margin-top: $spacing-xl;
     
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 1.5rem;
+        gap: $spacing-lg;
     }
     
-    @media (max-width: 480px) {
+    @media (max-width: $breakpoint-sm) {
         grid-template-columns: 1fr;
     }
 }
 
 .product-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    @include card-base;
+    @include card-hover;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
-    border: 1px solid #f0f0f0;
+    border: $border-width solid $color-border-light;
     
     &:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        box-shadow: $shadow-lg;
     }
     
     &.product-unavailable {
@@ -125,7 +118,7 @@
         
         &:hover {
             transform: none;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            box-shadow: $shadow-sm;
         }
     }
 }
@@ -134,7 +127,7 @@
     width: 100%;
     height: 200px;
     overflow: hidden;
-    background: #f5f5f5;
+    background: $color-bg-light;
     position: relative;
     
     img {
@@ -145,106 +138,96 @@
     
     .product-status-badge {
         position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
+        top: $spacing-sm;
+        right: $spacing-sm;
         padding: 0.4rem 0.8rem;
-        border-radius: 4px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: white;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        border-radius: $border-radius-sm;
+        @include text-body($font-size-xs, $color-text-white, $line-height-normal);
+        font-weight: $font-weight-semibold;
+        @include text-uppercase;
     }
     
     .product-status-in_stock {
-        background: #27ae60;
+        background: $color-success;
     }
     
     .product-status-on_order {
-        background: #f39c12;
+        background: $color-warning;
     }
     
     .product-status-out_of_stock {
-        background: #e74c3c;
+        background: $color-error;
     }
 }
 
 .product-info {
-    padding: 1.5rem;
+    padding: $spacing-lg;
     
     h3 {
-        @include text-heading(1.25rem, 600, #333, 0.5rem);
+        @include text-heading($font-size-lg, $font-weight-semibold, $color-text-primary, $spacing-sm);
     }
     
     .product-description {
-        @include text-body(0.9rem, #666, 1.6, 1rem);
+        @include text-body($font-size-sm, $color-text-secondary, $line-height-relaxed, $spacing-md);
         min-height: 40px;
     }
     
     .product-price {
-        @include text-heading(1.5rem, 700, #667eea, 1rem);
-        margin-bottom: 0.5rem;
+        @include text-heading($font-size-xl, $font-weight-bold, $color-primary, $spacing-md);
     }
     
     .product-availability {
-        @include text-body(0.9rem, #666, 1.4, 0.5rem);
-        font-weight: 500;
-        margin-bottom: 1rem;
+        @include text-body($font-size-sm, $color-text-secondary, $line-height-normal, $spacing-sm);
+        font-weight: $font-weight-medium;
         padding: 0.4rem 0.8rem;
-        border-radius: 4px;
+        border-radius: $border-radius-sm;
         display: inline-block;
     }
     
     .product-available {
-        background: #d4edda;
-        color: #155724;
+        background: rgba($color-success, 0.1);
+        color: $color-success;
     }
     
     .product-on-order {
-        background: #fff3cd;
-        color: #856404;
+        background: rgba($color-warning, 0.1);
+        color: $color-warning;
     }
     
     .product-out-of-stock {
-        background: #f8d7da;
-        color: #721c24;
+        background: rgba($color-error, 0.1);
+        color: $color-error;
     }
     
     .product-quantity {
-        margin-bottom: 1rem;
+        margin-bottom: $spacing-md;
         
         label {
-            display: block;
-            @include text-body(0.9rem, #666, 1.4, 0.5rem);
-            font-weight: 500;
-            margin-bottom: 0.5rem;
+            @include form-label;
+            margin-bottom: $spacing-sm;
         }
         
         .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            @include flex-center;
+            gap: $spacing-sm;
             max-width: 150px;
             
             .quantity-btn {
                 width: 36px;
                 height: 36px;
-                border: 1px solid #ddd;
-                background: white;
-                border-radius: 4px;
+                border: $border-width solid $color-border-light;
+                background: $color-bg-white;
+                border-radius: $border-radius-sm;
                 cursor: pointer;
-                font-size: 1.2rem;
-                font-weight: 600;
-                color: #667eea;
-                transition: all 0.3s ease;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                @include text-body($font-size-lg, $color-primary, $line-height-normal);
+                font-weight: $font-weight-semibold;
+                @include transition-base;
+                @include flex-center;
                 
                 &:hover:not(:disabled) {
-                    background: #667eea;
-                    color: white;
-                    border-color: #667eea;
+                    background: $color-primary;
+                    color: $color-text-white;
+                    border-color: $color-primary;
                 }
                 
                 &:active:not(:disabled) {
@@ -260,23 +243,23 @@
             input[type="number"] {
                 flex: 1;
                 height: 36px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
+                border: $border-width solid $color-border-light;
+                border-radius: $border-radius-sm;
                 text-align: center;
-                font-size: 1rem;
-                font-weight: 500;
-                padding: 0 0.5rem;
+                @include text-body($font-size-base, $color-text-primary, $line-height-normal);
+                font-weight: $font-weight-medium;
+                padding: 0 $spacing-sm;
                 
                 &:focus:not(:disabled) {
                     outline: none;
-                    border-color: #667eea;
-                    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+                    border-color: $color-primary;
+                    box-shadow: 0 0 0 2px rgba($color-primary, 0.1);
                 }
                 
                 &:disabled {
                     opacity: 0.5;
                     cursor: not-allowed;
-                    background: #f5f5f5;
+                    background: $color-bg-light;
                 }
                 
                 &::-webkit-inner-spin-button,
@@ -288,23 +271,11 @@
     }
     
     .btn-primary {
+        @include button-primary;
         width: 100%;
-        padding: 0.75rem 1.5rem;
-        background: #667eea;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        
-        &:hover:not(:disabled) {
-            background: #5568d3;
-        }
         
         &:disabled {
-            background: #ccc;
+            background: $color-text-secondary;
             cursor: not-allowed;
             opacity: 0.6;
         }
@@ -313,58 +284,44 @@
 
 #productsContainer {
     .products-header {
-        margin-bottom: 2rem;
+        margin-bottom: $spacing-xl;
         
         h2 {
-            @include text-heading(2rem, 600, #333, 1rem);
+            @include text-heading($font-size-2xl, $font-weight-semibold, $color-text-primary, $spacing-md);
             @include text-center;
             
-            @media (max-width: 768px) {
-                @include text-heading(1.5rem, 600, #333, 1rem);
+            @media (max-width: $breakpoint-md) {
+                @include text-heading($font-size-xl, $font-weight-semibold, $color-text-primary, $spacing-md);
             }
         }
     }
 }
 
 .btn-back {
+    @include button-link;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    color: #667eea;
-    text-decoration: none;
-    font-weight: 500;
-    margin-bottom: 1rem;
+    gap: $spacing-sm;
+    margin-bottom: $spacing-md;
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
-    font-size: 1rem;
-    transition: color 0.3s ease;
     
     svg {
         width: 20px;
         height: 20px;
     }
-    
-    &:hover {
-        color: #5568d3;
-        text-decoration: underline;
-    }
 }
 
 .error {
-    color: #e74c3c;
-    text-align: center;
-    padding: 2rem;
+    @include text-body($font-size-base, $color-error, $line-height-normal);
+    @include text-center;
+    padding: $spacing-xl;
 }
 
 // Section title (používá se i na homepage)
 .section-title {
-    @include text-heading(2.5rem, 600, #333, 3rem);
+    @include section-title;
     @include text-center;
-    
-    @media (max-width: 768px) {
-        @include text-heading(2rem, 600, #333, 2rem);
-    }
 }
-

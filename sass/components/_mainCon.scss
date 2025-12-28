@@ -8,17 +8,175 @@
 //
 // ============================================
 
+@use '../mixins' as *;
+@use '../variables' as *;
+
 main {
     width: 100vw;
     min-height: 100vh;
     background: url(/assets/pic/28ae60de-7568-4e68-a2f3-5c985597d5af.png);
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover; // Použít cover místo 100% 100% aby se nedeformovalo
-    background-attachment: fixed; // Fixní pozadí při scrollování
+    background-size: cover;
+    background-attachment: fixed;
     
-    @media (max-width: 768px) {
-        background-attachment: scroll; // Na mobilu scrollovat s obsahem
+    @media (max-width: $breakpoint-md) {
+        background-attachment: scroll;
         background-size: cover;
+    }
+}
+
+// Homepage Main Layout
+.homepage-main {
+    display: flex;
+    max-width: $breakpoint-2xl;
+    margin: 0 auto;
+    padding: 0;
+    min-height: calc(100vh - 200px);
+    
+    @media (max-width: $breakpoint-xl) {
+        flex-direction: column;
+    }
+}
+
+// Categories Sidebar
+.categories-sidebar {
+    width: 280px;
+    background-color: $color-bg-light;
+    padding: $spacing-xl $spacing-lg;
+    border-right: $border-width solid $color-border-light;
+    flex-shrink: 0;
+    
+    @media (max-width: $breakpoint-xl) {
+        width: 100%;
+        border-right: none;
+        border-bottom: $border-width solid $color-border-light;
+    }
+    
+    .sidebar-title {
+        @include text-heading($font-size-lg, $font-weight-semibold, $color-text-primary, $spacing-lg);
+        @include text-uppercase;
+    }
+    
+    .categories-nav {
+        margin-bottom: $spacing-xl;
+        
+        .category-item {
+            @include flex-between;
+            padding: 0.75rem $spacing-md;
+            margin-bottom: $spacing-sm;
+            @include card-base;
+            @include transition-base;
+            text-decoration: none;
+            color: $color-text-primary;
+            
+            &:hover {
+                background-color: $color-bg-light;
+                @include hover-lift;
+            }
+            
+            .category-name {
+                @include flex-center;
+                gap: 0.75rem;
+                
+                .material-symbols-outlined {
+                    font-size: $font-size-lg;
+                    color: $color-primary;
+                }
+            }
+            
+            .material-symbols-outlined.expand-icon {
+                font-size: $font-size-base;
+                color: $color-text-secondary;
+            }
+        }
+    }
+    
+    .btn-inquiry-sidebar {
+        @include button-primary;
+        @include flex-center;
+        gap: $spacing-sm;
+        width: 100%;
+        margin-bottom: $spacing-xl;
+        
+        .material-symbols-outlined {
+            font-size: $font-size-base;
+        }
+    }
+    
+    .quick-contact {
+        @include card-dark;
+        
+        h3 {
+            @include text-heading($font-size-lg, $font-weight-semibold, $color-text-white, $spacing-md);
+        }
+        
+        .contact-person {
+            display: flex;
+            gap: $spacing-md;
+            margin-bottom: $spacing-lg;
+            
+            .contact-photo {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                overflow: hidden;
+                flex-shrink: 0;
+                
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+            
+            .contact-details {
+                display: flex;
+                flex-direction: column;
+                gap: $spacing-sm;
+                
+                p {
+                    @include text-body($font-size-base, $color-text-white);
+                    margin: 0;
+                }
+                
+                a {
+                    @include flex-center;
+                    gap: $spacing-sm;
+                    @include text-link($color-text-white, $color-text-light);
+                    font-size: $font-size-sm;
+                    
+                    .material-symbols-outlined {
+                        font-size: $font-size-lg;
+                    }
+                }
+            }
+        }
+        
+        .contact-address {
+            @include text-body($font-size-sm, $color-text-light, $line-height-relaxed);
+            margin-bottom: $spacing-md;
+        }
+        
+        .btn-all-contacts {
+            @include button-secondary;
+            width: 100%;
+            color: $color-text-primary;
+            border: none;
+            
+            &:hover {
+                background-color: $color-bg-light;
+            }
+        }
+    }
+}
+
+// Homepage Content Area
+.homepage-content {
+    flex: 1;
+    padding: $spacing-xl;
+    
+    @media (max-width: $breakpoint-xl) {
+        padding: $spacing-lg;
     }
 }

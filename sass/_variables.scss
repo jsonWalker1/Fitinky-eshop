@@ -9,3 +9,107 @@
 //   color: $color-primary;
 //
 // ============================================
+
+// ============================================
+// COLORS - 10 základních barev
+// ============================================
+
+// Primary colors
+$color-primary: #3182ce;          // Hlavní modrá (tlačítka, odkazy)
+$color-primary-dark: #2c5282;     // Tmavší modrá (hover)
+$color-primary-light: #90cdf4;    // Světlejší modrá
+
+// Secondary colors
+$color-secondary: #2d3748;        // Tmavě šedá (texty, sidebar)
+$color-secondary-light: #4a5568;  // Střední šedá (top bar)
+$color-secondary-dark: #1a202c;   // Velmi tmavá šedá
+
+// Background colors
+$color-bg-light: #f7fafc;         // Světlé pozadí (sidebar, sections)
+$color-bg-white: #ffffff;         // Bílé pozadí
+$color-bg-dark: #2d3748;          // Tmavé pozadí (dark cards)
+
+// Text colors
+$color-text-primary: #2d3748;     // Hlavní text
+$color-text-secondary: #718096;   // Sekundární text (podnadpisy)
+$color-text-light: #cbd5e0;       // Světlý text (na tmavém pozadí)
+$color-text-white: #ffffff;       // Bílý text
+
+// Border colors
+$color-border-light: #e2e8f0;     // Světlý border
+$color-border-medium: #cbd5e0;    // Střední border
+
+// State colors
+$color-success: #48bb78;          // Zelená (success)
+$color-error: #e53e3e;            // Červená (error)
+$color-warning: #d69e2e;          // Žlutá (warning)
+$color-info: #3182ce;             // Modrá (info) - stejná jako primary
+
+// ============================================
+// SPACING
+// ============================================
+
+$spacing-xs: 0.25rem;    // 4px
+$spacing-sm: 0.5rem;     // 8px
+$spacing-md: 1rem;       // 16px
+$spacing-lg: 1.5rem;     // 24px
+$spacing-xl: 2rem;       // 32px
+$spacing-2xl: 3rem;      // 48px
+
+// ============================================
+// TYPOGRAPHY
+// ============================================
+
+$font-size-xs: 0.75rem;   // 12px
+$font-size-sm: 0.85rem;   // 14px
+$font-size-base: 1rem;    // 16px
+$font-size-lg: 1.25rem;   // 20px
+$font-size-xl: 1.5rem;    // 24px
+$font-size-2xl: 2rem;     // 32px
+
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+$line-height-tight: 1.2;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.6;
+
+// ============================================
+// BORDERS & RADIUS
+// ============================================
+
+$border-radius-sm: 4px;
+$border-radius-md: 6px;
+$border-radius-lg: 8px;
+$border-radius-xl: 10px;
+
+$border-width: 1px;
+
+// ============================================
+// SHADOWS
+// ============================================
+
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+$shadow-md: 0 2px 4px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.15);
+$shadow-xl: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+// ============================================
+// TRANSITIONS
+// ============================================
+
+$transition-fast: 0.15s ease;
+$transition-base: 0.3s ease;
+$transition-slow: 0.5s ease;
+
+// ============================================
+// BREAKPOINTS
+// ============================================
+
+$breakpoint-sm: 480px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1200px;
+$breakpoint-2xl: 1600px;

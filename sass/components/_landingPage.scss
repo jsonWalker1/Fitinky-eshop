@@ -15,19 +15,17 @@
 // ============================================
 
 @use '../mixins' as *;
+@use '../variables' as *;
 
 // Hero section
 .hero {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex-center;
     min-height: 80vh;
-    padding: 2rem;
-    text-align: center;
+    padding: $spacing-xl;
     
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
         min-height: 60vh;
-        padding: 1.5rem;
+        padding: $spacing-lg;
     }
 }
 
@@ -35,119 +33,96 @@
     max-width: 800px;
     
     h1 {
-        @include text-heading(3rem, 700, #fff, 1rem);
+        @include text-heading($font-size-2xl, $font-weight-bold, $color-text-white, $spacing-md);
         
-        @media (max-width: 768px) {
-            @include text-heading(2rem, 700, #fff, 1rem);
+        @media (max-width: $breakpoint-md) {
+            @include text-heading($font-size-xl, $font-weight-bold, $color-text-white, $spacing-md);
         }
         
-        @media (max-width: 480px) {
-            @include text-heading(1.5rem, 700, #fff, 1rem);
+        @media (max-width: $breakpoint-sm) {
+            @include text-heading($font-size-lg, $font-weight-bold, $color-text-white, $spacing-md);
         }
     }
     
     p {
-        @include text-body(1.25rem, #fff, 1.6, 2rem);
+        @include text-body($font-size-lg, $color-text-white, $line-height-relaxed, $spacing-xl);
         
-        @media (max-width: 768px) {
-            @include text-body(1.1rem, #fff, 1.6, 1.5rem);
+        @media (max-width: $breakpoint-md) {
+            @include text-body($font-size-base, $color-text-white, $line-height-relaxed, $spacing-lg);
         }
         
-        @media (max-width: 480px) {
-            @include text-body(1rem, #fff, 1.6, 1.5rem);
+        @media (max-width: $breakpoint-sm) {
+            @include text-body($font-size-sm, $color-text-white, $line-height-relaxed, $spacing-lg);
         }
     }
 }
 
 // Features section
 .features {
-    padding: 4rem 2rem;
-    background-color: #f8f9fa;
-    
-    @media (max-width: 768px) {
-        padding: 3rem 1.5rem;
-    }
-    
-    @media (max-width: 480px) {
-        padding: 2rem 1rem;
-    }
+    @include section-padding;
+    background-color: $color-bg-light;
 }
 
 .features h2 {
-    @include text-heading(2.5rem, 600, #333, 3rem);
+    @include section-title;
     @include text-center;
     
-    @media (max-width: 768px) {
-        @include text-heading(2rem, 600, #333, 2rem);
-    }
-    
-    @media (max-width: 480px) {
-        @include text-heading(1.5rem, 600, #333, 1.5rem);
+    @media (max-width: $breakpoint-md) {
+        @include text-heading($font-size-xl, $font-weight-semibold, $color-text-primary, $spacing-xl);
     }
 }
 
 .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    gap: $spacing-xl;
     
-    @media (max-width: 768px) {
+    @media (max-width: $breakpoint-md) {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: $spacing-lg;
     }
 }
 
 .feature-card {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    @include card-base;
     
     h3 {
-        @include text-heading(1.5rem, 600, #333, 1rem);
+        @include text-heading($font-size-xl, $font-weight-semibold, $color-text-primary, $spacing-md);
     }
     
     p {
-        @include text-body(1rem, #666, 1.6);
+        @include text-body($font-size-base, $color-text-secondary, $line-height-relaxed);
     }
 }
 
 // CTA section
 .cta {
-    padding: 4rem 2rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    @include section-padding;
+    background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
     @include text-center;
-    color: #fff;
-    
-    @media (max-width: 768px) {
-        padding: 3rem 1.5rem;
-    }
-    
-    @media (max-width: 480px) {
-        padding: 2rem 1rem;
-    }
+    color: $color-text-white;
     
     h2 {
-        @include text-heading(2.5rem, 600, #fff, 1rem);
+        @include text-heading($font-size-2xl, $font-weight-semibold, $color-text-white, $spacing-md);
         
-        @media (max-width: 768px) {
-            @include text-heading(2rem, 600, #fff, 1rem);
+        @media (max-width: $breakpoint-md) {
+            @include text-heading($font-size-xl, $font-weight-semibold, $color-text-white, $spacing-md);
         }
         
-        @media (max-width: 480px) {
-            @include text-heading(1.5rem, 600, #fff, 1rem);
+        @media (max-width: $breakpoint-sm) {
+            @include text-heading($font-size-lg, $font-weight-semibold, $color-text-white, $spacing-md);
         }
     }
     
     p {
-        @include text-body(1.25rem, #fff, 1.6, 2rem);
+        @include text-body($font-size-lg, $color-text-white, $line-height-relaxed, $spacing-xl);
         
-        @media (max-width: 768px) {
-            @include text-body(1.1rem, #fff, 1.6, 1.5rem);
+        @media (max-width: $breakpoint-md) {
+            @include text-body($font-size-base, $color-text-white, $line-height-relaxed, $spacing-lg);
         }
         
-        @media (max-width: 480px) {
-            @include text-body(1rem, #fff, 1.6, 1.5rem);
+        @media (max-width: $breakpoint-sm) {
+            @include text-body($font-size-sm, $color-text-white, $line-height-relaxed, $spacing-lg);
         }
     }
 }
