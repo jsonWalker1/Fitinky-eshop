@@ -1102,16 +1102,17 @@
             document.querySelector('input[name="imageSource"][value="url"]').checked = true;
             toggleImageSource();
             
-            // Načíst hodnoty atributů z API před otevřením modalu
+            // Otevřít modal nejdřív, aby byly selecty v DOM
+            document.getElementById('productModal').classList.add('active');
+            
+            // Načíst hodnoty atributů z API a naplnit selecty
             await loadAttributeValues();
             
-            // Vyčistit atributy
+            // Vyčistit atributy (po naplnění selectů)
             document.getElementById('attributeDiameter').value = '';
             document.getElementById('attributeConnectionType').value = '';
             document.getElementById('attributeShape').value = '';
             document.getElementById('attributeMaterial').value = '';
-            
-            document.getElementById('productModal').classList.add('active');
         }
         
         function closeModal() {
