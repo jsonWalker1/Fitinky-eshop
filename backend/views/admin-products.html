@@ -350,75 +350,52 @@
         // Načtení hodnot atributů
         async function loadAttributeValues() {
             try {
-                console.log('🔄 Načítám hodnoty atributů z API...');
                 const response = await fetch(`${API_BASE}/attributes/categories`);
                 const data = await response.json();
-                
-                console.log('📦 API response:', data);
                 
                 if (data.success && data.categories) {
                     // Konvertovat na objekt podle názvu kategorie
                     data.categories.forEach(category => {
-                        console.log(`📋 Kategorie: ${category.name}, hodnot: ${category.values?.length || 0}`);
                         if (attributeValues.hasOwnProperty(category.name)) {
                             attributeValues[category.name] = category.values || [];
-                            console.log(`✅ Nastaveno ${category.name}:`, attributeValues[category.name]);
                         }
                     });
                     
-                    console.log('📊 Finální attributeValues:', attributeValues);
-                    
                     // Naplnit selecty
                     populateAttributeSelects();
-                } else {
-                    console.error('❌ API nevrátilo data.success nebo categories');
                 }
             } catch (error) {
-                console.error('❌ Chyba při načítání hodnot atributů:', error);
+                console.error('Chyba při načítání hodnot atributů:', error);
             }
         }
         
         // Naplnit selecty s hodnotami atributů
         function populateAttributeSelects() {
-            console.log('🔍 populateAttributeSelects - attributeValues:', attributeValues);
-            
             // Materiál
             const materialSelect = document.getElementById('attributeMaterial');
-            console.log('🔍 materialSelect:', materialSelect);
             if (materialSelect && attributeValues.material && attributeValues.material.length > 0) {
                 materialSelect.innerHTML = '<option value="">Vyberte materiál</option>' +
                     attributeValues.material.map(v => 
                         `<option value="${escapeHtml(v.value)}">${escapeHtml(v.display_name)}</option>`
                     ).join('');
-                console.log('✅ Naplněn materialSelect s', attributeValues.material.length, 'hodnotami');
-            } else {
-                console.warn('⚠️ materialSelect nenalezen nebo žádné hodnoty');
             }
             
             // Typ připojení
             const connectionTypeSelect = document.getElementById('attributeConnectionType');
-            console.log('🔍 connectionTypeSelect:', connectionTypeSelect);
             if (connectionTypeSelect && attributeValues.connection_type && attributeValues.connection_type.length > 0) {
                 connectionTypeSelect.innerHTML = '<option value="">Vyberte typ</option>' +
                     attributeValues.connection_type.map(v => 
                         `<option value="${escapeHtml(v.value)}">${escapeHtml(v.display_name)}</option>`
                     ).join('');
-                console.log('✅ Naplněn connectionTypeSelect s', attributeValues.connection_type.length, 'hodnotami');
-            } else {
-                console.warn('⚠️ connectionTypeSelect nenalezen nebo žádné hodnoty');
             }
             
             // Tvar
             const shapeSelect = document.getElementById('attributeShape');
-            console.log('🔍 shapeSelect:', shapeSelect);
             if (shapeSelect && attributeValues.shape && attributeValues.shape.length > 0) {
                 shapeSelect.innerHTML = '<option value="">Vyberte tvar</option>' +
                     attributeValues.shape.map(v => 
                         `<option value="${escapeHtml(v.value)}">${escapeHtml(v.display_name)}</option>`
                     ).join('');
-                console.log('✅ Naplněn shapeSelect s', attributeValues.shape.length, 'hodnotami');
-            } else {
-                console.warn('⚠️ shapeSelect nenalezen nebo žádné hodnoty');
             }
         }
         
