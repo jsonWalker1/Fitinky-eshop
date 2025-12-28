@@ -41,7 +41,7 @@ main {
 
 // Categories Sidebar
 .categories-sidebar {
-    width: 280px;
+    width: 320px;
     background-color: $color-bg-light;
     padding: $spacing-xl $spacing-lg;
     border-right: $border-width solid $color-border-light;
@@ -63,9 +63,9 @@ main {
         
         .category-item {
             @include flex-between;
-            padding: 0.75rem $spacing-md;
             margin-bottom: $spacing-sm;
             @include card-base;
+            padding: 0.5rem;
             @include transition-base;
             text-decoration: none;
             color: $color-text-primary;

@@ -8,17 +8,18 @@
 @use '../mixins' as *;
 @use '../variables' as *;
 
-// Hero Image
+// Hero Image/Video
 .hero-image {
     width: 100%;
     margin-bottom: $spacing-xl;
     border-radius: $border-radius-lg;
     overflow: hidden;
     
-    img {
+    video {
         width: 100%;
-        height: auto;
+        height: 450px;
         display: block;
+        object-fit: cover;
     }
 }
 
