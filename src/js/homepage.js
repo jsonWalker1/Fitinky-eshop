@@ -3,49 +3,11 @@
  * HOMEPAGE LOGIC
  * ============================================
  * JavaScript pro hlavní stránku
- * Zobrazuje kategorie a nejnovější produkty
+ * Zobrazuje nejnovější produkty
  * ============================================
  */
 
 const API_BASE = '/api';
-
-/**
- * Načte a zobrazí kategorie
- */
-async function loadCategories() {
-    try {
-        const response = await fetch(`${API_BASE}/categories`);
-        const data = await response.json();
-        
-        if (data.success && data.categories) {
-            displayCategories(data.categories);
-        } else {
-            document.getElementById('categoriesList').innerHTML = '<p>Žádné kategorie k dispozici.</p>';
-        }
-    } catch (error) {
-        console.error('Chyba při načítání kategorií:', error);
-        document.getElementById('categoriesList').innerHTML = '<p>Chyba při načítání kategorií.</p>';
-    }
-}
-
-/**
- * Zobrazí kategorie
- */
-function displayCategories(categories) {
-    const list = document.getElementById('categoriesList');
-    
-    if (categories.length === 0) {
-        list.innerHTML = '<p>Žádné kategorie k dispozici.</p>';
-        return;
-    }
-    
-    list.innerHTML = categories.map(category => `
-        <div class="category-item" onclick="window.location.href='/products?category=${category.slug}'">
-            <div class="category-name">${escapeHtml(category.name)}</div>
-            <div class="category-count">${category.productCount || 0} produktů</div>
-        </div>
-    `).join('');
-}
 
 /**
  * Načte a zobrazí nejnovější produkty
