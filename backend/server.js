@@ -13,7 +13,7 @@ import express from 'express';
 import { config } from './config/server.js';
 import { setupCommonMiddleware } from './middleware/common.js';
 import { setupStaticFiles } from './middleware/staticFiles.js';
-import { assetsHandler } from './middleware/assetsHandler.js';
+import assetsHandler from './middleware/assetsHandler.js';
 import indexRoutes from './routes/indexRoutes.js';
 import healthRoutes from './routes/healthRoutes.js';
 import productsRoutes from './routes/productsRoutes.js';
