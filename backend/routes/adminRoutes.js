@@ -83,5 +83,12 @@ router.post('/admin/api/products/:productId/images', addProductImageAPI);
 router.delete('/admin/api/products/:productId/images/:imageId', deleteProductImageAPI);
 router.put('/admin/api/products/:productId/images/:imageId/order', updateProductImageOrderAPI);
 
+// Admin API - Attribute Values
+router.get('/admin/api/attributes/categories', getAttributeCategories);
+router.get('/admin/api/attributes/values/:categoryName', getAttributeValues);
+router.post('/admin/api/attributes/values', addAttributeValue);
+router.put('/admin/api/attributes/values/:id', updateAttributeValue);
+router.delete('/admin/api/attributes/values/:id', deleteAttributeValue);
+
 export default router;
 
