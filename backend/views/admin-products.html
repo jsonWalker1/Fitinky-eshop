@@ -875,6 +875,9 @@
                 document.getElementById('productCategory').value = category.id;
             }
             
+            // Načíst hodnoty atributů z API před naplněním formuláře
+            await loadAttributeValues();
+            
             // Naplnit atributy
             if (product.attributes) {
                 if (product.attributes.diameter?.value) {
