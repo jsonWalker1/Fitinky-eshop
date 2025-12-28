@@ -814,7 +814,7 @@
                 name: form.name.value,
                 category: form.category.value,
                 price: parseFloat(form.price.value),
-                image: form.image.value,
+                image: form.image?.value || null, // Volitelné pole image
                 description: form.description.value,
                 availabilityStatus: form.availabilityStatus.value
             };
