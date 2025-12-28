@@ -3,7 +3,6 @@ import { paths } from '../config/paths.js';
 import path from 'path';
 import * as productsService from '../services/productsService.js';
 import * as userRepo from '../repositories/userRepository.js';
-import * as userRepo from '../repositories/userRepository.js';
 
 /**
  * Controller pro admin rozhraní
