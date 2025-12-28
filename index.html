@@ -54,31 +54,44 @@
         <span id="userName" style="display: none; margin-right: 1rem; color: #333; font-weight: 500;"></span>
       </div>
     </header>
-    <main class="homepage-main">
-      <div class="container-b2b">
-        <!-- Kategorie navigace -->
-        <aside class="categories-nav-b2b">
-          <h2 class="nav-title">Kategorie produktů</h2>
-          <nav class="categories-list-b2b" id="categoriesNavB2B">
-            <p class="loading-text">Načítám kategorie...</p>
-          </nav>
-        </aside>
+    <main>
+      <section class="hero">
+        <div class="hero-content">
+          <h1>Vítejte v našem eshopu</h1>
+          <p>Objevte široký výběr kvalitních produktů za skvělé ceny</p>
+          <a href="/products" class="btn btn-primary">Prohlédnout produkty</a>
+        </div>
+      </section>
 
-        <!-- Hlavní obsah -->
-        <section class="products-section-b2b">
-          <div class="section-header">
-            <h1 class="section-title">Katalog produktů</h1>
-            <p class="section-description">Vodovodní fitinky a příslušenství pro průmyslové použití</p>
+      <section class="features" id="about">
+        <div class="container">
+          <h2>Proč si vybrat nás?</h2>
+          <div class="features-grid">
+            <article class="feature-card">
+              <h3>Kvalitní produkty</h3>
+              <p>Všechny naše produkty procházejí přísnou kontrolou kvality</p>
+            </article>
+            <article class="feature-card">
+              <h3>Rychlé dodání</h3>
+              <p>Doručení do 24 hodin po celé České republice</p>
+            </article>
+            <article class="feature-card">
+              <h3>Skvělá podpora</h3>
+              <p>Náš tým je vám k dispozici 24/7</p>
+            </article>
           </div>
-          
-          <div class="products-grid-b2b" id="homepageProductsB2B">
-            <p class="loading-text">Načítám produkty...</p>
-          </div>
-        </section>
-      </div>
+        </div>
+      </section>
+
+      <section class="cta" id="contact">
+        <div class="container">
+          <h2>Máte otázky?</h2>
+          <p>Kontaktujte nás ještě dnes a my vám rádi pomůžeme</p>
+          <a href="#contact" class="btn btn-secondary">Kontaktovat</a>
+        </div>
+      </section>
     </main>
   </div>
   <script type="module" src="/src/js/main.js"></script>
-  <script type="module" src="/src/js/homepage.js"></script>
 </body>
 </html>
