@@ -1547,6 +1547,34 @@ body {
   border-color: #667eea;
   box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
 }
+.product-details .product-details-content .product-edit-form .form-group-inline .select-with-add {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+.product-details .product-details-content .product-edit-form .form-group-inline .select-with-add select {
+  flex: 1;
+}
+.product-details .product-details-content .product-edit-form .form-group-inline .select-with-add .btn-add-value {
+  padding: 0.5rem;
+  border: 1px solid #667eea;
+  background: #667eea;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  min-width: 40px;
+}
+.product-details .product-details-content .product-edit-form .form-group-inline .select-with-add .btn-add-value:hover {
+  background: #5568d3;
+  border-color: #5568d3;
+}
+.product-details .product-details-content .product-edit-form .form-group-inline .select-with-add .btn-add-value .material-symbols-outlined {
+  font-size: 1.2rem;
+}
 .product-details .product-details-content .product-edit-form .section-label {
   font-size: 1rem;
   font-weight: 600;
@@ -2040,12 +2068,20 @@ body {
   font-weight: 500;
   color: #333333;
   margin-bottom: 0.25rem;
+  font-size: 1rem;
 }
-.attributes-management .attribute-category-card .category-values-list .value-item .value-info .value-name {
+.attributes-management .attribute-category-card .category-values-list .value-item .value-info .value-description {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   color: #666666;
-  font-family: monospace;
+  font-style: italic;
+  margin-top: 0.25rem;
+}
+.attributes-management .attribute-category-card .category-values-list .value-item .category-card-header .category-description {
+  font-size: 0.875rem;
+  color: #666666;
+  margin-top: 0.5rem;
+  font-style: italic;
 }
 .attributes-management .attribute-category-card .category-values-list .value-item .value-actions {
   display: flex;

@@ -89,23 +89,34 @@
                     background: #e9ecef;
                 }
                 
-                .value-info {
-                    flex: 1;
-                    
-                    .value-display-name {
-                        display: block;
-                        font-weight: 500;
-                        color: $admin-text-primary;
-                        margin-bottom: 0.25rem;
+                    .value-info {
+                        flex: 1;
+                        
+                        .value-display-name {
+                            display: block;
+                            font-weight: 500;
+                            color: $admin-text-primary;
+                            margin-bottom: 0.25rem;
+                            font-size: $admin-font-size-base;
+                        }
+                        
+                        .value-description {
+                            display: block;
+                            font-size: $admin-font-size-sm;
+                            color: $admin-text-secondary;
+                            font-style: italic;
+                            margin-top: 0.25rem;
+                        }
                     }
                     
-                    .value-name {
-                        display: block;
-                        font-size: $admin-font-size-xs;
-                        color: $admin-text-secondary;
-                        font-family: monospace;
+                    .category-card-header {
+                        .category-description {
+                            font-size: $admin-font-size-sm;
+                            color: $admin-text-secondary;
+                            margin-top: 0.5rem;
+                            font-style: italic;
+                        }
                     }
-                }
                 
                 .value-actions {
                     display: flex;

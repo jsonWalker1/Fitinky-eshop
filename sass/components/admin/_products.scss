@@ -404,6 +404,39 @@
             box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
         }
     }
+    
+    .select-with-add {
+        display: flex;
+        gap: 0.5rem;
+        align-items: stretch;
+        
+        select {
+            flex: 1;
+        }
+        
+        .btn-add-value {
+            padding: 0.5rem;
+            border: 1px solid #667eea;
+            background: #667eea;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            min-width: 40px;
+            
+            &:hover {
+                background: #5568d3;
+                border-color: #5568d3;
+            }
+            
+            .material-symbols-outlined {
+                font-size: 1.2rem;
+            }
+        }
+    }
 }
 
 .section-label {

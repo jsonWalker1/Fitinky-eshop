@@ -151,26 +151,24 @@
             <form id="attributeValueForm">
                 <input type="hidden" id="attributeValueId" name="id">
                 <input type="hidden" id="attributeValueCategoryId" name="category_id">
+                <input type="hidden" id="attributeValueValue" name="value">
                 
                 <div class="form-group">
-                    <label for="attributeValueValue">Hodnota (vnitřní název) *</label>
-                    <input type="text" id="attributeValueValue" name="value" required placeholder="např. nerez-304">
-                    <small>Vnitřní název pro systém (malá písmena, pomlčky)</small>
+                    <label for="attributeValueDisplayName">Název hodnoty *</label>
+                    <input type="text" id="attributeValueDisplayName" name="display_name" required placeholder="např. Nerez 304, Závitové, Koleno">
+                    <small>Název, který se zobrazí v seznamu při výběru</small>
                 </div>
                 
                 <div class="form-group">
-                    <label for="attributeValueDisplayName">Zobrazený název *</label>
-                    <input type="text" id="attributeValueDisplayName" name="display_name" required placeholder="např. Nerez 304">
-                </div>
-                
-                <div class="form-group">
-                    <label for="attributeValueDescription">Popis</label>
-                    <textarea id="attributeValueDescription" name="description" rows="3"></textarea>
+                    <label for="attributeValueDescription">Popis (volitelné)</label>
+                    <textarea id="attributeValueDescription" name="description" rows="3" placeholder="Krátký popis hodnoty..."></textarea>
+                    <small>Dodatečný popis pro lepší orientaci</small>
                 </div>
                 
                 <div class="form-group">
                     <label for="attributeValueDisplayOrder">Pořadí zobrazení</label>
                     <input type="number" id="attributeValueDisplayOrder" name="display_order" value="0" min="0">
+                    <small>Nižší číslo = výše v seznamu (0 = automaticky na konec)</small>
                 </div>
                 
                 <div class="form-actions">
@@ -307,7 +305,7 @@
                 document.getElementById('attributeValueModalTitle').textContent = 'Upravit hodnotu';
                 document.getElementById('attributeValueId').value = value.id;
                 document.getElementById('attributeValueCategoryId').value = categoryId;
-                document.getElementById('attributeValueValue').value = value.value;
+                document.getElementById('attributeValueValue').value = value.value; // Uložit pro editaci
                 document.getElementById('attributeValueDisplayName').value = value.display_name;
                 document.getElementById('attributeValueDescription').value = value.description || '';
                 document.getElementById('attributeValueDisplayOrder').value = value.display_order || 0;

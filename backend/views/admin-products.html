@@ -277,23 +277,38 @@
                             
                             <div class="form-group-inline">
                                 <label for="attributeConnectionType">Typ připojení</label>
-                                <select id="attributeConnectionType" name="attributeConnectionType">
-                                    <option value="">Vyberte typ</option>
-                                </select>
+                                <div class="select-with-add">
+                                    <select id="attributeConnectionType" name="attributeConnectionType">
+                                        <option value="">Vyberte typ</option>
+                                    </select>
+                                    <button type="button" class="btn-add-value" onclick="openQuickAddAttributeModal('connection_type')" title="Přidat nový typ připojení">
+                                        <span class="material-symbols-outlined">add</span>
+                                    </button>
+                                </div>
                             </div>
                             
                             <div class="form-group-inline">
                                 <label for="attributeShape">Tvar</label>
-                                <select id="attributeShape" name="attributeShape">
-                                    <option value="">Vyberte tvar</option>
-                                </select>
+                                <div class="select-with-add">
+                                    <select id="attributeShape" name="attributeShape">
+                                        <option value="">Vyberte tvar</option>
+                                    </select>
+                                    <button type="button" class="btn-add-value" onclick="openQuickAddAttributeModal('shape')" title="Přidat nový tvar">
+                                        <span class="material-symbols-outlined">add</span>
+                                    </button>
+                                </div>
                             </div>
                             
                             <div class="form-group-inline">
                                 <label for="attributeMaterial">Materiál</label>
-                                <select id="attributeMaterial" name="attributeMaterial">
-                                    <option value="">Vyberte materiál</option>
-                                </select>
+                                <div class="select-with-add">
+                                    <select id="attributeMaterial" name="attributeMaterial">
+                                        <option value="">Vyberte materiál</option>
+                                    </select>
+                                    <button type="button" class="btn-add-value" onclick="openQuickAddAttributeModal('material')" title="Přidat nový materiál">
+                                        <span class="material-symbols-outlined">add</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
