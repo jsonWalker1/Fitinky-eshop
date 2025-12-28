@@ -492,11 +492,6 @@ main {
   opacity: 0.1;
   z-index: 0;
 }
-.hero {
-  background-attachment: fixed;
-  position: relative;
-  overflow: hidden;
-}
 @media (max-width: 768px) {
   .hero {
     min-height: 60vh;
