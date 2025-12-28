@@ -279,10 +279,6 @@
                                 <label for="attributeConnectionType">Typ připojení</label>
                                 <select id="attributeConnectionType" name="attributeConnectionType">
                                     <option value="">Vyberte typ</option>
-                                    <option value="zavitove">Závitové</option>
-                                    <option value="svarove">Svařované</option>
-                                    <option value="press">Press</option>
-                                    <option value="push-fit">Push-fit</option>
                                 </select>
                             </div>
                             
@@ -290,14 +286,6 @@
                                 <label for="attributeShape">Tvar</label>
                                 <select id="attributeShape" name="attributeShape">
                                     <option value="">Vyberte tvar</option>
-                                    <option value="koleno">Koleno</option>
-                                    <option value="t-kus">T-kus</option>
-                                    <option value="kriz">Kříž</option>
-                                    <option value="prechod">Přechod</option>
-                                    <option value="redukce">Redukce</option>
-                                    <option value="zatka">Zátka</option>
-                                    <option value="viko">Víko</option>
-                                    <option value="kombinovane">Kombinované</option>
                                 </select>
                             </div>
                             
@@ -305,11 +293,6 @@
                                 <label for="attributeMaterial">Materiál</label>
                                 <select id="attributeMaterial" name="attributeMaterial">
                                     <option value="">Vyberte materiál</option>
-                                    <option value="nerez-304">Nerez 304</option>
-                                    <option value="nerez-316">Nerez 316</option>
-                                    <option value="mosaz">Mosaz</option>
-                                    <option value="ocel">Uhlíková ocel</option>
-                                    <option value="plast">Plast</option>
                                 </select>
                             </div>
                         </div>
@@ -343,6 +326,13 @@
         if (hamburgerMenu) hamburgerMenu.addEventListener('click', toggleSidebar);
         if (overlay) overlay.addEventListener('click', toggleSidebar);
         
+        // Atributy hodnoty
+        let attributeValues = {
+            material: [],
+            connection_type: [],
+            shape: []
+        };
+        
         // Načtení kategorií
         async function loadCategories() {
             try {
@@ -354,6 +344,58 @@
                 }
             } catch (error) {
                 console.error('Chyba při načítání kategorií:', error);
+            }
+        }
+        
+        // Načtení hodnot atributů
+        async function loadAttributeValues() {
+            try {
+                const response = await fetch(`${API_BASE}/attributes/categories`);
+                const data = await response.json();
+                
+                if (data.success && data.categories) {
+                    // Konvertovat na objekt podle názvu kategorie
+                    data.categories.forEach(category => {
+                        if (attributeValues.hasOwnProperty(category.name)) {
+                            attributeValues[category.name] = category.values || [];
+                        }
+                    });
+                    
+                    // Naplnit selecty
+                    populateAttributeSelects();
+                }
+            } catch (error) {
+                console.error('Chyba při načítání hodnot atributů:', error);
+            }
+        }
+        
+        // Naplnit selecty s hodnotami atributů
+        function populateAttributeSelects() {
+            // Materiál
+            const materialSelect = document.getElementById('attributeMaterial');
+            if (materialSelect) {
+                materialSelect.innerHTML = '<option value="">Vyberte materiál</option>' +
+                    attributeValues.material.map(v => 
+                        `<option value="${escapeHtml(v.value)}">${escapeHtml(v.display_name)}</option>`
+                    ).join('');
+            }
+            
+            // Typ připojení
+            const connectionTypeSelect = document.getElementById('attributeConnectionType');
+            if (connectionTypeSelect) {
+                connectionTypeSelect.innerHTML = '<option value="">Vyberte typ</option>' +
+                    attributeValues.connection_type.map(v => 
+                        `<option value="${escapeHtml(v.value)}">${escapeHtml(v.display_name)}</option>`
+                    ).join('');
+            }
+            
+            // Tvar
+            const shapeSelect = document.getElementById('attributeShape');
+            if (shapeSelect) {
+                shapeSelect.innerHTML = '<option value="">Vyberte tvar</option>' +
+                    attributeValues.shape.map(v => 
+                        `<option value="${escapeHtml(v.value)}">${escapeHtml(v.display_name)}</option>`
+                    ).join('');
             }
         }
         
@@ -541,10 +583,9 @@
                                                     <label>Typ připojení</label>
                                                     <select name="attributeConnectionType">
                                                         <option value="">Vyberte typ</option>
-                                                        <option value="zavitove" ${(product.attributes?.connection_type?.value === 'zavitove') ? 'selected' : ''}>Závitové</option>
-                                                        <option value="svarove" ${(product.attributes?.connection_type?.value === 'svarove') ? 'selected' : ''}>Svařované</option>
-                                                        <option value="press" ${(product.attributes?.connection_type?.value === 'press') ? 'selected' : ''}>Press</option>
-                                                        <option value="push-fit" ${(product.attributes?.connection_type?.value === 'push-fit') ? 'selected' : ''}>Push-fit</option>
+                                                        ${(attributeValues.connection_type || []).map(v => 
+                                                            `<option value="${escapeHtml(v.value)}" ${(product.attributes?.connection_type?.value === v.value) ? 'selected' : ''}>${escapeHtml(v.display_name)}</option>`
+                                                        ).join('')}
                                                     </select>
                                                 </div>
                                                 
@@ -552,14 +593,9 @@
                                                     <label>Tvar</label>
                                                     <select name="attributeShape">
                                                         <option value="">Vyberte tvar</option>
-                                                        <option value="koleno" ${(product.attributes?.shape?.value === 'koleno') ? 'selected' : ''}>Koleno</option>
-                                                        <option value="t-kus" ${(product.attributes?.shape?.value === 't-kus') ? 'selected' : ''}>T-kus</option>
-                                                        <option value="kriz" ${(product.attributes?.shape?.value === 'kriz') ? 'selected' : ''}>Kříž</option>
-                                                        <option value="prechod" ${(product.attributes?.shape?.value === 'prechod') ? 'selected' : ''}>Přechod</option>
-                                                        <option value="redukce" ${(product.attributes?.shape?.value === 'redukce') ? 'selected' : ''}>Redukce</option>
-                                                        <option value="zatka" ${(product.attributes?.shape?.value === 'zatka') ? 'selected' : ''}>Zátka</option>
-                                                        <option value="viko" ${(product.attributes?.shape?.value === 'viko') ? 'selected' : ''}>Víko</option>
-                                                        <option value="kombinovane" ${(product.attributes?.shape?.value === 'kombinovane') ? 'selected' : ''}>Kombinované</option>
+                                                        ${(attributeValues.shape || []).map(v => 
+                                                            `<option value="${escapeHtml(v.value)}" ${(product.attributes?.shape?.value === v.value) ? 'selected' : ''}>${escapeHtml(v.display_name)}</option>`
+                                                        ).join('')}
                                                     </select>
                                                 </div>
                                                 
@@ -567,11 +603,9 @@
                                                     <label>Materiál</label>
                                                     <select name="attributeMaterial">
                                                         <option value="">Vyberte materiál</option>
-                                                        <option value="nerez-304" ${(product.attributes?.material?.value === 'nerez-304') ? 'selected' : ''}>Nerez 304</option>
-                                                        <option value="nerez-316" ${(product.attributes?.material?.value === 'nerez-316') ? 'selected' : ''}>Nerez 316</option>
-                                                        <option value="mosaz" ${(product.attributes?.material?.value === 'mosaz') ? 'selected' : ''}>Mosaz</option>
-                                                        <option value="ocel" ${(product.attributes?.material?.value === 'ocel') ? 'selected' : ''}>Uhlíková ocel</option>
-                                                        <option value="plast" ${(product.attributes?.material?.value === 'plast') ? 'selected' : ''}>Plast</option>
+                                                        ${(attributeValues.material || []).map(v => 
+                                                            `<option value="${escapeHtml(v.value)}" ${(product.attributes?.material?.value === v.value) ? 'selected' : ''}>${escapeHtml(v.display_name)}</option>`
+                                                        ).join('')}
                                                     </select>
                                                 </div>
                                             </div>

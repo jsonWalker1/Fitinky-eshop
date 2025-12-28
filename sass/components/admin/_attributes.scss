@@ -1,0 +1,292 @@
+// ============================================
+// ADMIN ATTRIBUTES COMPONENT
+// ============================================
+// Komponenta pro správu hodnot atributů v admin rozhraní
+//
+// HTML struktura:
+//   <div class="attributes-management">
+//     <div class="attributes-categories">...</div>
+//   </div>
+//
+// ============================================
+
+@use '../../adminVariables' as *;
+@use '../../adminMixins' as *;
+
+.attributes-management {
+    padding: $admin-spacing-xl;
+    
+    .message {
+        display: none;
+        padding: $admin-spacing-md;
+        margin-bottom: $admin-spacing-lg;
+        border-radius: $admin-radius-md;
+        
+        &.message-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        &.message-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    }
+    
+    .attributes-categories {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        gap: $admin-spacing-xl;
+        
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .attribute-category-card {
+        background: $admin-card-bg;
+        border-radius: $admin-radius-lg;
+        box-shadow: $admin-shadow-md;
+        padding: $admin-spacing-lg;
+        
+        .category-card-header {
+            margin-bottom: $admin-spacing-lg;
+            padding-bottom: $admin-spacing-md;
+            border-bottom: 2px solid #f0f0f0;
+            
+            h3 {
+                @include admin-text-heading($admin-font-size-xl, 600);
+                margin: 0 0 0.5rem 0;
+                color: $admin-text-primary;
+            }
+            
+            .category-name {
+                font-size: $admin-font-size-sm;
+                color: $admin-text-secondary;
+                text-transform: lowercase;
+                font-family: monospace;
+            }
+        }
+        
+        .category-values-list {
+            margin-bottom: $admin-spacing-lg;
+            max-height: 400px;
+            overflow-y: auto;
+            
+            .value-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: $admin-spacing-md;
+                margin-bottom: $admin-spacing-sm;
+                background: #f8f9fa;
+                border-radius: $admin-radius-sm;
+                transition: background-color $admin-transition-fast;
+                
+                &:hover {
+                    background: #e9ecef;
+                }
+                
+                .value-info {
+                    flex: 1;
+                    
+                    .value-display-name {
+                        display: block;
+                        font-weight: 500;
+                        color: $admin-text-primary;
+                        margin-bottom: 0.25rem;
+                    }
+                    
+                    .value-name {
+                        display: block;
+                        font-size: $admin-font-size-xs;
+                        color: $admin-text-secondary;
+                        font-family: monospace;
+                    }
+                }
+                
+                .value-actions {
+                    display: flex;
+                    gap: $admin-spacing-xs;
+                }
+            }
+            
+            .no-values {
+                text-align: center;
+                color: $admin-text-secondary;
+                font-style: italic;
+                padding: $admin-spacing-lg;
+            }
+        }
+        
+        .category-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+}
+
+// Modal pro přidání/editaci hodnoty
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    
+    &.active {
+        display: flex;
+    }
+    
+    .modal-content {
+        background: white;
+        border-radius: $admin-radius-lg;
+        box-shadow: $admin-shadow-lg;
+        max-width: 500px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: $admin-spacing-lg;
+            border-bottom: 1px solid #e0e0e0;
+            
+            h2 {
+                @include admin-text-heading($admin-font-size-xl, 600);
+                margin: 0;
+            }
+            
+            .modal-close {
+                background: none;
+                border: none;
+                font-size: 2rem;
+                color: $admin-text-secondary;
+                cursor: pointer;
+                padding: 0;
+                width: 32px;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: $admin-radius-sm;
+                transition: background-color $admin-transition-fast;
+                
+                &:hover {
+                    background: #f0f0f0;
+                }
+            }
+        }
+        
+        form {
+            padding: $admin-spacing-lg;
+            
+            .form-group {
+                margin-bottom: $admin-spacing-lg;
+                
+                label {
+                    display: block;
+                    margin-bottom: $admin-spacing-xs;
+                    font-weight: 500;
+                    color: $admin-text-primary;
+                }
+                
+                input,
+                textarea,
+                select {
+                    width: 100%;
+                    padding: $admin-spacing-sm;
+                    border: 1px solid #ddd;
+                    border-radius: $admin-radius-sm;
+                    font-size: $admin-font-size-base;
+                    font-family: inherit;
+                    
+                    &:focus {
+                        outline: none;
+                        border-color: $admin-primary;
+                        box-shadow: 0 0 0 2px rgba($admin-primary, 0.1);
+                    }
+                }
+                
+                small {
+                    display: block;
+                    margin-top: 0.25rem;
+                    font-size: $admin-font-size-xs;
+                    color: $admin-text-secondary;
+                }
+            }
+            
+            .form-actions {
+                display: flex;
+                justify-content: flex-end;
+                gap: $admin-spacing-md;
+                margin-top: $admin-spacing-xl;
+                padding-top: $admin-spacing-lg;
+                border-top: 1px solid #e0e0e0;
+            }
+        }
+    }
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $admin-radius-sm;
+    color: $admin-text-secondary;
+    transition: all $admin-transition-fast;
+    
+    &:hover {
+        background: rgba(0, 0, 0, 0.05);
+        color: $admin-text-primary;
+    }
+    
+    .material-symbols-outlined {
+        font-size: 1.2rem;
+    }
+}
+
+.btn {
+    padding: $admin-spacing-sm $admin-spacing-lg;
+    border: none;
+    border-radius: $admin-radius-sm;
+    font-size: $admin-font-size-base;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all $admin-transition-fast;
+    display: inline-flex;
+    align-items: center;
+    gap: $admin-spacing-xs;
+    
+    &.btn-primary {
+        background: $admin-primary;
+        color: white;
+        
+        &:hover {
+            background: $admin-primary-hover;
+        }
+    }
+    
+    &.btn-secondary {
+        background: #e0e0e0;
+        color: $admin-text-primary;
+        
+        &:hover {
+            background: #d0d0d0;
+        }
+    }
+}
+
