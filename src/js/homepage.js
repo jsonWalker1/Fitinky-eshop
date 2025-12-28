@@ -144,7 +144,7 @@ function initHeroSwiper() {
         return;
     }
     
-    new Swiper('.heroSwiper', {
+    const swiper = new Swiper('.heroSwiper', {
         loop: true,
         autoplay: {
             delay: 5000,
@@ -160,12 +160,11 @@ function initHeroSwiper() {
         },
         speed: 500,
         slidesPerView: 1,
-        spaceBetween: 0,
-        observer: true,
-        observeParents: true,
-        watchOverflow: true,
-        resizeObserver: true
+        spaceBetween: 0
     });
+    
+    // Zajistit, že Swiper má správnou šířku po inicializaci
+    swiper.update();
 }
 
 // Inicializace při načtení stránky

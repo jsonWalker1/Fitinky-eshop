@@ -1019,8 +1019,6 @@ header {
   object-fit: cover;
   object-position: center;
   display: block;
-  min-width: 100%;
-  min-height: 100%;
 }
 .hero-slider .heroSwiper .swiper-button-next,
 .hero-slider .heroSwiper .swiper-button-prev {
