@@ -369,7 +369,52 @@
             display: grid;
             gap: $admin-spacing-md;
             
-            .form-group {
+            .attributes-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 0.5rem;
+    
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-group-inline {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    
+    label {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #666;
+    }
+    
+    input,
+    select {
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        
+        &:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+    }
+}
+
+.section-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.form-group {
                 label {
                     display: block;
                     margin-bottom: $admin-spacing-xs;

@@ -1513,6 +1513,47 @@ body {
   display: grid;
   gap: 1rem;
 }
+.product-details .product-details-content .product-edit-form .attributes-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+@media (max-width: 768px) {
+  .product-details .product-details-content .product-edit-form .attributes-section {
+    grid-template-columns: 1fr;
+  }
+}
+.product-details .product-details-content .product-edit-form .form-group-inline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.product-details .product-details-content .product-edit-form .form-group-inline label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #666;
+}
+.product-details .product-details-content .product-edit-form .form-group-inline input,
+.product-details .product-details-content .product-edit-form .form-group-inline select {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+.product-details .product-details-content .product-edit-form .form-group-inline input:focus,
+.product-details .product-details-content .product-edit-form .form-group-inline select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+.product-details .product-details-content .product-edit-form .section-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.75rem;
+  display: block;
+}
 .product-details .product-details-content .product-edit-form .form-group label {
   display: block;
   margin-bottom: 0.25rem;

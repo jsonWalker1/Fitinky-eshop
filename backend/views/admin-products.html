@@ -266,6 +266,55 @@
                         </select>
                     </div>
                     
+                    <!-- Produktové atributy -->
+                    <div class="form-group">
+                        <label class="section-label">Technické atributy</label>
+                        <div class="attributes-section">
+                            <div class="form-group-inline">
+                                <label for="attributeDiameter">Průměr (DN)</label>
+                                <input type="text" id="attributeDiameter" name="attributeDiameter" placeholder="např. DN 20, DN 25">
+                            </div>
+                            
+                            <div class="form-group-inline">
+                                <label for="attributeConnectionType">Typ připojení</label>
+                                <select id="attributeConnectionType" name="attributeConnectionType">
+                                    <option value="">Vyberte typ</option>
+                                    <option value="zavitove">Závitové</option>
+                                    <option value="svarove">Svařované</option>
+                                    <option value="press">Press</option>
+                                    <option value="push-fit">Push-fit</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group-inline">
+                                <label for="attributeShape">Tvar</label>
+                                <select id="attributeShape" name="attributeShape">
+                                    <option value="">Vyberte tvar</option>
+                                    <option value="koleno">Koleno</option>
+                                    <option value="t-kus">T-kus</option>
+                                    <option value="kriz">Kříž</option>
+                                    <option value="prechod">Přechod</option>
+                                    <option value="redukce">Redukce</option>
+                                    <option value="zatka">Zátka</option>
+                                    <option value="viko">Víko</option>
+                                    <option value="kombinovane">Kombinované</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group-inline">
+                                <label for="attributeMaterial">Materiál</label>
+                                <select id="attributeMaterial" name="attributeMaterial">
+                                    <option value="">Vyberte materiál</option>
+                                    <option value="nerez-304">Nerez 304</option>
+                                    <option value="nerez-316">Nerez 316</option>
+                                    <option value="mosaz">Mosaz</option>
+                                    <option value="ocel">Uhlíková ocel</option>
+                                    <option value="plast">Plast</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="form-actions">
                         <button type="button" class="btn btn-secondary" id="modalCancel">Zrušit</button>
                         <button type="submit" class="btn btn-primary">Uložit</button>
@@ -478,6 +527,56 @@
                                                 <option value="out_of_stock" ${status === 'out_of_stock' ? 'selected' : ''}>Nedostupné</option>
                                             </select>
                                         </div>
+                                        
+                                        <!-- Atributy v inline editaci -->
+                                        <div class="form-group">
+                                            <label class="section-label">Technické atributy</label>
+                                            <div class="attributes-section">
+                                                <div class="form-group-inline">
+                                                    <label>Průměr (DN)</label>
+                                                    <input type="text" name="attributeDiameter" value="${escapeHtml(product.attributes?.diameter?.value || '')}" placeholder="např. DN 20">
+                                                </div>
+                                                
+                                                <div class="form-group-inline">
+                                                    <label>Typ připojení</label>
+                                                    <select name="attributeConnectionType">
+                                                        <option value="">Vyberte typ</option>
+                                                        <option value="zavitove" ${(product.attributes?.connection_type?.value === 'zavitove') ? 'selected' : ''}>Závitové</option>
+                                                        <option value="svarove" ${(product.attributes?.connection_type?.value === 'svarove') ? 'selected' : ''}>Svařované</option>
+                                                        <option value="press" ${(product.attributes?.connection_type?.value === 'press') ? 'selected' : ''}>Press</option>
+                                                        <option value="push-fit" ${(product.attributes?.connection_type?.value === 'push-fit') ? 'selected' : ''}>Push-fit</option>
+                                                    </select>
+                                                </div>
+                                                
+                                                <div class="form-group-inline">
+                                                    <label>Tvar</label>
+                                                    <select name="attributeShape">
+                                                        <option value="">Vyberte tvar</option>
+                                                        <option value="koleno" ${(product.attributes?.shape?.value === 'koleno') ? 'selected' : ''}>Koleno</option>
+                                                        <option value="t-kus" ${(product.attributes?.shape?.value === 't-kus') ? 'selected' : ''}>T-kus</option>
+                                                        <option value="kriz" ${(product.attributes?.shape?.value === 'kriz') ? 'selected' : ''}>Kříž</option>
+                                                        <option value="prechod" ${(product.attributes?.shape?.value === 'prechod') ? 'selected' : ''}>Přechod</option>
+                                                        <option value="redukce" ${(product.attributes?.shape?.value === 'redukce') ? 'selected' : ''}>Redukce</option>
+                                                        <option value="zatka" ${(product.attributes?.shape?.value === 'zatka') ? 'selected' : ''}>Zátka</option>
+                                                        <option value="viko" ${(product.attributes?.shape?.value === 'viko') ? 'selected' : ''}>Víko</option>
+                                                        <option value="kombinovane" ${(product.attributes?.shape?.value === 'kombinovane') ? 'selected' : ''}>Kombinované</option>
+                                                    </select>
+                                                </div>
+                                                
+                                                <div class="form-group-inline">
+                                                    <label>Materiál</label>
+                                                    <select name="attributeMaterial">
+                                                        <option value="">Vyberte materiál</option>
+                                                        <option value="nerez-304" ${(product.attributes?.material?.value === 'nerez-304') ? 'selected' : ''}>Nerez 304</option>
+                                                        <option value="nerez-316" ${(product.attributes?.material?.value === 'nerez-316') ? 'selected' : ''}>Nerez 316</option>
+                                                        <option value="mosaz" ${(product.attributes?.material?.value === 'mosaz') ? 'selected' : ''}>Mosaz</option>
+                                                        <option value="ocel" ${(product.attributes?.material?.value === 'ocel') ? 'selected' : ''}>Uhlíková ocel</option>
+                                                        <option value="plast" ${(product.attributes?.material?.value === 'plast') ? 'selected' : ''}>Plast</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
                                         <div class="form-actions">
                                             <button type="submit" class="btn btn-primary">Uložit změny</button>
                                         </div>
@@ -742,6 +841,28 @@
                 document.getElementById('productCategory').value = category.id;
             }
             
+            // Naplnit atributy
+            if (product.attributes) {
+                if (product.attributes.diameter?.value) {
+                    document.getElementById('attributeDiameter').value = product.attributes.diameter.value;
+                }
+                if (product.attributes.connection_type?.value) {
+                    document.getElementById('attributeConnectionType').value = product.attributes.connection_type.value;
+                }
+                if (product.attributes.shape?.value) {
+                    document.getElementById('attributeShape').value = product.attributes.shape.value;
+                }
+                if (product.attributes.material?.value) {
+                    document.getElementById('attributeMaterial').value = product.attributes.material.value;
+                }
+            } else {
+                // Vyčistit pokud nejsou atributy
+                document.getElementById('attributeDiameter').value = '';
+                document.getElementById('attributeConnectionType').value = '';
+                document.getElementById('attributeShape').value = '';
+                document.getElementById('attributeMaterial').value = '';
+            }
+            
             // Load product images from API
             currentProductGallery = [];
             await loadProductImages(productId);
@@ -808,8 +929,23 @@
                 price: parseFloat(form.price.value),
                 image: form.image?.value || null, // Volitelné pole image
                 description: form.description.value,
-                availabilityStatus: form.availabilityStatus.value
+                availabilityStatus: form.availabilityStatus.value,
+                attributes: {}
             };
+            
+            // Sbírat atributy
+            if (form.attributeDiameter?.value) {
+                formData.attributes.diameter = { value: form.attributeDiameter.value, type: 'text' };
+            }
+            if (form.attributeConnectionType?.value) {
+                formData.attributes.connection_type = { value: form.attributeConnectionType.value, type: 'text' };
+            }
+            if (form.attributeShape?.value) {
+                formData.attributes.shape = { value: form.attributeShape.value, type: 'text' };
+            }
+            if (form.attributeMaterial?.value) {
+                formData.attributes.material = { value: form.attributeMaterial.value, type: 'text' };
+            }
             
             try {
                 const response = await fetch(`${API_BASE}/products/${productId}`, {
@@ -951,8 +1087,23 @@
                 price: parseFloat(form.price.value),
                 image: currentProductGallery.length > 0 ? currentProductGallery[0].url : null, // Pro zpětnou kompatibilitu
                 description: form.description.value,
-                availabilityStatus: form.availabilityStatus.value
+                availabilityStatus: form.availabilityStatus.value,
+                attributes: {}
             };
+            
+            // Sbírat atributy
+            if (form.attributeDiameter?.value) {
+                formData.attributes.diameter = { value: form.attributeDiameter.value, type: 'text' };
+            }
+            if (form.attributeConnectionType?.value) {
+                formData.attributes.connection_type = { value: form.attributeConnectionType.value, type: 'text' };
+            }
+            if (form.attributeShape?.value) {
+                formData.attributes.shape = { value: form.attributeShape.value, type: 'text' };
+            }
+            if (form.attributeMaterial?.value) {
+                formData.attributes.material = { value: form.attributeMaterial.value, type: 'text' };
+            }
             
             try {
                 const url = productId 

@@ -139,7 +139,7 @@ export const getProducts = async (req, res) => {
  */
 export const addProduct = async (req, res) => {
     try {
-        const { name, category, price, description, availabilityStatus, image } = req.body;
+        const { name, category, price, description, availabilityStatus, image, attributes } = req.body;
         
         if (!name || !category || !price) {
             return res.status(400).json({
@@ -160,7 +160,8 @@ export const addProduct = async (req, res) => {
             price: parseFloat(price),
             description: description || '',
             availabilityStatus: status,
-            image: image || null
+            image: image || null,
+            attributes: attributes || {}
         };
         
         const newProduct = await productsService.addProduct(productData);
@@ -186,7 +187,7 @@ export const addProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, category, price, description, availabilityStatus, image } = req.body;
+        const { name, category, price, description, availabilityStatus, image, attributes } = req.body;
         
         const productData = {};
         if (name !== undefined) productData.name = name;
@@ -201,6 +202,9 @@ export const updateProduct = async (req, res) => {
             if (validStatuses.includes(availabilityStatus)) {
                 productData.availabilityStatus = availabilityStatus;
             }
+        }
+        if (attributes !== undefined) {
+            productData.attributes = attributes;
         }
         
         const updatedProduct = await productsService.updateProduct(id, productData);
