@@ -1283,8 +1283,81 @@
             alert(message);
         }
         
+        // Quick add attribute value modal
+        window.openQuickAddAttributeModal = async function(categoryName) {
+            // Najít category ID podle názvu
+            const response = await fetch(`${API_BASE}/attributes/categories`);
+            const data = await response.json();
+            
+            if (!data.success || !data.categories) {
+                showError('Chyba při načítání kategorií');
+                return;
+            }
+            
+            const category = data.categories.find(c => c.name === categoryName);
+            if (!category) {
+                showError('Kategorie nenalezena');
+                return;
+            }
+            
+            // Otevřít modal pro přidání hodnoty
+            const categoryId = category.id;
+            const displayName = category.display_name;
+            
+            const valueName = prompt(`Zadejte název nové hodnoty pro "${displayName}":`);
+            if (!valueName || !valueName.trim()) {
+                return;
+            }
+            
+            try {
+                // Automaticky generovat value z display_name
+                const value = valueName
+                    .toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-+|-+$/g, '');
+                
+                const formData = {
+                    category_id: categoryId,
+                    value: value,
+                    display_name: valueName.trim(),
+                    description: null,
+                    display_order: 0
+                };
+                
+                const addResponse = await fetch(`${API_BASE}/attributes/values`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const addData = await addResponse.json();
+                
+                if (addData.success) {
+                    showSuccess('Hodnota úspěšně přidána');
+                    // Znovu načíst hodnoty atributů
+                    await loadAttributeValues();
+                    // Nastavit nově přidanou hodnotu jako vybranou
+                    const selectId = categoryName === 'material' ? 'attributeMaterial' :
+                                    categoryName === 'connection_type' ? 'attributeConnectionType' :
+                                    'attributeShape';
+                    const select = document.getElementById(selectId);
+                    if (select) {
+                        select.value = value;
+                    }
+                } else {
+                    showError(addData.error || 'Chyba při přidávání hodnoty');
+                }
+            } catch (error) {
+                console.error('Chyba:', error);
+                showError('Chyba připojení k serveru');
+            }
+        };
+        
         // Initialize
         loadCategories();
+        loadAttributeValues();
         loadProducts();
     </script>
 </body>
