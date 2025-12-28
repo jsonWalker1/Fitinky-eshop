@@ -21,6 +21,7 @@
     "start:admin": "npm run build:css && node backend/adminServer.js",
     "db:init": "node backend/db/init-db.js",
     "db:migrate": "node backend/db/migrate.js",
+    "db:migrate-images": "node backend/db/migrate-images.js",
     "db:setup": "npm run db:init && npm run db:migrate",
     "db:add-fitinky": "node backend/db/add-fitinky.js",
     "prisma:generate": "prisma generate",

@@ -104,11 +104,20 @@ function displayProducts(products) {
         const isAvailable = status === 'in_stock' || status === 'on_order';
         const statusLabel = statusLabels[status] || status;
         
+        // Zpracování obrázků produktu
+        const productImages = product.images || (product.image ? [product.image] : []);
+        const mainImage = productImages.length > 0 ? (typeof productImages[0] === 'string' ? productImages[0] : productImages[0].url) : '/assets/pic/trubka.webp';
+        const hasGallery = productImages.length > 1;
+        
         return `
-        <div class="product-card ${status === 'out_of_stock' ? 'product-unavailable' : ''}">
-            <div class="product-image">
-                <img src="${product.image || '/assets/pic/trubka.webp'}" alt="${product.name}">
+        <div class="product-card ${status === 'out_of_stock' ? 'product-unavailable' : ''}" data-product-id="${product.id}">
+            <div class="product-image ${hasGallery ? 'product-image-gallery' : ''}" ${hasGallery ? `onclick="openProductGallery('${product.id}')"` : ''} style="${hasGallery ? 'cursor: pointer;' : ''}">
+                <img src="${mainImage}" alt="${product.name}">
                 ${status !== 'in_stock' ? `<div class="product-status-badge product-status-${status}">${statusLabel}</div>` : ''}
+                ${hasGallery ? `<div class="product-gallery-badge">
+                    <span class="material-symbols-outlined">photo_library</span>
+                    <span>${productImages.length}</span>
+                </div>` : ''}
             </div>
             <div class="product-info">
                 <h3>${product.name}</h3>

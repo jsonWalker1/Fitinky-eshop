@@ -65,6 +65,89 @@ export const getCategoryById = async (id) => {
 };
 
 /**
+ * Načte obrázky produktu
+ */
+export const getProductImages = async (productId) => {
+    try {
+        const result = await pool.query(
+            'SELECT id, image_url, display_order FROM product_images WHERE product_id = $1 ORDER BY display_order ASC, id ASC',
+            [productId]
+        );
+        return result.rows;
+    } catch (error) {
+        console.error('Chyba při načítání obrázků produktu:', error);
+        throw error;
+    }
+};
+
+/**
+ * Přidá obrázek do galerie produktu
+ */
+export const addProductImage = async (productId, imageUrl, displayOrder = null) => {
+    try {
+        // Pokud není zadán display_order, použij maximální + 1
+        if (displayOrder === null) {
+            const maxOrderResult = await pool.query(
+                'SELECT MAX(display_order) as max_order FROM product_images WHERE product_id = $1',
+                [productId]
+            );
+            displayOrder = (maxOrderResult.rows[0]?.max_order ?? -1) + 1;
+        }
+        
+        const result = await pool.query(
+            'INSERT INTO product_images (product_id, image_url, display_order) VALUES ($1, $2, $3) RETURNING *',
+            [productId, imageUrl, displayOrder]
+        );
+        return result.rows[0];
+    } catch (error) {
+        console.error('Chyba při přidávání obrázku:', error);
+        throw error;
+    }
+};
+
+/**
+ * Odstraní obrázek z galerie produktu
+ */
+export const deleteProductImage = async (imageId) => {
+    try {
+        const result = await pool.query('DELETE FROM product_images WHERE id = $1 RETURNING id', [imageId]);
+        return result.rows.length > 0;
+    } catch (error) {
+        console.error('Chyba při mazání obrázku:', error);
+        throw error;
+    }
+};
+
+/**
+ * Aktualizuje pořadí obrázků
+ */
+export const updateProductImageOrder = async (imageId, displayOrder) => {
+    try {
+        const result = await pool.query(
+            'UPDATE product_images SET display_order = $1 WHERE id = $2 RETURNING *',
+            [displayOrder, imageId]
+        );
+        return result.rows[0] || null;
+    } catch (error) {
+        console.error('Chyba při aktualizaci pořadí obrázku:', error);
+        throw error;
+    }
+};
+
+/**
+ * Odstraní všechny obrázky produktu
+ */
+export const deleteAllProductImages = async (productId) => {
+    try {
+        await pool.query('DELETE FROM product_images WHERE product_id = $1', [productId]);
+        return true;
+    } catch (error) {
+        console.error('Chyba při mazání obrázků produktu:', error);
+        throw error;
+    }
+};
+
+/**
  * Načte všechny produkty
  * @param {object} filters - Objekt s filtry: { search, categoryId, availabilityStatus }
  */

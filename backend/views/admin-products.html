@@ -215,9 +215,9 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="productImage">Obrázek produktu</label>
-                        <div class="image-upload-section">
-                            <div class="image-upload-options">
+                        <label>Galerie obrázků produktu</label>
+                        <div class="product-gallery-section">
+                            <div class="gallery-upload-options">
                                 <label class="upload-option">
                                     <input type="radio" name="imageSource" value="url" checked onchange="toggleImageSource()">
                                     <span>URL obrázku</span>
@@ -229,24 +229,25 @@
                             </div>
                             
                             <div id="imageUrlInput" class="image-input-wrapper">
-                                <input type="text" id="productImage" name="image" placeholder="https://example.com/image.jpg">
+                                <input type="text" id="productImageUrl" placeholder="https://example.com/image.jpg">
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="addImageFromUrl()">Přidat do galerie</button>
                             </div>
                             
                             <div id="imageFileInput" class="image-input-wrapper" style="display: none;">
-                                <input type="file" id="productImageFile" name="imageFile" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp" onchange="handleImageFileSelect(event)">
-                                <div class="image-preview" id="imagePreview" style="display: none;">
-                                    <img id="previewImg" src="" alt="Náhled">
-                                    <button type="button" class="btn-remove-preview" onclick="removeImagePreview()">
-                                        <span class="material-symbols-outlined">close</span>
-                                    </button>
+                                <input type="file" id="productImageFile" name="imageFile" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp" multiple onchange="handleImageFileSelect(event)">
+                                <div class="upload-progress" id="uploadProgress" style="display: none;">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="progressFill"></div>
+                                    </div>
+                                    <span class="progress-text" id="progressText">Nahrávání...</span>
                                 </div>
                             </div>
                             
-                            <div class="upload-progress" id="uploadProgress" style="display: none;">
-                                <div class="progress-bar">
-                                    <div class="progress-fill" id="progressFill"></div>
+                            <div class="product-gallery-preview" id="productGalleryPreview">
+                                <div class="gallery-empty" id="galleryEmpty">
+                                    <span class="material-symbols-outlined">image</span>
+                                    <p>Žádné obrázky v galerii</p>
                                 </div>
-                                <span class="progress-text" id="progressText">Nahrávání...</span>
                             </div>
                         </div>
                     </div>
@@ -597,15 +598,143 @@
             icon.classList.toggle('expanded');
         };
         
+        // Product gallery management
+        let currentProductGallery = [];
+        let editingProductId = null;
+        
+        // Load product images
+        async function loadProductImages(productId) {
+            try {
+                const response = await fetch(`${API_BASE}/products/${productId}/images`);
+                const data = await response.json();
+                if (data.success) {
+                    currentProductGallery = data.images.map(img => ({
+                        id: img.id,
+                        url: img.url,
+                        displayOrder: img.displayOrder
+                    }));
+                    displayProductGallery();
+                }
+            } catch (error) {
+                console.error('Chyba při načítání obrázků:', error);
+            }
+        }
+        
+        // Display product gallery
+        function displayProductGallery() {
+            const galleryContainer = document.getElementById('productGalleryPreview');
+            const galleryEmpty = document.getElementById('galleryEmpty');
+            
+            if (currentProductGallery.length === 0) {
+                if (galleryEmpty) galleryEmpty.style.display = 'block';
+                if (galleryContainer) {
+                    galleryContainer.innerHTML = '';
+                    galleryContainer.appendChild(galleryEmpty);
+                }
+                return;
+            }
+            
+            if (galleryEmpty) galleryEmpty.style.display = 'none';
+            
+            galleryContainer.innerHTML = currentProductGallery.map((img, index) => `
+                <div class="gallery-item" data-image-id="${img.id || 'temp-' + index}">
+                    <img src="${img.url}" alt="Obrázek ${index + 1}">
+                    <div class="gallery-item-actions">
+                        <button type="button" class="btn-icon" onclick="moveImageUp(${index})" title="Posunout nahoru" ${index === 0 ? 'disabled' : ''}>
+                            <span class="material-symbols-outlined">arrow_upward</span>
+                        </button>
+                        <button type="button" class="btn-icon" onclick="moveImageDown(${index})" title="Posunout dolů" ${index === currentProductGallery.length - 1 ? 'disabled' : ''}>
+                            <span class="material-symbols-outlined">arrow_downward</span>
+                        </button>
+                        <button type="button" class="btn-icon btn-danger" onclick="removeImageFromGallery(${index})" title="Odstranit">
+                            <span class="material-symbols-outlined">delete</span>
+                        </button>
+                    </div>
+                    ${index === 0 ? '<div class="gallery-item-primary">Hlavní</div>' : ''}
+                </div>
+            `).join('');
+        }
+        
+        // Add image from URL
+        window.addImageFromUrl = function() {
+            const urlInput = document.getElementById('productImageUrl');
+            const url = urlInput.value.trim();
+            if (!url) {
+                showError('Zadejte URL obrázku');
+                return;
+            }
+            currentProductGallery.push({
+                id: null,
+                url: url,
+                displayOrder: currentProductGallery.length
+            });
+            urlInput.value = '';
+            displayProductGallery();
+        };
+        
+        // Handle multiple file select
+        window.handleImageFileSelect = async function(event) {
+            const files = Array.from(event.target.files);
+            if (files.length === 0) return;
+            
+            const uploadProgress = document.getElementById('uploadProgress');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            uploadProgress.style.display = 'block';
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                try {
+                    progressText.textContent = `Nahrávám ${i + 1} / ${files.length}...`;
+                    const imageUrl = await uploadImageFile(file);
+                    currentProductGallery.push({
+                        id: null,
+                        url: imageUrl,
+                        displayOrder: currentProductGallery.length
+                    });
+                } catch (error) {
+                    console.error('Chyba při nahrávání obrázku:', error);
+                    showError(`Chyba při nahrávání obrázku ${file.name}`);
+                }
+            }
+            
+            uploadProgress.style.display = 'none';
+            event.target.value = '';
+            displayProductGallery();
+        };
+        
+        // Move image up
+        window.moveImageUp = function(index) {
+            if (index <= 0) return;
+            [currentProductGallery[index - 1], currentProductGallery[index]] = 
+                [currentProductGallery[index], currentProductGallery[index - 1]];
+            displayProductGallery();
+        };
+        
+        // Move image down
+        window.moveImageDown = function(index) {
+            if (index >= currentProductGallery.length - 1) return;
+            [currentProductGallery[index], currentProductGallery[index + 1]] = 
+                [currentProductGallery[index + 1], currentProductGallery[index]];
+            displayProductGallery();
+        };
+        
+        // Remove image from gallery
+        window.removeImageFromGallery = function(index) {
+            currentProductGallery.splice(index, 1);
+            displayProductGallery();
+        };
+        
         // Edit product
         window.editProduct = function(productId) {
+            editingProductId = productId;
             const product = allProducts.find(p => p.id === productId);
             if (!product) return;
             
             document.getElementById('productId').value = product.id;
             document.getElementById('productName').value = product.name;
             document.getElementById('productPrice').value = product.price;
-            document.getElementById('productImage').value = product.image || '';
             document.getElementById('productDescription').value = product.description || '';
             document.getElementById('productStatus').value = product.availabilityStatus || 'in_stock';
             
@@ -614,10 +743,20 @@
                 document.getElementById('productCategory').value = category.id;
             }
             
+            // Load product images
+            currentProductGallery = [];
+            if (product.images && product.images.length > 0) {
+                currentProductGallery = product.images.map((img, index) => ({
+                    id: typeof img === 'string' ? null : img.id,
+                    url: typeof img === 'string' ? img : img.url,
+                    displayOrder: index
+                }));
+            }
+            displayProductGallery();
+            
             // Nastavit URL jako výchozí při editaci
             document.querySelector('input[name="imageSource"][value="url"]').checked = true;
             toggleImageSource();
-            removeImagePreview();
             
             document.getElementById('modalTitle').textContent = 'Upravit produkt';
             document.getElementById('productModal').classList.add('active');
@@ -707,37 +846,17 @@
             const urlInput = document.getElementById('imageUrlInput');
             const fileInput = document.getElementById('imageFileInput');
             
-            if (urlRadio.checked) {
-                urlInput.style.display = 'block';
-                fileInput.style.display = 'none';
-                document.getElementById('productImageFile').value = '';
-                removeImagePreview();
-            } else {
-                urlInput.style.display = 'none';
-                fileInput.style.display = 'block';
-                document.getElementById('productImage').value = '';
+            if (urlRadio && urlRadio.checked) {
+                if (urlInput) urlInput.style.display = 'block';
+                if (fileInput) fileInput.style.display = 'none';
+                const fileInputEl = document.getElementById('productImageFile');
+                if (fileInputEl) fileInputEl.value = '';
+            } else if (fileRadio && fileRadio.checked) {
+                if (urlInput) urlInput.style.display = 'none';
+                if (fileInput) fileInput.style.display = 'block';
+                const urlInputEl = document.getElementById('productImageUrl');
+                if (urlInputEl) urlInputEl.value = '';
             }
-        };
-        
-        window.handleImageFileSelect = function(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            // Zobrazit náhled
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const preview = document.getElementById('imagePreview');
-                const previewImg = document.getElementById('previewImg');
-                previewImg.src = e.target.result;
-                preview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        };
-        
-        window.removeImagePreview = function() {
-            document.getElementById('imagePreview').style.display = 'none';
-            document.getElementById('previewImg').src = '';
-            document.getElementById('productImageFile').value = '';
         };
         
         async function uploadImageFile(file) {
