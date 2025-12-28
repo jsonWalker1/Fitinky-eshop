@@ -1094,7 +1094,6 @@
         // Modal functions
         async function openAddModal() {
             editingProductId = null;
-            document.getElementById('productForm').reset();
             document.getElementById('productId').value = '';
             document.getElementById('modalTitle').textContent = 'Přidat produkt';
             currentProductGallery = [];
@@ -1108,7 +1107,13 @@
             // Načíst hodnoty atributů z API a naplnit selecty
             await loadAttributeValues();
             
-            // Vyčistit atributy (po naplnění selectů)
+            // Reset formuláře PO naplnění selectů (aby se nevymazaly)
+            document.getElementById('productForm').reset();
+            
+            // Znovu naplnit selecty (reset je vymazal)
+            populateAttributeSelects();
+            
+            // Vyčistit atributy
             document.getElementById('attributeDiameter').value = '';
             document.getElementById('attributeConnectionType').value = '';
             document.getElementById('attributeShape').value = '';
