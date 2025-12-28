@@ -172,3 +172,63 @@ export const deleteProduct = async (id) => {
     }
 };
 
+/**
+ * Načte obrázky produktu
+ */
+export const getProductImages = async (productId) => {
+    try {
+        return await productRepo.getProductImages(productId);
+    } catch (error) {
+        console.error('Chyba při načítání obrázků produktu:', error);
+        throw error;
+    }
+};
+
+/**
+ * Přidá obrázek do galerie produktu
+ */
+export const addProductImage = async (productId, imageUrl, displayOrder = null) => {
+    try {
+        return await productRepo.addProductImage(productId, imageUrl, displayOrder);
+    } catch (error) {
+        console.error('Chyba při přidávání obrázku:', error);
+        throw error;
+    }
+};
+
+/**
+ * Odstraní obrázek z galerie produktu
+ */
+export const deleteProductImage = async (imageId) => {
+    try {
+        return await productRepo.deleteProductImage(imageId);
+    } catch (error) {
+        console.error('Chyba při mazání obrázku:', error);
+        throw error;
+    }
+};
+
+/**
+ * Aktualizuje pořadí obrázků
+ */
+export const updateProductImageOrder = async (imageId, displayOrder) => {
+    try {
+        return await productRepo.updateProductImageOrder(imageId, displayOrder);
+    } catch (error) {
+        console.error('Chyba při aktualizaci pořadí obrázku:', error);
+        throw error;
+    }
+};
+
+/**
+ * Odstraní všechny obrázky produktu
+ */
+export const deleteAllProductImages = async (productId) => {
+    try {
+        return await productRepo.deleteAllProductImages(productId);
+    } catch (error) {
+        console.error('Chyba při mazání obrázků produktu:', error);
+        throw error;
+    }
+};
+
