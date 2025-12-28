@@ -952,32 +952,14 @@
             
             const form = e.target;
             const productId = document.getElementById('productId').value;
-            const imageSource = document.querySelector('input[name="imageSource"]:checked').value;
-            
-            let imageUrl = form.image.value;
-            
-            // Pokud je vybrán file upload, nejdříve nahrát obrázek
-            if (imageSource === 'file') {
-                const fileInput = document.getElementById('productImageFile');
-                const file = fileInput.files[0];
-                
-                if (file) {
-                    try {
-                        imageUrl = await uploadImageFile(file);
-                    } catch (error) {
-                        showError('Chyba při nahrávání obrázku: ' + error.message);
-                        return;
-                    }
-                }
-            }
             
             const formData = {
                 name: form.name.value,
                 category: form.category.value,
                 price: parseFloat(form.price.value),
-                image: imageUrl || '',
+                image: currentProductGallery.length > 0 ? currentProductGallery[0].url : null, // Pro zpětnou kompatibilitu
                 description: form.description.value,
-                availabilityStatus: form.availabilityStatus.value
+                availabilityStatus: form.status.value
             };
             
             try {
@@ -995,6 +977,37 @@
                 const data = await response.json();
                 
                 if (data.success) {
+                    const savedProductId = productId || data.product.id;
+                    
+                    // Uložit obrázky do galerie
+                    if (currentProductGallery.length > 0) {
+                        // Odstranit staré obrázky (pokud editujeme)
+                        if (productId) {
+                            const imagesResponse = await fetch(`${API_BASE}/products/${savedProductId}/images`);
+                            const imagesData = await imagesResponse.json();
+                            if (imagesData.success) {
+                                for (const img of imagesData.images) {
+                                    await fetch(`${API_BASE}/products/${savedProductId}/images/${img.id}`, {
+                                        method: 'DELETE'
+                                    });
+                                }
+                            }
+                        }
+                        
+                        // Přidat nové obrázky
+                        for (let i = 0; i < currentProductGallery.length; i++) {
+                            const img = currentProductGallery[i];
+                            await fetch(`${API_BASE}/products/${savedProductId}/images`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    imageUrl: img.url,
+                                    displayOrder: i
+                                })
+                            });
+                        }
+                    }
+                    
                     showSuccess(productId ? 'Produkt úspěšně aktualizován' : 'Produkt úspěšně přidán');
                     closeModal();
                     loadProducts();
@@ -1002,6 +1015,7 @@
                     showError(data.error || 'Chyba při ukládání produktu');
                 }
             } catch (error) {
+                console.error('Chyba:', error);
                 showError('Chyba připojení k serveru');
             }
         });
