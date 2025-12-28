@@ -516,12 +516,6 @@ main {
   cursor: pointer;
   transition: all 0.3s ease;
 }
-.categories-sidebar .category-item:hover {
-  background-color: #667eea;
-  color: #fff;
-  border-color: #667eea;
-  transform: translateX(5px);
-}
 .categories-sidebar .category-item .category-name {
   font-size: 1rem;
   font-weight: 600;
@@ -529,16 +523,22 @@ main {
   margin-bottom: 0.5rem;
   line-height: 1.2;
 }
-.category-item:hover .categories-sidebar .category-item .category-name {
-  color: #fff;
-}
 .categories-sidebar .category-item .category-count {
   font-size: 0.85rem;
   color: #999;
   line-height: 1.4;
   margin-bottom: 0;
 }
-.category-item:hover .categories-sidebar .category-item .category-count {
+.categories-sidebar .category-item:hover {
+  background-color: #667eea;
+  color: #fff;
+  border-color: #667eea;
+  transform: translateX(5px);
+}
+.categories-sidebar .category-item:hover .category-name {
+  color: #fff;
+}
+.categories-sidebar .category-item:hover .category-count {
   color: rgba(255, 255, 255, 0.9);
 }
 
