@@ -81,6 +81,104 @@ export const getProductImages = async (productId) => {
 };
 
 /**
+ * Načte atributy produktu
+ */
+export const getProductAttributes = async (productId) => {
+    try {
+        const result = await pool.query(
+            'SELECT attribute_name, attribute_value, attribute_type FROM product_attributes WHERE product_id = $1 ORDER BY attribute_name',
+            [productId]
+        );
+        // Převede na objekt { attribute_name: attribute_value }
+        const attributes = {};
+        result.rows.forEach(row => {
+            attributes[row.attribute_name] = {
+                value: row.attribute_value,
+                type: row.attribute_type
+            };
+        });
+        return attributes;
+    } catch (error) {
+        console.error('Chyba při načítání atributů produktu:', error);
+        throw error;
+    }
+};
+
+/**
+ * Přidá nebo aktualizuje atribut produktu
+ */
+export const upsertProductAttribute = async (productId, attributeName, attributeValue, attributeType = 'text') => {
+    try {
+        const result = await pool.query(
+            `INSERT INTO product_attributes (product_id, attribute_name, attribute_value, attribute_type)
+             VALUES ($1, $2, $3, $4)
+             ON CONFLICT (product_id, attribute_name)
+             DO UPDATE SET attribute_value = $3, attribute_type = $4, updated_at = CURRENT_TIMESTAMP
+             RETURNING *`,
+            [productId, attributeName, attributeValue, attributeType]
+        );
+        return result.rows[0];
+    } catch (error) {
+        console.error('Chyba při ukládání atributu produktu:', error);
+        throw error;
+    }
+};
+
+/**
+ * Smaže atribut produktu
+ */
+export const deleteProductAttribute = async (productId, attributeName) => {
+    try {
+        const result = await pool.query(
+            'DELETE FROM product_attributes WHERE product_id = $1 AND attribute_name = $2 RETURNING id',
+            [productId, attributeName]
+        );
+        return result.rows.length > 0;
+    } catch (error) {
+        console.error('Chyba při mazání atributu produktu:', error);
+        throw error;
+    }
+};
+
+/**
+ * Smaže všechny atributy produktu
+ */
+export const deleteAllProductAttributes = async (productId) => {
+    try {
+        await pool.query('DELETE FROM product_attributes WHERE product_id = $1', [productId]);
+        return true;
+    } catch (error) {
+        console.error('Chyba při mazání atributů produktu:', error);
+        throw error;
+    }
+};
+
+/**
+ * Uloží všechny atributy produktu (přepíše existující)
+ */
+export const setProductAttributes = async (productId, attributes) => {
+    try {
+        // Smazat všechny existující atributy
+        await deleteAllProductAttributes(productId);
+        
+        // Přidat nové atributy
+        if (attributes && typeof attributes === 'object') {
+            const entries = Object.entries(attributes);
+            for (const [name, data] of entries) {
+                const value = typeof data === 'object' ? data.value : data;
+                const type = typeof data === 'object' && data.type ? data.type : 'text';
+                await upsertProductAttribute(productId, name, value, type);
+            }
+        }
+        
+        return true;
+    } catch (error) {
+        console.error('Chyba při ukládání atributů produktu:', error);
+        throw error;
+    }
+};
+
+/**
  * Přidá obrázek do galerie produktu
  */
 export const addProductImage = async (productId, imageUrl, displayOrder = null) => {
@@ -198,7 +296,7 @@ export const getAllProducts = async (filters = {}) => {
         const result = await pool.query(query, params);
         const products = result.rows.map(mapProductToJSON);
         
-        // Načíst obrázky pro všechny produkty
+        // Načíst obrázky a atributy pro všechny produkty
         for (const product of products) {
             const images = await getProductImages(product.id);
             product.images = images.map(img => ({
@@ -206,6 +304,9 @@ export const getAllProducts = async (filters = {}) => {
                 url: img.image_url,
                 displayOrder: img.display_order
             }));
+            
+            const attributes = await getProductAttributes(product.id);
+            product.attributes = attributes;
         }
         
         return products;
@@ -239,6 +340,10 @@ export const getProductById = async (id) => {
             displayOrder: img.display_order
         }));
         
+        // Načíst atributy
+        const attributes = await getProductAttributes(id);
+        product.attributes = attributes;
+        
         return product;
     } catch (error) {
         console.error('Chyba při načítání produktu:', error);
@@ -261,7 +366,7 @@ export const getProductsByCategory = async (categorySlug) => {
         
         const products = result.rows.map(mapProductToJSON);
         
-        // Načíst obrázky pro všechny produkty
+        // Načíst obrázky a atributy pro všechny produkty
         for (const product of products) {
             const images = await getProductImages(product.id);
             product.images = images.map(img => ({
@@ -269,6 +374,9 @@ export const getProductsByCategory = async (categorySlug) => {
                 url: img.image_url,
                 displayOrder: img.display_order
             }));
+            
+            const attributes = await getProductAttributes(product.id);
+            product.attributes = attributes;
         }
         
         return products;
@@ -316,7 +424,16 @@ export const addProduct = async (productData) => {
             productData.availabilityStatus || 'in_stock'
         ]);
 
-        return mapProductToJSON(result.rows[0]);
+        const product = mapProductToJSON(result.rows[0]);
+        
+        // Uložit atributy pokud jsou poskytnuty
+        if (productData.attributes && typeof productData.attributes === 'object') {
+            await setProductAttributes(id, productData.attributes);
+            const attributes = await getProductAttributes(id);
+            product.attributes = attributes;
+        }
+        
+        return product;
     } catch (error) {
         console.error('Chyba při přidávání produktu:', error);
         throw error;
@@ -390,7 +507,22 @@ export const updateProduct = async (id, productData) => {
             RETURNING *
         `, values);
 
-        return result.rows[0] ? mapProductToJSON(result.rows[0]) : null;
+        if (!result.rows[0]) return null;
+        
+        const product = mapProductToJSON(result.rows[0]);
+        
+        // Aktualizovat atributy pokud jsou poskytnuty
+        if (productData.attributes !== undefined) {
+            await setProductAttributes(id, productData.attributes);
+            const attributes = await getProductAttributes(id);
+            product.attributes = attributes;
+        } else {
+            // Načíst existující atributy
+            const attributes = await getProductAttributes(id);
+            product.attributes = attributes;
+        }
+        
+        return product;
     } catch (error) {
         console.error('Chyba při aktualizaci produktu:', error);
         throw error;

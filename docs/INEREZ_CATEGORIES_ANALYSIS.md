@@ -346,18 +346,22 @@ V admin panelu při vytváření/editaci produktu přidat formulář pro atribut
 1. **Jak detailní struktura kategorií?**
    - Jednoduchá (5-6 kategorií) vs. Detailní (10+ kategorií)
    - Doporučení: Začni jednoduše, můžeš později rozdělit
+   jednoduchá 
 
 2. **Kde ukládat atributy?**
    - JSONB (rychlé) vs. Samostatná tabulka (pokročilé)
    - Doporučení: JSONB pro začátek
+   ne dej pokročilé budeme dělat pak pro zákazniký funkci s filtrací produktů a to musím fungovat dobře 
 
 3. **Kolik atributů potřebuješ?**
    - Základní (průměr, typ, tvar, materiál) vs. Pokročilé (všechny výše)
    - Doporučení: Začni se základními, přidávej podle potřeby
+   základní 
 
 4. **Filtrování podle atributů?**
    - Ano, je důležité pro B2B eshop
    - Uživatelé budou chtít najít konkrétní typ fitinky
+   ano určitě filtr budeme dělat 
 
 ---
 

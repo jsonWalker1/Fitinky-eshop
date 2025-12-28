@@ -24,6 +24,7 @@
     "db:migrate-images": "node backend/db/migrate-images.js",
     "db:setup": "npm run db:init && npm run db:migrate",
     "db:add-fitinky": "node backend/db/add-fitinky.js",
+    "db:add-attributes-table": "node backend/db/add-product-attributes-table.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
