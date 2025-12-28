@@ -959,7 +959,7 @@
                 price: parseFloat(form.price.value),
                 image: currentProductGallery.length > 0 ? currentProductGallery[0].url : null, // Pro zpětnou kompatibilitu
                 description: form.description.value,
-                availabilityStatus: form.status.value
+                availabilityStatus: form.availabilityStatus?.value || form.status?.value || 'in_stock'
             };
             
             try {
