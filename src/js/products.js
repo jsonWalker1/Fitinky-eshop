@@ -105,8 +105,15 @@ function displayProducts(products) {
         const statusLabel = statusLabels[status] || status;
         
         // Zpracování obrázků produktu
-        const productImages = product.images || (product.image ? [product.image] : []);
-        const mainImage = productImages.length > 0 ? (typeof productImages[0] === 'string' ? productImages[0] : productImages[0].url) : '/assets/pic/trubka.webp';
+        let productImages = [];
+        if (product.images && product.images.length > 0) {
+            // Pokud má pole images (z galerie), použij to
+            productImages = product.images.map(img => typeof img === 'string' ? img : img.url);
+        } else if (product.image) {
+            // Pokud má starý formát image, použij to
+            productImages = [product.image];
+        }
+        const mainImage = productImages.length > 0 ? productImages[0] : '/assets/pic/trubka.webp';
         const hasGallery = productImages.length > 1;
         
         return `

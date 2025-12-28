@@ -139,7 +139,7 @@ export const getProducts = async (req, res) => {
  */
 export const addProduct = async (req, res) => {
     try {
-        const { name, category, price, description, availabilityStatus } = req.body;
+        const { name, category, price, description, availabilityStatus, image } = req.body;
         
         if (!name || !category || !price) {
             return res.status(400).json({
@@ -160,7 +160,8 @@ export const addProduct = async (req, res) => {
             categorySlug: category,
             price: parseFloat(price),
             description: description || '',
-            availabilityStatus: status
+            availabilityStatus: status,
+            image: image || null
         };
         
         const newProduct = await productsService.addProduct(productData);
