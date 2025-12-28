@@ -191,8 +191,7 @@ export const updateProduct = async (req, res) => {
         const productData = {};
         if (name !== undefined) productData.name = name;
         if (category !== undefined) {
-            productData.categoryId = category;
-            productData.categorySlug = category;
+            productData.categoryId = category; // category je ID z formuláře
         }
         if (price !== undefined) productData.price = parseFloat(price);
         if (description !== undefined) productData.description = description;
