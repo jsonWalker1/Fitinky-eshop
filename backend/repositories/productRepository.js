@@ -283,13 +283,21 @@ export const getProductsByCategory = async (categorySlug) => {
  */
 export const addProduct = async (productData) => {
     try {
-        // Najít category_id podle category slug nebo ID
+        // Najít category_id a slug podle category ID nebo slug
         let categoryId = null;
-        if (productData.categorySlug || productData.categoryId) {
-            const category = productData.categoryId 
-                ? await getCategoryById(productData.categoryId)
-                : await getCategoryBySlug(productData.categorySlug || productData.category);
-            categoryId = category?.id || null;
+        let categorySlug = null;
+        if (productData.categoryId) {
+            const category = await getCategoryById(productData.categoryId);
+            if (category) {
+                categoryId = category.id;
+                categorySlug = category.slug;
+            }
+        } else if (productData.categorySlug || productData.category) {
+            const category = await getCategoryBySlug(productData.categorySlug || productData.category);
+            if (category) {
+                categoryId = category.id;
+                categorySlug = category.slug;
+            }
         }
 
         const id = productData.id || String(Date.now());
@@ -304,7 +312,7 @@ export const addProduct = async (productData) => {
             productData.price,
             productData.image || null,
             categoryId,
-            productData.categorySlug || productData.category || null,
+            categorySlug,
             productData.availabilityStatus || 'in_stock'
         ]);
 
@@ -353,9 +361,9 @@ export const updateProduct = async (id, productData) => {
             updates.push(`category_id = $${paramIndex++}`);
             values.push(categoryId);
         }
-        if (productData.categorySlug !== undefined || productData.category !== undefined) {
+        if (categorySlug !== null) {
             updates.push(`category_slug = $${paramIndex++}`);
-            values.push(productData.categorySlug || productData.category);
+            values.push(categorySlug);
         }
         if (productData.availabilityStatus !== undefined) {
             updates.push(`availability_status = $${paramIndex++}`);

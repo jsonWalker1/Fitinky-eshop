@@ -156,8 +156,7 @@ export const addProduct = async (req, res) => {
         
         const productData = {
             name,
-            category,
-            categorySlug: category,
+            categoryId: category, // category je ID z formuláře
             price: parseFloat(price),
             description: description || '',
             availabilityStatus: status,
