@@ -196,7 +196,19 @@ export const getAllProducts = async (filters = {}) => {
         query += ' ORDER BY p.name';
         
         const result = await pool.query(query, params);
-        return result.rows.map(mapProductToJSON);
+        const products = result.rows.map(mapProductToJSON);
+        
+        // Načíst obrázky pro všechny produkty
+        for (const product of products) {
+            const images = await getProductImages(product.id);
+            product.images = images.map(img => ({
+                id: img.id,
+                url: img.image_url,
+                displayOrder: img.display_order
+            }));
+        }
+        
+        return products;
     } catch (error) {
         console.error('Chyba při načítání produktů:', error);
         throw error;
@@ -214,7 +226,20 @@ export const getProductById = async (id) => {
             LEFT JOIN categories c ON p.category_id = c.id
             WHERE p.id = $1
         `, [id]);
-        return result.rows[0] ? mapProductToJSON(result.rows[0]) : null;
+        
+        if (!result.rows[0]) return null;
+        
+        const product = mapProductToJSON(result.rows[0]);
+        
+        // Načíst obrázky z galerie
+        const images = await getProductImages(id);
+        product.images = images.map(img => ({
+            id: img.id,
+            url: img.image_url,
+            displayOrder: img.display_order
+        }));
+        
+        return product;
     } catch (error) {
         console.error('Chyba při načítání produktu:', error);
         throw error;
@@ -233,7 +258,20 @@ export const getProductsByCategory = async (categorySlug) => {
             WHERE p.category_slug = $1 OR c.slug = $1
             ORDER BY p.name
         `, [categorySlug]);
-        return result.rows.map(mapProductToJSON);
+        
+        const products = result.rows.map(mapProductToJSON);
+        
+        // Načíst obrázky pro všechny produkty
+        for (const product of products) {
+            const images = await getProductImages(product.id);
+            product.images = images.map(img => ({
+                id: img.id,
+                url: img.image_url,
+                displayOrder: img.display_order
+            }));
+        }
+        
+        return products;
     } catch (error) {
         console.error('Chyba při načítání produktů podle kategorie:', error);
         throw error;
