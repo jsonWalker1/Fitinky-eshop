@@ -6,6 +6,8 @@
   <title>Fitinky - Nerezové armatury a fitinky</title>
   <link rel="stylesheet" href="/sass/main.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 </head>
 <body>
   <!-- Top Contact Bar -->
@@ -14,7 +16,7 @@
       <div class="contact-info">
         <span class="contact-item">
           <span>Rychlý kontakt:</span>
-          <a href="tel:+420123456789">603 788 788</a>
+          <a href="tel:+420603788788">603 788 788</a>
         </span>
         <span class="contact-item">
           <a href="mailto:info@fitinky.cz">info@fitinky.cz</a>
@@ -68,6 +70,10 @@
       <a href="/login" class="menu-icon" id="loginIcon" title="Přihlásit se">
         <span class="material-symbols-outlined">person</span>
       </a>
+      <button class="login" id="logoutButton" style="display: none;">
+        <a href="#" onclick="handleLogout(event)">Odhlásit se</a>
+      </button>
+      <span id="userName" style="display: none; margin-right: 1rem; color: #333; font-weight: 500;"></span>
       <a href="/cart" class="menu-icon cart-icon" id="cartIcon" aria-label="Košík">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M7 18C5.9 18 5.01 18.9 5.01 20C5.01 21.1 5.9 22 7 22C8.1 22 9 21.1 9 20C9 18.9 8.1 18 7 18ZM1 2V4H3L6.6 11.59L5.25 14.04C5.09 14.32 5 14.65 5 15C5 16.1 5.9 17 7 17H19V15H7.42C7.28 15 7.17 14.89 7.17 14.75L7.2 14.63L8.1 13H15.55C16.3 13 16.96 12.59 17.3 11.97L20.88 5.48C20.96 5.34 21 5.17 21 5C21 4.45 20.55 4 20 4H5.21L4.27 2H1ZM17 18C15.9 18 15.01 18.9 15.01 20C15.01 21.1 15.9 22 17 22C18.1 22 19 21.1 19 20C19 18.9 18.1 18 17 18Z" fill="currentColor"/>
@@ -121,14 +127,26 @@
     <div class="homepage-content">
       <!-- Hero Slider -->
       <section class="hero-slider">
-        <div class="hero-slide active">
-          <img src="/assets/pic/hero-default.jpg" alt="Hero image" onerror="this.src='https://via.placeholder.com/1200x400/1e3a8a/ffffff?text=Fitinky'">
-        </div>
-        <div class="slider-dots">
-          <span class="dot active"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
+        <div class="swiper heroSwiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <img src="/assets/pic/hero-default.jpg" alt="Hero image 1" onerror="this.src='https://via.placeholder.com/1200x400/1e3a8a/ffffff?text=Fitinky+Slide+1'">
+            </div>
+            <div class="swiper-slide">
+              <img src="https://via.placeholder.com/1200x400/3182ce/ffffff?text=Fitinky+Slide+2" alt="Hero image 2">
+            </div>
+            <div class="swiper-slide">
+              <img src="https://via.placeholder.com/1200x400/2d3748/ffffff?text=Fitinky+Slide+3" alt="Hero image 3">
+            </div>
+            <div class="swiper-slide">
+              <img src="https://via.placeholder.com/1200x400/718096/ffffff?text=Fitinky+Slide+4" alt="Hero image 4">
+            </div>
+          </div>
+          <!-- Navigation buttons -->
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+          <!-- Pagination -->
+          <div class="swiper-pagination"></div>
         </div>
       </section>
 
@@ -261,6 +279,12 @@
               </svg>
               <span>info@fitinky.cz</span>
             </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
+              </svg>
+              <span>Libišany 156, 533 45 Opatovice nad Labem</span>
+            </li>
           </ul>
         </div>
       </div>
@@ -271,6 +295,8 @@
     </div>
   </footer>
   
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script type="module" src="/src/js/main.js"></script>
   <script type="module" src="/src/js/homepage.js"></script>
 </body>

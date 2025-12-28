@@ -38,15 +38,19 @@ async function updateCartBadge() {
 // Aktualizace UI podle přihlášení
 function updateAuthUI() {
     const loginButton = document.getElementById('loginButton');
+    const loginIcon = document.getElementById('loginIcon');
     const logoutButton = document.getElementById('logoutButton');
     const userName = document.getElementById('userName');
     const cartIcon = document.getElementById('cartIcon');
     const ordersMenuItem = document.getElementById('ordersMenuItem');
     
     if (isAuthenticated()) {
-        // Zobrazit odhlášení a jméno
+        // Skrýt tlačítko/ikonu přihlášení
         if (loginButton) loginButton.style.display = 'none';
+        if (loginIcon) loginIcon.style.display = 'none';
         if (logoutButton) logoutButton.style.display = 'block';
+        
+        // Zobrazit jméno uživatele
         if (userName) {
             // Zkusit získat jméno z userData nebo userName
             let name = 'Uživatel';
@@ -81,26 +85,39 @@ function updateAuthUI() {
             userName.innerHTML = `<a href="/orders" style="color: inherit; text-decoration: none;">${name}</a>`;
             userName.style.display = 'inline-block';
         }
+        
         // Zobrazit odkaz na objednávky v menu
         if (ordersMenuItem) ordersMenuItem.style.display = 'list-item';
-        // Košík je vždy viditelný
-        if (cartIcon) cartIcon.style.pointerEvents = 'auto';
+        
+        // Košík je vždy dostupný pro přihlášené uživatele
+        if (cartIcon) {
+            cartIcon.href = '/cart';
+            cartIcon.style.pointerEvents = 'auto';
+            // Odstranit event listener, pokud existuje
+            const existingHandler = cartIcon.getAttribute('data-login-handler');
+            if (existingHandler) {
+                cartIcon.removeAttribute('data-login-handler');
+            }
+        }
     } else {
         // Zobrazit přihlášení
         if (loginButton) loginButton.style.display = 'block';
+        if (loginIcon) loginIcon.style.display = 'block';
         if (logoutButton) logoutButton.style.display = 'none';
         if (userName) userName.style.display = 'none';
+        
         // Skrýt odkaz na objednávky v menu
         if (ordersMenuItem) ordersMenuItem.style.display = 'none';
-        // Košík je viditelný, ale při kliknutí přesměruje na login
+        
+        // Košík přesměruje na login, pokud není uživatel přihlášený
         if (cartIcon) {
-            cartIcon.addEventListener('click', (e) => {
-                if (!isAuthenticated()) {
-                    e.preventDefault();
-                    alert('Pro zobrazení košíku se musíte přihlásit');
-                    window.location.href = '/login';
-                }
-            });
+            // Odstranit event listener, pokud existuje
+            const existingHandler = cartIcon.getAttribute('data-login-handler');
+            if (existingHandler) {
+                cartIcon.removeAttribute('data-login-handler');
+            }
+            // Nastavit href na login pro nepřihlášené uživatele
+            cartIcon.href = '/login';
         }
     }
 }

@@ -341,48 +341,78 @@ header {
     }
 }
 
-// Hero Slider
+// Hero Slider (Swiper)
 .hero-slider {
     position: relative;
     width: 100%;
-    height: 400px;
     margin-bottom: 2rem;
     border-radius: 8px;
     overflow: hidden;
     
-    @media (max-width: 768px) {
-        height: 250px;
-    }
-    
-    .hero-slide {
+    .heroSwiper {
         width: 100%;
-        height: 100%;
+        height: 400px;
+        border-radius: 8px;
         
-        img {
+        @media (max-width: 768px) {
+            height: 250px;
+        }
+        
+        .swiper-slide {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
         }
-    }
-    
-    .slider-dots {
-        position: absolute;
-        bottom: 1rem;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 0.5rem;
         
-        .dot {
-            width: 12px;
-            height: 12px;
+        // Navigation buttons
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.2);
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
             transition: background-color 0.3s ease;
             
-            &.active {
-                background-color: #fff;
+            &::after {
+                font-size: 20px;
+                font-weight: 700;
+            }
+            
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.3);
+            }
+            
+            @media (max-width: 768px) {
+                width: 36px;
+                height: 36px;
+                
+                &::after {
+                    font-size: 16px;
+                }
+            }
+        }
+        
+        // Pagination
+        .swiper-pagination {
+            bottom: 20px;
+            
+            .swiper-pagination-bullet {
+                width: 12px;
+                height: 12px;
+                background-color: rgba(255, 255, 255, 0.5);
+                opacity: 1;
+                transition: background-color 0.3s ease;
+                
+                &-active {
+                    background-color: #fff;
+                }
             }
         }
     }

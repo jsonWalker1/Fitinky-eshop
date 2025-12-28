@@ -131,9 +131,60 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+// Inicializace Swiper karuselu
+function initHeroSwiper() {
+    const swiperElement = document.querySelector('.heroSwiper');
+    if (!swiperElement) {
+        console.error('Hero Swiper element nenalezen');
+        return;
+    }
+    
+    if (typeof Swiper === 'undefined') {
+        console.error('Swiper.js není načten');
+        return;
+    }
+    
+    const heroSwiper = new Swiper('.heroSwiper', {
+        loop: true,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+            dynamicBullets: true,
+        },
+        effect: 'slide',
+        speed: 600,
+        slidesPerView: 1,
+        spaceBetween: 0
+    });
+    
+    return heroSwiper;
+}
+
 // Inicializace při načtení stránky
 document.addEventListener('DOMContentLoaded', () => {
     loadCategories();
     loadBestsellers();
+    
+    // Inicializovat Swiper - počkat až bude Swiper načten (je to script tag před </body>)
+    const initSwiper = () => {
+        if (typeof Swiper !== 'undefined') {
+            initHeroSwiper();
+        } else {
+            // Pokud Swiper není ještě načten, zkusit znovu po krátké době
+            setTimeout(initSwiper, 100);
+        }
+    };
+    
+    // Začít inicializaci po malém zpoždění, aby se ujistil, že Swiper script je načten
+    setTimeout(initSwiper, 100);
 });
 

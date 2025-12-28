@@ -5,55 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Košík - Eshop</title>
     <link rel="stylesheet" href="/sass/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 </head>
 <body>
-    <div class="mainContainer">
-        <header>
-            <div class="logo">
-                <a href="/" class="menu-icon">
-                    <img src="/assets/pic/logo.png" alt="logo">
-                </a>
+    <!-- Top Contact Bar -->
+    <div class="top-contact-bar">
+        <div class="container">
+            <div class="contact-info">
+                <span class="contact-item">
+                    <span>Rychlý kontakt:</span>
+                    <a href="tel:+420603788788">603 788 788</a>
+                </span>
+                <span class="contact-item">
+                    <a href="mailto:info@fitinky.cz">info@fitinky.cz</a>
+                </span>
             </div>
-            
-            <button class="hamburger" aria-label="Menu" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+            <a href="#contact" class="btn-inquiry">
+                <span class="material-symbols-outlined">send</span>
+                Nezávazná poptávka
+            </a>
+        </div>
+    </div>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="logo">
+            <a href="/" class="menu-icon">
+                <img src="/assets/pic/logo.png" alt="logo">
+                <span class="logo-text">
+                    <span class="logo-name">Fitinky</span>
+                    <span class="logo-tagline">nerezové armatury a fitinky</span>
+                </span>
+            </a>
+        </div>
+        
+        <button class="hamburger" aria-label="Menu" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
+        <div class="header-menu" id="headerMenu">
+            <nav>
+                <ul>
+                    <li><a href="/">Domů</a></li>
+                    <li><a href="/products">Produkty</a></li>
+                    <li><a href="/#about">O nás</a></li>
+                    <li><a href="/#contact">Kontakt</a></li>
+                    <li id="ordersMenuItem" style="display: none;"><a href="/orders">Moje objednávky</a></li>
+                </ul>
+            </nav>
+        </div>
+        
+        <div class="right-menu">
+            <a href="/products" class="menu-icon" title="Vyhledat">
+                <span class="material-symbols-outlined">search</span>
+            </a>
+            <div class="menu-icon" title="Měna: Kč">
+                <span class="material-symbols-outlined">currency_exchange</span>
+                <span class="currency-text">Kč</span>
+            </div>
+            <a href="/login" class="menu-icon" id="loginIcon" title="Přihlásit se">
+                <span class="material-symbols-outlined">person</span>
+            </a>
+            <button class="login" id="logoutButton" style="display: none;">
+                <a href="#" onclick="handleLogout(event)">Odhlásit se</a>
             </button>
-            
-            <div class="header-menu" id="headerMenu">
-                <nav class="header-menu">
-                    <ul>
-                        <li><a href="/">Domů</a></li>
-                        <li><a href="/products">Produkty</a></li>
-                        <li><a href="#about">O nás</a></li>
-                        <li><a href="#contact">Kontakt</a></li>
-                        <li id="ordersMenuItem"><a href="/orders">Moje objednávky</a></li>
-                    </ul>
-                </nav>
-            </div>
-            
-            <div class="right-menu">
-                <a href="/cart" class="menu-icon cart-icon" id="cartIcon" aria-label="Košík">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M7 18C5.9 18 5.01 18.9 5.01 20C5.01 21.1 5.9 22 7 22C8.1 22 9 21.1 9 20C9 18.9 8.1 18 7 18ZM1 2V4H3L6.6 11.59L5.25 14.04C5.09 14.32 5 14.65 5 15C5 16.1 5.9 17 7 17H19V15H7.42C7.28 15 7.17 14.89 7.17 14.75L7.2 14.63L8.1 13H15.55C16.3 13 16.96 12.59 17.3 11.97L20.88 5.48C20.96 5.34 21 5.17 21 5C21 4.45 20.55 4 20 4H5.21L4.27 2H1ZM17 18C15.9 18 15.01 18.9 15.01 20C15.01 21.1 15.9 22 17 22C18.1 22 19 21.1 19 20C19 18.9 18.1 18 17 18Z" fill="currentColor"/>
-                    </svg>
-                    <span class="cart-badge" id="cartBadge">0</span>
-                </a>
-                
-                <a href="" class="menu-icon">
-                    <img src="/assets/pic/personalicon.bmp" alt="profil">
-                </a>
-                
-                <button class="login" id="loginButton">
-                    <a href="/login">Přihlášení</a>
-                </button>
-                <button class="login" id="logoutButton">
-                    <a href="#" onclick="handleLogout(event)">Odhlásit se</a>
-                </button>
-                <span id="userName"></span>
-            </div>
-        </header>
+            <span id="userName" style="display: none; margin-right: 1rem; color: #333; font-weight: 500;"></span>
+            <a href="/cart" class="menu-icon cart-icon" id="cartIcon" aria-label="Košík">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 18C5.9 18 5.01 18.9 5.01 20C5.01 21.1 5.9 22 7 22C8.1 22 9 21.1 9 20C9 18.9 8.1 18 7 18ZM1 2V4H3L6.6 11.59L5.25 14.04C5.09 14.32 5 14.65 5 15C5 16.1 5.9 17 7 17H19V15H7.42C7.28 15 7.17 14.89 7.17 14.75L7.2 14.63L8.1 13H15.55C16.3 13 16.96 12.59 17.3 11.97L20.88 5.48C20.96 5.34 21 5.17 21 5C21 4.45 20.55 4 20 4H5.21L4.27 2H1ZM17 18C15.9 18 15.01 18.9 15.01 20C15.01 21.1 15.9 22 17 22C18.1 22 19 21.1 19 20C19 18.9 18.1 18 17 18Z" fill="currentColor"/>
+                </svg>
+                <span class="cart-badge" id="cartBadge">0</span>
+            </a>
+        </div>
+    </header>
+    
+    <div class="mainContainer">
         
         <main>
             <section class="cart-section">
@@ -140,13 +168,19 @@
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M22 16.92V19.92C22 20.52 21.52 21 20.92 21C9.4 21 0 11.6 0 0.08C0 -0.52 0.48 -1 1.08 -1H4.08C4.68 -1 5.16 -0.52 5.16 0.08V3.08C5.16 3.68 4.68 4.16 4.08 4.16H2.08C2.08 12.84 9.16 19.92 17.84 19.92V17.92C17.84 17.32 18.32 16.84 18.92 16.84H21.92C22.52 16.84 23 17.32 23 17.92V20.92H22V16.92Z" fill="currentColor"/>
                                 </svg>
-                                <span>+420 123 456 789</span>
+                                <span>+420 603 788 788</span>
                             </li>
                             <li>
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" fill="currentColor"/>
                                 </svg>
                                 <span>info@fitinky.cz</span>
+                            </li>
+                            <li>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
+                                </svg>
+                                <span>Libišany 156, 533 45 Opatovice nad Labem</span>
                             </li>
                         </ul>
                     </div>
