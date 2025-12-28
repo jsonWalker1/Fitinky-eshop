@@ -160,7 +160,11 @@ function initHeroSwiper() {
         },
         speed: 500,
         slidesPerView: 1,
-        spaceBetween: 0
+        spaceBetween: 0,
+        observer: true,
+        observeParents: true,
+        watchOverflow: true,
+        resizeObserver: true
     });
 }
 
