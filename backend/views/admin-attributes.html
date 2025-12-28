@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Správa atributů - Admin</title>
+    <link rel="stylesheet" href="/sass/admin.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="/assets/pic/logo.png" alt="logo">
+            <h2>Eshop Admin</h2>
+        </div>
+        
+        <ul class="sidebar-links">
+            <li>
+                <a href="/admin/dashboard">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            
+            <h4 class="sidebar-section-title">Hlavní menu</h4>
+            
+            <li>
+                <a href="/admin/products">
+                    <span class="material-symbols-outlined">inventory</span>
+                    <span>Produkty</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/categories">
+                    <span class="material-symbols-outlined">folder</span>
+                    <span>Kategorie</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/orders">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                    <span>Objednávky</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/users">
+                    <span class="material-symbols-outlined">people</span>
+                    <span>Uživatelé</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/attributes" class="active">
+                    <span class="material-symbols-outlined">tune</span>
+                    <span>Atributy</span>
+                </a>
+            </li>
+            
+            <h4 class="sidebar-section-title">Další</h4>
+            
+            <li>
+                <a href="/admin/statistics">
+                    <span class="material-symbols-outlined">analytics</span>
+                    <span>Statistiky</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/settings">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span>Nastavení</span>
+                </a>
+            </li>
+            <li>
+                <a href="/" target="_blank">
+                    <span class="material-symbols-outlined">open_in_new</span>
+                    <span>Zobrazit eshop</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/logout">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span>Odhlásit se</span>
+                </a>
+            </li>
+        </ul>
+        
+        <div class="sidebar-user">
+            <div class="user-profile">
+                <img src="/assets/pic/personalicon.bmp" alt="profile">
+                <div class="user-info">
+                    <h3>Admin</h3>
+                    <span>Administrátor</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+    
+    <!-- Overlay pro mobil -->
+    <div class="admin-sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Main Layout -->
+    <div class="admin-layout">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-left">
+                <button class="hamburger-menu" id="hamburgerMenu" aria-label="Menu">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <h1>Správa atributů</h1>
+            </div>
+            <div class="header-right">
+                <!-- Globální vyhledávání -->
+                <div class="global-search-wrapper">
+                    <div class="global-search-input-wrapper">
+                        <input 
+                            type="search" 
+                            id="globalSearchInput" 
+                            placeholder="Hledat produkty, objednávky, uživatele..." 
+                            autocomplete="off"
+                        >
+                        <span class="search-icon">🔍</span>
+                    </div>
+                    <div class="global-search-results" id="globalSearchResults"></div>
+                </div>
+                <a href="/" class="admin-nav-link">← Zpět na eshop</a>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="attributes-management">
+                <div class="message" id="message"></div>
+                
+                <div class="attributes-categories" id="attributesCategories">
+                    <p>Načítám kategorie atributů...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal pro přidání/editaci hodnoty -->
+    <div class="modal" id="attributeValueModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="attributeValueModalTitle">Přidat hodnotu</h2>
+                <button class="modal-close" id="attributeValueModalClose">×</button>
+            </div>
+            <form id="attributeValueForm">
+                <input type="hidden" id="attributeValueId" name="id">
+                <input type="hidden" id="attributeValueCategoryId" name="category_id">
+                
+                <div class="form-group">
+                    <label for="attributeValueValue">Hodnota (vnitřní název) *</label>
+                    <input type="text" id="attributeValueValue" name="value" required placeholder="např. nerez-304">
+                    <small>Vnitřní název pro systém (malá písmena, pomlčky)</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="attributeValueDisplayName">Zobrazený název *</label>
+                    <input type="text" id="attributeValueDisplayName" name="display_name" required placeholder="např. Nerez 304">
+                </div>
+                
+                <div class="form-group">
+                    <label for="attributeValueDescription">Popis</label>
+                    <textarea id="attributeValueDescription" name="description" rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="attributeValueDisplayOrder">Pořadí zobrazení</label>
+                    <input type="number" id="attributeValueDisplayOrder" name="display_order" value="0" min="0">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="attributeValueModalCancel">Zrušit</button>
+                    <button type="submit" class="btn btn-primary">Uložit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE = '/admin/api';
+        let currentCategoryId = null;
+        let editingValueId = null;
+        
+        // Hamburger menu
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+        
+        if (hamburgerMenu) hamburgerMenu.addEventListener('click', toggleSidebar);
+        if (overlay) overlay.addEventListener('click', toggleSidebar);
+        
+        // Načtení kategorií atributů
+        async function loadAttributeCategories() {
+            try {
+                const response = await fetch(`${API_BASE}/attributes/categories`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayAttributeCategories(data.categories);
+                } else {
+                    showMessage('Chyba při načítání kategorií atributů', 'error');
+                }
+            } catch (error) {
+                console.error('Chyba:', error);
+                showMessage('Chyba připojení k serveru', 'error');
+            }
+        }
+        
+        // Zobrazení kategorií atributů
+        function displayAttributeCategories(categories) {
+            const container = document.getElementById('attributesCategories');
+            
+            if (categories.length === 0) {
+                container.innerHTML = '<p>Žádné kategorie atributů k dispozici.</p>';
+                return;
+            }
+            
+            container.innerHTML = categories.map(category => `
+                <div class="attribute-category-card">
+                    <div class="category-card-header">
+                        <h3>${escapeHtml(category.display_name)}</h3>
+                        <span class="category-name">${escapeHtml(category.name)}</span>
+                    </div>
+                    <div class="category-values-list">
+                        ${category.values && category.values.length > 0 
+                            ? category.values.map(value => `
+                                <div class="value-item">
+                                    <div class="value-info">
+                                        <span class="value-display-name">${escapeHtml(value.display_name)}</span>
+                                        <span class="value-name">${escapeHtml(value.value)}</span>
+                                    </div>
+                                    <div class="value-actions">
+                                        <button class="btn-icon" onclick="editAttributeValue(${value.id}, ${category.id})" title="Editovat">
+                                            <span class="material-symbols-outlined">edit</span>
+                                        </button>
+                                        <button class="btn-icon" onclick="deleteAttributeValue(${value.id})" title="Smazat">
+                                            <span class="material-symbols-outlined">delete</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')
+                            : '<p class="no-values">Žádné hodnoty</p>'
+                        }
+                    </div>
+                    <div class="category-actions">
+                        <button class="btn btn-primary" onclick="openAddValueModal(${category.id})">
+                            <span class="material-symbols-outlined">add</span>
+                            Přidat hodnotu
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Otevřít modal pro přidání hodnoty
+        window.openAddValueModal = function(categoryId) {
+            currentCategoryId = categoryId;
+            editingValueId = null;
+            
+            document.getElementById('attributeValueModalTitle').textContent = 'Přidat hodnotu';
+            document.getElementById('attributeValueForm').reset();
+            document.getElementById('attributeValueId').value = '';
+            document.getElementById('attributeValueCategoryId').value = categoryId;
+            document.getElementById('attributeValueDisplayOrder').value = '0';
+            
+            document.getElementById('attributeValueModal').classList.add('active');
+        };
+        
+        // Editovat hodnotu
+        window.editAttributeValue = async function(valueId, categoryId) {
+            try {
+                // Najít hodnotu v načtených kategoriích
+                const response = await fetch(`${API_BASE}/attributes/categories`);
+                const data = await response.json();
+                
+                if (!data.success) {
+                    showMessage('Chyba při načítání hodnoty', 'error');
+                    return;
+                }
+                
+                let value = null;
+                for (const category of data.categories) {
+                    if (category.id === categoryId) {
+                        value = category.values.find(v => v.id === valueId);
+                        break;
+                    }
+                }
+                
+                if (!value) {
+                    showMessage('Hodnota nenalezena', 'error');
+                    return;
+                }
+                
+                currentCategoryId = categoryId;
+                editingValueId = valueId;
+                
+                document.getElementById('attributeValueModalTitle').textContent = 'Upravit hodnotu';
+                document.getElementById('attributeValueId').value = value.id;
+                document.getElementById('attributeValueCategoryId').value = categoryId;
+                document.getElementById('attributeValueValue').value = value.value;
+                document.getElementById('attributeValueDisplayName').value = value.display_name;
+                document.getElementById('attributeValueDescription').value = value.description || '';
+                document.getElementById('attributeValueDisplayOrder').value = value.display_order || 0;
+                
+                document.getElementById('attributeValueModal').classList.add('active');
+            } catch (error) {
+                console.error('Chyba:', error);
+                showMessage('Chyba při načítání hodnoty', 'error');
+            }
+        };
+        
+        // Smazat hodnotu
+        window.deleteAttributeValue = async function(valueId) {
+            if (!confirm('Opravdu chcete smazat tuto hodnotu?')) return;
+            
+            try {
+                const response = await fetch(`${API_BASE}/attributes/values/${valueId}`, {
+                    method: 'DELETE'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage('Hodnota úspěšně smazána', 'success');
+                    loadAttributeCategories();
+                } else {
+                    showMessage(data.error || 'Chyba při mazání hodnoty', 'error');
+                }
+            } catch (error) {
+                console.error('Chyba:', error);
+                showMessage('Chyba připojení k serveru', 'error');
+            }
+        };
+        
+        // Uložit hodnotu (přidat/editovat)
+        document.getElementById('attributeValueForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const form = e.target;
+            const valueId = document.getElementById('attributeValueId').value;
+            const categoryId = document.getElementById('attributeValueCategoryId').value;
+            
+            const formData = {
+                category_id: parseInt(categoryId),
+                value: form.value.value,
+                display_name: form.display_name.value,
+                description: form.description.value || null,
+                display_order: parseInt(form.display_order.value) || 0
+            };
+            
+            try {
+                let response;
+                if (valueId) {
+                    // Editace
+                    response = await fetch(`${API_BASE}/attributes/values/${valueId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
+                } else {
+                    // Přidání
+                    response = await fetch(`${API_BASE}/attributes/values`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage(valueId ? 'Hodnota úspěšně aktualizována' : 'Hodnota úspěšně přidána', 'success');
+                    closeAttributeValueModal();
+                    loadAttributeCategories();
+                } else {
+                    showMessage(data.error || 'Chyba při ukládání hodnoty', 'error');
+                }
+            } catch (error) {
+                console.error('Chyba:', error);
+                showMessage('Chyba připojení k serveru', 'error');
+            }
+        });
+        
+        // Zavřít modal
+        function closeAttributeValueModal() {
+            document.getElementById('attributeValueModal').classList.remove('active');
+            editingValueId = null;
+            currentCategoryId = null;
+        }
+        
+        document.getElementById('attributeValueModalClose')?.addEventListener('click', closeAttributeValueModal);
+        document.getElementById('attributeValueModalCancel')?.addEventListener('click', closeAttributeValueModal);
+        
+        // Escape pro zavření modalu
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeAttributeValueModal();
+            }
+        });
+        
+        // Zobrazit zprávu
+        function showMessage(text, type = 'success') {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = text;
+            messageEl.className = `message message-${type}`;
+            messageEl.style.display = 'block';
+            
+            setTimeout(() => {
+                messageEl.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Načíst kategorie při načtení stránky
+        loadAttributeCategories();
+    </script>
+</body>
+</html>
+

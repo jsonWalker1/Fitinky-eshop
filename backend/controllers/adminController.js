@@ -351,6 +351,25 @@ export const getAdminCategories = (req, res) => {
 };
 
 /**
+ * Načte admin attributes stránku
+ */
+export const getAdminAttributes = (req, res) => {
+    try {
+        const attributesPath = path.join(paths.root, 'backend', 'views', 'admin-attributes.html');
+        if (fs.existsSync(attributesPath)) {
+            const attributesContent = fs.readFileSync(attributesPath, 'utf8');
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
+            res.send(attributesContent);
+        } else {
+            res.status(404).send('Admin attributes stránka nenalezena');
+        }
+    } catch (error) {
+        console.error('Chyba při načítání admin attributes:', error);
+        res.status(500).send('Chyba při načítání stránky');
+    }
+};
+
+/**
  * Získá všechny kategorie (pro admin API)
  * GET /admin/api/categories?search=query
  */

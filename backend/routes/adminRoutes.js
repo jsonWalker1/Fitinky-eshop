@@ -33,6 +33,13 @@ import {
     updateProductImageOrderAPI
 } from '../controllers/adminController.js';
 import { globalSearch } from '../controllers/globalSearchController.js';
+import {
+    getAttributeCategories,
+    getAttributeValues,
+    addAttributeValue,
+    updateAttributeValue,
+    deleteAttributeValue
+} from '../controllers/attributeController.js';
 import { uploadImage, upload } from '../controllers/uploadController.js';
 
 const router = express.Router();
@@ -45,6 +52,7 @@ router.get('/admin/products', getAdminProducts);
 router.get('/admin/categories', getAdminCategories);
 router.get('/admin/users', getAdminUsers);
 router.get('/admin/orders', getAdminOrders);
+router.get('/admin/attributes', getAdminAttributes);
 
 // Admin API - Dashboard
 router.get('/admin/api/dashboard', getDashboardStats);
