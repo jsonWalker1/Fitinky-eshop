@@ -26,6 +26,7 @@
     "db:add-fitinky": "node backend/db/add-fitinky.js",
     "db:add-attributes-table": "node backend/db/add-product-attributes-table.js",
     "db:add-attribute-categories": "node backend/db/add-attribute-categories-table.js",
+    "db:check-attributes": "node backend/db/check-attribute-values.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
