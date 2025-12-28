@@ -529,3 +529,136 @@ export const getAdminCategory = async (req, res) => {
     }
 };
 
+/**
+ * Získá obrázky produktu
+ * GET /admin/api/products/:productId/images
+ */
+export const getProductImagesAPI = async (req, res) => {
+    try {
+        const { productId } = req.params;
+        const images = await productsService.getProductImages(productId);
+        
+        res.json({
+            success: true,
+            images: images.map(img => ({
+                id: img.id,
+                url: img.image_url,
+                displayOrder: img.display_order
+            }))
+        });
+    } catch (error) {
+        console.error('Chyba při načítání obrázků:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Chyba při načítání obrázků'
+        });
+    }
+};
+
+/**
+ * Přidá obrázek do galerie produktu
+ * POST /admin/api/products/:productId/images
+ */
+export const addProductImageAPI = async (req, res) => {
+    try {
+        const { productId } = req.params;
+        const { imageUrl, displayOrder } = req.body;
+        
+        if (!imageUrl) {
+            return res.status(400).json({
+                success: false,
+                error: 'URL obrázku je povinné'
+            });
+        }
+        
+        const image = await productsService.addProductImage(productId, imageUrl, displayOrder);
+        
+        res.json({
+            success: true,
+            image: {
+                id: image.id,
+                url: image.image_url,
+                displayOrder: image.display_order
+            }
+        });
+    } catch (error) {
+        console.error('Chyba při přidávání obrázku:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Chyba při přidávání obrázku'
+        });
+    }
+};
+
+/**
+ * Smaže obrázek z galerie produktu
+ * DELETE /admin/api/products/:productId/images/:imageId
+ */
+export const deleteProductImageAPI = async (req, res) => {
+    try {
+        const { imageId } = req.params;
+        
+        const deleted = await productsService.deleteProductImage(imageId);
+        
+        if (!deleted) {
+            return res.status(404).json({
+                success: false,
+                error: 'Obrázek nenalezen'
+            });
+        }
+        
+        res.json({
+            success: true,
+            message: 'Obrázek úspěšně smazán'
+        });
+    } catch (error) {
+        console.error('Chyba při mazání obrázku:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Chyba při mazání obrázku'
+        });
+    }
+};
+
+/**
+ * Aktualizuje pořadí obrázku
+ * PUT /admin/api/products/:productId/images/:imageId/order
+ */
+export const updateProductImageOrderAPI = async (req, res) => {
+    try {
+        const { imageId } = req.params;
+        const { displayOrder } = req.body;
+        
+        if (displayOrder === undefined || displayOrder === null) {
+            return res.status(400).json({
+                success: false,
+                error: 'displayOrder je povinné'
+            });
+        }
+        
+        const image = await productsService.updateProductImageOrder(imageId, displayOrder);
+        
+        if (!image) {
+            return res.status(404).json({
+                success: false,
+                error: 'Obrázek nenalezen'
+            });
+        }
+        
+        res.json({
+            success: true,
+            image: {
+                id: image.id,
+                url: image.image_url,
+                displayOrder: image.display_order
+            }
+        });
+    } catch (error) {
+        console.error('Chyba při aktualizaci pořadí obrázku:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Chyba při aktualizaci pořadí obrázku'
+        });
+    }
+};
+

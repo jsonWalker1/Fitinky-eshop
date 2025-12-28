@@ -26,7 +26,11 @@ import {
     createCategory,
     updateAdminCategory,
     deleteAdminCategory,
-    getAdminCategory
+    getAdminCategory,
+    getProductImagesAPI,
+    addProductImageAPI,
+    deleteProductImageAPI,
+    updateProductImageOrderAPI
 } from '../controllers/adminController.js';
 import { globalSearch } from '../controllers/globalSearchController.js';
 import { uploadImage, upload } from '../controllers/uploadController.js';
@@ -63,6 +67,12 @@ router.get('/admin/api/products', getProducts);
 router.post('/admin/api/products', addProduct);
 router.put('/admin/api/products/:id', updateProduct);
 router.delete('/admin/api/products/:id', deleteProduct);
+
+// Admin API - Product Images
+router.get('/admin/api/products/:productId/images', getProductImagesAPI);
+router.post('/admin/api/products/:productId/images', addProductImageAPI);
+router.delete('/admin/api/products/:productId/images/:imageId', deleteProductImageAPI);
+router.put('/admin/api/products/:productId/images/:imageId/order', updateProductImageOrderAPI);
 
 export default router;
 
