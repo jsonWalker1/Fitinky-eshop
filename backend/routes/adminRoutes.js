@@ -17,6 +17,7 @@ import {
     getAdminUsers,
     getAdminOrders,
     getAdminCategories,
+    getAdminAttributes,
     getProducts,
     addProduct,
     updateProduct,
