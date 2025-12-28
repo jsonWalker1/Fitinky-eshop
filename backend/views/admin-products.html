@@ -623,18 +623,17 @@
         // Display product gallery
         function displayProductGallery() {
             const galleryContainer = document.getElementById('productGalleryPreview');
-            const galleryEmpty = document.getElementById('galleryEmpty');
+            if (!galleryContainer) return;
             
             if (currentProductGallery.length === 0) {
-                if (galleryEmpty) galleryEmpty.style.display = 'block';
-                if (galleryContainer) {
-                    galleryContainer.innerHTML = '';
-                    galleryContainer.appendChild(galleryEmpty);
-                }
+                galleryContainer.innerHTML = `
+                    <div class="gallery-empty" id="galleryEmpty">
+                        <span class="material-symbols-outlined">image</span>
+                        <p>Žádné obrázky v galerii</p>
+                    </div>
+                `;
                 return;
             }
-            
-            if (galleryEmpty) galleryEmpty.style.display = 'none';
             
             galleryContainer.innerHTML = currentProductGallery.map((img, index) => `
                 <div class="gallery-item" data-image-id="${img.id || 'temp-' + index}">
