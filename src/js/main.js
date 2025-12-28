@@ -43,17 +43,10 @@ function updateAuthUI() {
     const cartIcon = document.getElementById('cartIcon');
     const ordersMenuItem = document.getElementById('ordersMenuItem');
     
-    // Pokud je uživatel autorizován (přihlášen)
     if (isAuthenticated()) {
-        // Skrýt tlačítko "Přihlásit se"
-        if (loginButton) {
-            loginButton.classList.remove('visible');
-        }
-        // Zobrazit tlačítko "Odhlásit se"
-        if (logoutButton) {
-            logoutButton.classList.add('visible');
-        }
-        // Zobrazit uživatelské jméno
+        // Zobrazit odhlášení a jméno
+        if (loginButton) loginButton.style.display = 'none';
+        if (logoutButton) logoutButton.style.display = 'block';
         if (userName) {
             // Zkusit získat jméno z userData nebo userName
             let name = 'Uživatel';
@@ -85,29 +78,20 @@ function updateAuthUI() {
                 }
             }
             
-            userName.innerHTML = `<a href="/orders">${name}</a>`;
-            userName.classList.add('visible');
+            userName.innerHTML = `<a href="/orders" style="color: inherit; text-decoration: none;">${name}</a>`;
+            userName.style.display = 'inline-block';
         }
         // Zobrazit odkaz na objednávky v menu
-        if (ordersMenuItem) ordersMenuItem.classList.add('visible');
+        if (ordersMenuItem) ordersMenuItem.style.display = 'list-item';
         // Košík je vždy viditelný
         if (cartIcon) cartIcon.style.pointerEvents = 'auto';
     } else {
-        // Pokud uživatel NENÍ autorizován (není přihlášen)
-        // Zobrazit tlačítko "Přihlásit se"
-        if (loginButton) {
-            loginButton.classList.add('visible');
-        }
-        // Skrýt tlačítko "Odhlásit se"
-        if (logoutButton) {
-            logoutButton.classList.remove('visible');
-        }
-        // Skrýt uživatelské jméno
-        if (userName) {
-            userName.classList.remove('visible');
-        }
+        // Zobrazit přihlášení
+        if (loginButton) loginButton.style.display = 'block';
+        if (logoutButton) logoutButton.style.display = 'none';
+        if (userName) userName.style.display = 'none';
         // Skrýt odkaz na objednávky v menu
-        if (ordersMenuItem) ordersMenuItem.classList.remove('visible');
+        if (ordersMenuItem) ordersMenuItem.style.display = 'none';
         // Košík je viditelný, ale při kliknutí přesměruje na login
         if (cartIcon) {
             cartIcon.addEventListener('click', (e) => {
