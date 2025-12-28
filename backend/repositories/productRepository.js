@@ -426,9 +426,15 @@ export const addProduct = async (productData) => {
 
         const product = mapProductToJSON(result.rows[0]);
         
-        // Uložit atributy pokud jsou poskytnuty
-        if (productData.attributes && typeof productData.attributes === 'object') {
+        // Uložit atributy pokud jsou poskytnuty (a nejsou prázdné)
+        if (productData.attributes && 
+            typeof productData.attributes === 'object' && 
+            Object.keys(productData.attributes).length > 0) {
             await setProductAttributes(id, productData.attributes);
+            const attributes = await getProductAttributes(id);
+            product.attributes = attributes;
+        } else {
+            // Načíst existující atributy (nebo prázdný objekt pokud nejsou)
             const attributes = await getProductAttributes(id);
             product.attributes = attributes;
         }
@@ -511,13 +517,16 @@ export const updateProduct = async (id, productData) => {
         
         const product = mapProductToJSON(result.rows[0]);
         
-        // Aktualizovat atributy pokud jsou poskytnuty
-        if (productData.attributes !== undefined) {
+        // Aktualizovat atributy pokud jsou poskytnuty (a nejsou prázdné)
+        if (productData.attributes !== undefined && 
+            productData.attributes !== null &&
+            typeof productData.attributes === 'object' && 
+            Object.keys(productData.attributes).length > 0) {
             await setProductAttributes(id, productData.attributes);
             const attributes = await getProductAttributes(id);
             product.attributes = attributes;
         } else {
-            // Načíst existující atributy
+            // Načíst existující atributy (nebo prázdný objekt pokud nejsou)
             const attributes = await getProductAttributes(id);
             product.attributes = attributes;
         }

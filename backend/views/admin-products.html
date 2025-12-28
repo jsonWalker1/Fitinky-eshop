@@ -963,22 +963,27 @@
                 price: parseFloat(form.price.value),
                 image: form.image?.value || null, // Volitelné pole image
                 description: form.description.value,
-                availabilityStatus: form.availabilityStatus.value,
-                attributes: {}
+                availabilityStatus: form.availabilityStatus.value
             };
             
-            // Sbírat atributy
+            // Sbírat atributy - pouze pokud mají hodnotu
+            const attributes = {};
             if (form.attributeDiameter?.value) {
-                formData.attributes.diameter = { value: form.attributeDiameter.value, type: 'text' };
+                attributes.diameter = { value: form.attributeDiameter.value, type: 'text' };
             }
             if (form.attributeConnectionType?.value) {
-                formData.attributes.connection_type = { value: form.attributeConnectionType.value, type: 'text' };
+                attributes.connection_type = { value: form.attributeConnectionType.value, type: 'text' };
             }
             if (form.attributeShape?.value) {
-                formData.attributes.shape = { value: form.attributeShape.value, type: 'text' };
+                attributes.shape = { value: form.attributeShape.value, type: 'text' };
             }
             if (form.attributeMaterial?.value) {
-                formData.attributes.material = { value: form.attributeMaterial.value, type: 'text' };
+                attributes.material = { value: form.attributeMaterial.value, type: 'text' };
+            }
+            
+            // Přidat atributy pouze pokud jsou nějaké vyplněné
+            if (Object.keys(attributes).length > 0) {
+                formData.attributes = attributes;
             }
             
             try {
@@ -1128,22 +1133,27 @@
                 price: parseFloat(form.price.value),
                 image: currentProductGallery.length > 0 ? currentProductGallery[0].url : null, // Pro zpětnou kompatibilitu
                 description: form.description.value,
-                availabilityStatus: form.availabilityStatus.value,
-                attributes: {}
+                availabilityStatus: form.availabilityStatus.value
             };
             
-            // Sbírat atributy
+            // Sbírat atributy - pouze pokud mají hodnotu
+            const attributes = {};
             if (form.attributeDiameter?.value) {
-                formData.attributes.diameter = { value: form.attributeDiameter.value, type: 'text' };
+                attributes.diameter = { value: form.attributeDiameter.value, type: 'text' };
             }
             if (form.attributeConnectionType?.value) {
-                formData.attributes.connection_type = { value: form.attributeConnectionType.value, type: 'text' };
+                attributes.connection_type = { value: form.attributeConnectionType.value, type: 'text' };
             }
             if (form.attributeShape?.value) {
-                formData.attributes.shape = { value: form.attributeShape.value, type: 'text' };
+                attributes.shape = { value: form.attributeShape.value, type: 'text' };
             }
             if (form.attributeMaterial?.value) {
-                formData.attributes.material = { value: form.attributeMaterial.value, type: 'text' };
+                attributes.material = { value: form.attributeMaterial.value, type: 'text' };
+            }
+            
+            // Přidat atributy pouze pokud jsou nějaké vyplněné
+            if (Object.keys(attributes).length > 0) {
+                formData.attributes = attributes;
             }
             
             try {
