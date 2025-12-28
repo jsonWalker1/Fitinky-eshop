@@ -1059,6 +1059,13 @@
             displayProductGallery();
             document.querySelector('input[name="imageSource"][value="url"]').checked = true;
             toggleImageSource();
+            
+            // Vyčistit atributy
+            document.getElementById('attributeDiameter').value = '';
+            document.getElementById('attributeConnectionType').value = '';
+            document.getElementById('attributeShape').value = '';
+            document.getElementById('attributeMaterial').value = '';
+            
             document.getElementById('productModal').classList.add('active');
         }
         
