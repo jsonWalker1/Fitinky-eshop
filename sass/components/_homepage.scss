@@ -1,0 +1,253 @@
+// ============================================
+// HOMEPAGE COMPONENT
+// ============================================
+// Moderní design pro eshop s technickými produkty a fitinkami
+// Layout: Kategorie vlevo (sidebar), produkty vpravo (grid)
+//
+// HTML struktura:
+//   <main class="homepage-main">
+//     <aside class="categories-sidebar">...</aside>
+//     <section class="homepage-content">...</section>
+//   </main>
+//
+// ============================================
+
+@use '../mixins' as *;
+@use '../variables' as *;
+
+// Hlavní container
+.homepage-main {
+    display: flex;
+    min-height: calc(100vh - 200px);
+    background-color: #f8f9fa;
+    
+    @media (max-width: 1024px) {
+        flex-direction: column;
+    }
+}
+
+// Sidebar s kategoriemi (280px fixní šířka)
+.categories-sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    padding: 2rem 0;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    
+    @media (max-width: 1024px) {
+        width: 100%;
+        min-width: 100%;
+        padding: 1.5rem 0;
+    }
+    
+    .sidebar-header {
+        padding: 0 1.5rem 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        
+        h2 {
+            @include text-heading(1.5rem, 600, #fff, 0);
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+    }
+    
+    .categories-nav {
+        padding: 1rem 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        
+        .loading-text,
+        .error-text {
+            padding: 1rem 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        .category-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+            
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                border-left-color: #3b82f6;
+                color: #fff;
+                
+                .category-count {
+                    opacity: 1;
+                }
+            }
+            
+            .category-name {
+                font-weight: 500;
+                font-size: 0.95rem;
+            }
+            
+            .category-count {
+                font-size: 0.8rem;
+                color: rgba(255, 255, 255, 0.6);
+                opacity: 0.8;
+                transition: opacity 0.2s ease;
+            }
+        }
+    }
+}
+
+// Hlavní obsahová oblast
+.homepage-content {
+    flex: 1;
+    padding: 3rem 2.5rem;
+    background-color: #fff;
+    
+    @media (max-width: 1024px) {
+        padding: 2rem 1.5rem;
+    }
+    
+    @media (max-width: 768px) {
+        padding: 1.5rem 1rem;
+    }
+    
+    .content-header {
+        margin-bottom: 2.5rem;
+        
+        @media (max-width: 768px) {
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            @include text-heading(2.5rem, 700, #1e293b, 0.5rem);
+            margin-bottom: 0.5rem;
+            
+            @media (max-width: 768px) {
+                @include text-heading(2rem, 700, #1e293b, 0.5rem);
+            }
+        }
+        
+        .page-subtitle {
+            @include text-body(1.1rem, #64748b, 1.6, 0);
+            font-weight: 400;
+        }
+    }
+    
+    .products-section {
+        .loading-text,
+        .error-text {
+            text-align: center;
+            padding: 3rem;
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            
+            @media (max-width: 768px) {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            @media (max-width: 480px) {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+        
+        .product-card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+            
+            &:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+                border-color: #3b82f6;
+            }
+            
+            .product-link {
+                display: block;
+                text-decoration: none;
+                color: inherit;
+            }
+            
+            .product-image-wrapper {
+                position: relative;
+                width: 100%;
+                padding-top: 75%; // 4:3 poměr
+                background-color: #f1f5f9;
+                overflow: hidden;
+                
+                .product-image {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    transition: transform 0.3s ease;
+                }
+                
+                &:hover .product-image {
+                    transform: scale(1.05);
+                }
+                
+                .product-status {
+                    position: absolute;
+                    top: 0.75rem;
+                    right: 0.75rem;
+                    padding: 0.4rem 0.8rem;
+                    border-radius: 6px;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                    
+                    &.in-stock {
+                        background-color: #10b981;
+                        color: #fff;
+                    }
+                    
+                    &.on-order {
+                        background-color: #f59e0b;
+                        color: #fff;
+                    }
+                    
+                    &.out-of-stock {
+                        background-color: #ef4444;
+                        color: #fff;
+                    }
+                }
+            }
+            
+            .product-info {
+                padding: 1.25rem;
+                
+                .product-name {
+                    @include text-heading(1.1rem, 600, #1e293b, 0.5rem);
+                    margin-bottom: 0.75rem;
+                    line-height: 1.4;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
+                
+                .product-price {
+                    @include text-heading(1.5rem, 700, #3b82f6, 0);
+                    font-size: 1.5rem;
+                }
+            }
+        }
+    }
+}
