@@ -106,9 +106,14 @@ function displayProducts(products) {
         
         // Zpracování obrázků produktu
         let productImages = [];
-        if (product.images && product.images.length > 0) {
+        if (product.images && Array.isArray(product.images) && product.images.length > 0) {
             // Pokud má pole images (z galerie), použij to
-            productImages = product.images.map(img => typeof img === 'string' ? img : img.url);
+            productImages = product.images.map(img => {
+                if (typeof img === 'string') return img;
+                if (typeof img === 'object' && img.url) return img.url;
+                if (typeof img === 'object' && img.image_url) return img.image_url;
+                return null;
+            }).filter(Boolean);
         } else if (product.image) {
             // Pokud má starý formát image, použij to
             productImages = [product.image];
