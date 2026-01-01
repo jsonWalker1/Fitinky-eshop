@@ -1,6 +1,12 @@
 # Eshop Admin GUI
 
-Projekt pro administraci eshopu s HTML, Sass a JavaScript.
+Full-stack e-commerce platform s admin panelem. Postaveno na Node.js, Express.js, PostgreSQL a moderním frontendu.
+
+## 📚 Dokumentace pro prezentaci
+
+- **[PROJECT_SPECIFICATION.md](./PROJECT_SPECIFICATION.md)** - Detailní technická specifikace projektu
+- **[PROJECT_SUMMARY.md](./PROJECT_SUMMARY.md)** - Rychlý přehled projektu
+- **[INTERVIEW_GUIDE.md](./INTERVIEW_GUIDE.md)** - Průvodce pro prezentaci na pohovoru
 
 ## 📋 Obsah
 

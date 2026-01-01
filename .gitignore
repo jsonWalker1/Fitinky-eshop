@@ -9,3 +9,6 @@ dist/
 railway-multi-service.json
 *.css.map
 vzor-GUI/
+
+# Dokumentace a analýzy
+docs/
