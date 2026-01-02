@@ -166,9 +166,10 @@ header {
         position: relative;
         display: flex;
         align-items: center;
+        width: 250px;
         
         .search-input {
-            width: 250px;
+            width: 100%;
             padding: $spacing-sm $spacing-md;
             padding-right: 45px;
             border: $border-width solid $color-border-light;
@@ -197,6 +198,7 @@ header {
             @include flex-center;
             color: $color-text-secondary;
             @include transition-base;
+            z-index: 10;
             
             &:hover {
                 color: $color-primary;
@@ -209,18 +211,18 @@ header {
         
         .search-results {
             position: absolute;
-            top: 100%;
+            top: calc(100% + #{$spacing-xs});
             left: 0;
             right: 0;
-            margin-top: $spacing-xs;
             background: $color-bg-white;
             border: $border-width solid $color-border-light;
             border-radius: $border-radius-md;
             box-shadow: $shadow-lg;
             max-height: 400px;
             overflow-y: auto;
-            z-index: 1000;
+            z-index: 1001;
             display: none;
+            min-width: 100%;
             
             &.show {
                 display: block;
@@ -233,6 +235,8 @@ header {
                 cursor: pointer;
                 @include transition-base;
                 border-bottom: $border-width solid $color-border-light;
+                width: 100%;
+                box-sizing: border-box;
                 
                 &:last-child {
                     border-bottom: none;
@@ -245,14 +249,17 @@ header {
                 img {
                     width: 50px;
                     height: 50px;
+                    min-width: 50px;
                     object-fit: cover;
                     border-radius: $border-radius-sm;
                     margin-right: $spacing-md;
+                    flex-shrink: 0;
                 }
                 
                 .result-info {
                     flex: 1;
-                    min-width: 0; // Aby se text správně zalamoval
+                    min-width: 0;
+                    overflow: hidden;
                     
                     .result-name {
                         @include text-body($font-size-base, $color-text-primary, $font-weight-semibold);
@@ -260,10 +267,12 @@ header {
                         overflow: hidden;
                         text-overflow: ellipsis;
                         white-space: nowrap;
+                        display: block;
                     }
                     
                     .result-price {
                         @include text-body($font-size-sm, $color-primary, $font-weight-semibold);
+                        display: block;
                     }
                 }
             }

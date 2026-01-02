@@ -38,7 +38,8 @@ export function initSearch() {
     
     // Zavřít výsledky při kliknutí mimo
     document.addEventListener('click', (e) => {
-        if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+        const searchWrapper = searchInput.closest('.search-wrapper');
+        if (searchWrapper && !searchWrapper.contains(e.target)) {
             searchResults.classList.remove('show');
         }
     });
@@ -75,7 +76,9 @@ export async function performSearch(query = null, showDropdown = false) {
         const response = await fetch(`${API_BASE}/products?search=${encodeURIComponent(searchQuery)}`);
         const data = await response.json();
         
-        if (data.success && data.products) {
+        console.log('Search results:', data); // Debug
+        
+        if (data.success && data.products && Array.isArray(data.products)) {
             displaySearchResults(data.products, showDropdown);
         } else {
             showNoResults(showDropdown);
@@ -93,15 +96,20 @@ export async function performSearch(query = null, showDropdown = false) {
  */
 function displaySearchResults(products, showDropdown) {
     const searchResults = document.getElementById('searchResults');
-    if (!searchResults) return;
+    if (!searchResults) {
+        console.error('searchResults element not found');
+        return;
+    }
     
-    if (products.length === 0) {
+    if (!Array.isArray(products) || products.length === 0) {
         showNoResults(showDropdown);
         return;
     }
     
     // Zobrazit pouze prvních 5 výsledků v dropdownu
     const displayProducts = showDropdown ? products.slice(0, 5) : products;
+    
+    console.log('Displaying products:', displayProducts); // Debug
     
     searchResults.innerHTML = displayProducts.map(product => {
         // Zpracování obrázků - stejně jako v products.js
@@ -175,9 +183,14 @@ window.performSearch = function() {
 
 // Inicializace při načtení
 if (typeof document !== 'undefined') {
-    document.addEventListener('DOMContentLoaded', () => {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            initSearch();
+        });
+    } else {
+        // DOM už je načtený
         initSearch();
-    });
+    }
 }
 
 

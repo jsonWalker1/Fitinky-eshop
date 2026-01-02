@@ -277,9 +277,10 @@ header {
   position: relative;
   display: flex;
   align-items: center;
+  width: 250px;
 }
 .right-menu .search-wrapper .search-input {
-  width: 250px;
+  width: 100%;
   padding: 0.5rem 1rem;
   padding-right: 45px;
   border: 1px solid #e2e8f0;
@@ -310,6 +311,7 @@ header {
   align-items: center;
   color: #718096;
   transition: all 0.3s ease;
+  z-index: 10;
 }
 .right-menu .search-wrapper .search-button:hover {
   color: #3182ce;
@@ -319,18 +321,18 @@ header {
 }
 .right-menu .search-wrapper .search-results {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 0.25rem);
   left: 0;
   right: 0;
-  margin-top: 0.25rem;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 6px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   max-height: 400px;
   overflow-y: auto;
-  z-index: 1000;
+  z-index: 1001;
   display: none;
+  min-width: 100%;
 }
 .right-menu .search-wrapper .search-results.show {
   display: block;
@@ -342,6 +344,8 @@ header {
   cursor: pointer;
   transition: all 0.3s ease;
   border-bottom: 1px solid #e2e8f0;
+  width: 100%;
+  box-sizing: border-box;
 }
 .right-menu .search-wrapper .search-results .search-result-item:last-child {
   border-bottom: none;
@@ -352,13 +356,16 @@ header {
 .right-menu .search-wrapper .search-results .search-result-item img {
   width: 50px;
   height: 50px;
+  min-width: 50px;
   object-fit: cover;
   border-radius: 4px;
   margin-right: 1rem;
+  flex-shrink: 0;
 }
 .right-menu .search-wrapper .search-results .search-result-item .result-info {
   flex: 1;
   min-width: 0;
+  overflow: hidden;
 }
 .right-menu .search-wrapper .search-results .search-result-item .result-info .result-name {
   font-size: 1rem;
@@ -369,12 +376,14 @@ header {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  display: block;
 }
 .right-menu .search-wrapper .search-results .search-result-item .result-info .result-price {
   font-size: 0.85rem;
   color: #3182ce;
   line-height: 600;
   margin-bottom: 0;
+  display: block;
 }
 .right-menu .search-wrapper .search-results .search-no-results {
   padding: 1.5rem;
