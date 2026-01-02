@@ -1,12 +1,12 @@
 # Eshop Admin GUI
 
-Full-stack e-commerce platform s admin panelem. Postaveno na Node.js, Express.js, PostgreSQL a moderním frontendu.
+Full-stack e-commerce platform s admin panelem. Experimentální projekt vytvořený ve spolupráci s AI pro učení a zkoušení moderních webových technologií.
 
-## 📚 Dokumentace pro prezentaci
+## 📖 O projektu
 
-- **[PROJECT_SPECIFICATION.md](./PROJECT_SPECIFICATION.md)** - Detailní technická specifikace projektu
-- **[PROJECT_SUMMARY.md](./PROJECT_SUMMARY.md)** - Rychlý přehled projektu
-- **[INTERVIEW_GUIDE.md](./INTERVIEW_GUIDE.md)** - Průvodce pro prezentaci na pohovoru
+Tento projekt vznikl jako experimentální zkouška programování s AI asistencí. Cílem bylo vytvořit funkční e-commerce platformu s kompletním admin panelem a naučit se moderní webové technologie a best practices.
+
+Projekt zahrnuje jak zákaznickou část (storefront), tak komplexní admin rozhraní pro správu produktů, objednávek a uživatelů.
 
 ## 📋 Obsah
 
@@ -20,37 +20,62 @@ Full-stack e-commerce platform s admin panelem. Postaveno na Node.js, Express.js
 
 ## 🛠 Technologie
 
-- **HTML** - struktura stránky
-- **Sass** - preprocesor CSS
-- **JavaScript** - funkcionalita
-- **Vite** - dev server s live reloading
+### Frontend
+- **HTML5** - semantická struktura stránky
+- **SASS/SCSS** - CSS preprocesor s modulární architekturou
+- **JavaScript (ES6+)** - moderní JavaScript s moduly
+- **Vite** - dev server s hot module replacement
+
+### Backend
 - **Node.js** - runtime prostředí
+- **Express.js** - web framework
+- **PostgreSQL** - relační databáze
+- **Prisma** - ORM pro type-safe databázový přístup
+
+### Deployment
+- **Railway** - cloud hosting platforma
 
 ## 📁 Struktura projektu
 
 ```
 eshopAdminGUI/
-├── assets/              # Statické soubory (obrázky, videa)
-│   └── pic/            # Obrázky a videa
-├── sass/               # Sass soubory
-│   ├── _variables.scss # Proměnné (barvy, spacing, atd.)
-│   ├── _mixins.scss    # Mixiny pro tlačítka, text, atd.
-│   ├── _base.scss      # Základní reset a globální styly
-│   ├── _layout.scss    # Layout styly (mainContainer, atd.)
-│   ├── main.scss       # Hlavní import soubor
-│   ├── main.css        # Zkompilovaný CSS (generovaný)
-│   └── components/     # Komponenty
-│       ├── _header.scss
-│       ├── _footer.scss
-│       ├── _landingPage.scss
-│       └── _mainCon.scss
-├── src/
-│   └── js/
-│       └── main.js     # Hlavní JavaScript soubor
-├── index.html          # Hlavní HTML soubor
-├── package.json        # NPM konfigurace
-└── README.md           # Tato dokumentace
+├── backend/            # Backend aplikace
+│   ├── controllers/   # HTTP request handlers
+│   ├── services/      # Business logika
+│   ├── repositories/  # Data access layer
+│   ├── routes/        # API routy
+│   ├── middleware/    # Express middleware
+│   ├── db/            # Database migrace a utilities
+│   └── views/         # Admin HTML šablony
+├── src/js/            # Frontend JavaScript moduly
+├── sass/              # SASS/SCSS soubory
+│   ├── _variables.scss # Design tokens
+│   ├── _mixins.scss   # Reusable mixiny
+│   ├── _base.scss     # Reset a base styles
+│   ├── _layout.scss   # Layout komponenty
+│   └── components/    # Component styles
+├── assets/            # Statické soubory
+├── *.html             # Frontend stránky
+└── package.json       # NPM konfigurace
 ```
+
+## 🎯 Hlavní funkce
+
+### Zákaznická část
+- Procházení produktů a kategorií
+- Nákupní košík
+- Proces objednávky (checkout)
+- Historie objednávek
+- Uživatelská autentizace
+
+### Admin panel
+- Dashboard se statistikami
+- Správa produktů (CRUD operace)
+- Správa kategorií
+- Správa objednávek
+- Správa uživatelů
+- Správa produktových atributů
+- Globální vyhledávání
 
 ## 🚀 Instalace a spuštění
 
@@ -60,13 +85,27 @@ eshopAdminGUI/
 npm install
 ```
 
-### Spuštění dev serveru
+### Spuštění backend serveru
 
 ```bash
-npm run dev
+npm run server
 ```
 
-Dev server běží na **http://localhost:5173** (nebo jiný port, pokud je 5173 obsazený).
+Backend server běží na **http://localhost:3001**
+
+### Spuštění admin serveru
+
+```bash
+npm run server:admin
+```
+
+Admin server běží na **http://localhost:3002**
+
+### Spuštění obou serverů najednou
+
+```bash
+npm run server:all
+```
 
 ### Kompilace Sass
 
@@ -352,6 +391,24 @@ Styly pro hlavní kontejner.
 - Zkontroluj, že máš `@use '../mixins' as *;` na začátku souboru
 - Zkontroluj, že mixin existuje v `_mixins.scss`
 - Zkontroluj syntaxi `@include mixin-name;`
+
+---
+
+## 💡 O projektu a AI spolupráci
+
+Tento projekt vznikl jako experimentální zkouška programování s AI asistencí. Cílem bylo:
+
+- Naučit se moderní webové technologie (Node.js, Express, PostgreSQL, Prisma)
+- Vyzkoušet clean architecture a best practices
+- Vytvořit funkční full-stack aplikaci od začátku do konce
+- Pochopit, jak AI může pomoci při vývoji a učení
+
+Projekt demonstruje:
+- **Layered architecture** - Routes → Controllers → Services → Repositories
+- **RESTful API design** - Konzistentní API endpointy
+- **Database design** - Normalizované schéma s Prisma ORM
+- **Modern frontend** - ES6 moduly, SASS architektura
+- **Production deployment** - Railway cloud hosting
 
 ---
 
