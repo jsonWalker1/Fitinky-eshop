@@ -61,7 +61,10 @@ function displayCart(cart) {
     const emptyCart = document.getElementById('emptyCart');
     const cartContent = document.getElementById('cartContent');
     
-    if (cart.items.length === 0) {
+    // Kontrola, jestli má košík položky
+    const hasItems = cart && cart.items && Array.isArray(cart.items) && cart.items.length > 0;
+    
+    if (!hasItems) {
         emptyCart.classList.add('visible');
         cartContent.classList.remove('visible');
         return;
