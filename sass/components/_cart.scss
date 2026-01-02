@@ -63,6 +63,11 @@
 .empty-cart {
     @include text-center;
     padding: $spacing-2xl $spacing-xl;
+    display: none; // Skrytý ve výchozím stavu
+    
+    &.visible {
+        display: block;
+    }
     
     p {
         @include text-body($font-size-lg, $color-text-secondary, $line-height-relaxed, $spacing-xl);
@@ -70,6 +75,14 @@
 }
 
 // Košík s produkty
+#cartContent {
+    display: none; // Skrytý ve výchozím stavu
+    
+    &.visible {
+        display: block;
+    }
+}
+
 .cart-items {
     margin-bottom: $spacing-xl;
 }

@@ -2046,12 +2046,23 @@ main {
 .empty-cart {
   text-align: center;
   padding: 3rem 2rem;
+  display: none;
+}
+.empty-cart.visible {
+  display: block;
 }
 .empty-cart p {
   font-size: 1.25rem;
   color: #718096;
   line-height: 1.6;
   margin-bottom: 2rem;
+}
+
+#cartContent {
+  display: none;
+}
+#cartContent.visible {
+  display: block;
 }
 
 .cart-items {

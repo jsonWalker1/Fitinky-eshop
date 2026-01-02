@@ -64,14 +64,26 @@ function displayCart(cart) {
     // Kontrola, jestli má košík položky
     const hasItems = cart && cart.items && Array.isArray(cart.items) && cart.items.length > 0;
     
-    if (!hasItems) {
-        emptyCart.classList.add('visible');
+    // Vždy nejdřív skrýt obě sekce
+    if (emptyCart) {
+        emptyCart.classList.remove('visible');
+    }
+    if (cartContent) {
         cartContent.classList.remove('visible');
+    }
+    
+    // Pak zobrazit správnou sekci
+    if (!hasItems) {
+        if (emptyCart) {
+            emptyCart.classList.add('visible');
+        }
         return;
     }
     
-    emptyCart.classList.remove('visible');
-    cartContent.classList.add('visible');
+    // Košík má položky - zobrazit obsah
+    if (cartContent) {
+        cartContent.classList.add('visible');
+    }
     
     // Zobrazení produktů
     const itemsContainer = document.getElementById('cartItems');
