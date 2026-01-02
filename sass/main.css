@@ -3213,6 +3213,7 @@ main {
 .calculators-page-section .steel-grades-section .steel-grades-table {
   max-width: 1000px;
   margin: 0 auto;
+  display: block;
 }
 .calculators-page-section .steel-grades-section .steel-grades-table .grade-row {
   background: #ffffff;
@@ -3221,6 +3222,9 @@ main {
   margin-bottom: 1rem;
   overflow: hidden;
   transition: all 0.3s ease;
+  display: block;
+  visibility: visible;
+  opacity: 1;
 }
 .calculators-page-section .steel-grades-section .steel-grades-table .grade-row:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

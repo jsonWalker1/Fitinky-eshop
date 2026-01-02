@@ -426,6 +426,7 @@
         .steel-grades-table {
             max-width: 1000px;
             margin: 0 auto;
+            display: block;
             
             .grade-row {
                 background: $color-bg-white;
@@ -434,6 +435,9 @@
                 margin-bottom: $spacing-md;
                 overflow: hidden;
                 @include transition-base;
+                display: block;
+                visibility: visible;
+                opacity: 1;
                 
                 &:hover {
                     box-shadow: $shadow-md;
