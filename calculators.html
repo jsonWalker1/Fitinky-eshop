@@ -103,140 +103,421 @@
   <main class="mainContainer">
     <div class="container">
       <section class="calculators-page-section">
-        <h1>Užitečné kalkulačky</h1>
-        <p class="section-intro">Pomocí našich kalkulaček si můžete snadno vypočítat hmotnosti, tlaky a další hodnoty.</p>
+        <h1>Výpočet hmotností nerezových materiálů</h1>
+        <p class="section-intro">Pomocí našich kalkulaček si můžete snadno vypočítat hmotnosti nerezových materiálů různých tvarů a jakostí.</p>
         
-        <div class="calculators-grid">
-          <!-- Výpočet hmotnosti trubky -->
-          <div class="calculator-card" id="weightPipe">
-            <div class="calculator-header" onclick="toggleCalculator('weightPipe')">
-              <span class="material-symbols-outlined">straighten</span>
-              <h2>Výpočet hmotnosti trubky</h2>
-              <span class="material-symbols-outlined expand-icon">expand_more</span>
+        <!-- Tabulka jakostí nerezových materiálů -->
+        <div class="steel-grades-section">
+          <h2>Jakosti nerezových materiálů</h2>
+          <p class="grades-intro">Kliknutím na jakost se zobrazí detailní informace o materiálu</p>
+          <div class="steel-grades-table">
+            <div class="grade-row" onclick="toggleGrade('grade304')">
+              <div class="grade-header">
+                <span class="grade-code">AISI 304 / EN 1.4301</span>
+                <span class="material-symbols-outlined expand-icon">expand_more</span>
+              </div>
+              <div class="grade-content" id="grade304">
+                <div class="grade-info">
+                  <h3>Nerezová ocel 304</h3>
+                  <div class="grade-details">
+                    <p><strong>Typ:</strong> Austenitická nerezová ocel</p>
+                    <p><strong>Hustota:</strong> 7,93 g/cm³ (7930 kg/m³)</p>
+                    <p><strong>Chemické složení:</strong> Cr 18-20%, Ni 8-10.5%, C max 0.08%</p>
+                    <p><strong>Vlastnosti:</strong> Vynikající odolnost proti korozi, dobrá svařitelnost, odolnost proti kyselinám</p>
+                    <p><strong>Použití:</strong> Potravinářský průmysl, chemický průmysl, zdravotnictví, architektura, domácí spotřebiče</p>
+                    <p><strong>Normy:</strong> ČSN 17025, EN 1.4301, DIN X5CrNi18-10, AISI 304, UNS S30400</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="calculator-body" id="weightPipeBody">
-              <div class="form-group">
-                <label for="pipeDiameter">Vnější průměr (mm)</label>
-                <input type="number" id="pipeDiameter" step="0.1" min="0" placeholder="např. 50">
+            
+            <div class="grade-row" onclick="toggleGrade('grade316')">
+              <div class="grade-header">
+                <span class="grade-code">AISI 316 / EN 1.4401</span>
+                <span class="material-symbols-outlined expand-icon">expand_more</span>
               </div>
-              <div class="form-group">
-                <label for="pipeThickness">Tloušťka stěny (mm)</label>
-                <input type="number" id="pipeThickness" step="0.1" min="0" placeholder="např. 2">
+              <div class="grade-content" id="grade316">
+                <div class="grade-info">
+                  <h3>Nerezová ocel 316</h3>
+                  <div class="grade-details">
+                    <p><strong>Typ:</strong> Austenitická nerezová ocel s molybdenem</p>
+                    <p><strong>Hustota:</strong> 8,00 g/cm³ (8000 kg/m³)</p>
+                    <p><strong>Chemické složení:</strong> Cr 16-18%, Ni 10-14%, Mo 2-3%, C max 0.08%</p>
+                    <p><strong>Vlastnosti:</strong> Vynikající odolnost proti korozi, odolnost proti chloridům, vyšší pevnost než 304</p>
+                    <p><strong>Použití:</strong> Námořní aplikace, chemický průmysl, lékařské přístroje, potravinářství, farmacie</p>
+                    <p><strong>Normy:</strong> ČSN 17026, EN 1.4401, DIN X5CrNiMo17-12-2, AISI 316, UNS S31600</p>
+                  </div>
+                </div>
               </div>
-              <div class="form-group">
-                <label for="pipeLength">Délka (m)</label>
-                <input type="number" id="pipeLength" step="0.01" min="0" placeholder="např. 1">
+            </div>
+            
+            <div class="grade-row" onclick="toggleGrade('grade430')">
+              <div class="grade-header">
+                <span class="grade-code">AISI 430 / EN 1.4016</span>
+                <span class="material-symbols-outlined expand-icon">expand_more</span>
               </div>
-              <div class="form-group">
-                <label for="pipeDensity">Hustota materiálu (kg/m³)</label>
-                <input type="number" id="pipeDensity" value="7850" step="1" min="0" placeholder="7850 (ocel)">
-                <small>Výchozí: 7850 kg/m³ (ocel)</small>
+              <div class="grade-content" id="grade430">
+                <div class="grade-info">
+                  <h3>Nerezová ocel 430</h3>
+                  <div class="grade-details">
+                    <p><strong>Typ:</strong> Feritická nerezová ocel</p>
+                    <p><strong>Hustota:</strong> 7,70 g/cm³ (7700 kg/m³)</p>
+                    <p><strong>Chemické složení:</strong> Cr 16-18%, C max 0.12%</p>
+                    <p><strong>Vlastnosti:</strong> Magnetická, dobrá odolnost proti korozi, nižší cena než austenitické oceli</p>
+                    <p><strong>Použití:</strong> Automobilový průmysl, domácí spotřebiče, dekorativní aplikace, výfukové systémy</p>
+                    <p><strong>Normy:</strong> ČSN 17040, EN 1.4016, DIN X6Cr17, AISI 430, UNS S43000</p>
+                  </div>
+                </div>
               </div>
-              <button class="btn btn-primary" onclick="calculatePipeWeight()">Vypočítat</button>
-              <div class="calculator-result" id="pipeResult"></div>
+            </div>
+            
+            <div class="grade-row" onclick="toggleGrade('grade410')">
+              <div class="grade-header">
+                <span class="grade-code">AISI 410 / EN 1.4006</span>
+                <span class="material-symbols-outlined expand-icon">expand_more</span>
+              </div>
+              <div class="grade-content" id="grade410">
+                <div class="grade-info">
+                  <h3>Nerezová ocel 410</h3>
+                  <div class="grade-details">
+                    <p><strong>Typ:</strong> Martenzitická nerezová ocel</p>
+                    <p><strong>Hustota:</strong> 7,70 g/cm³ (7700 kg/m³)</p>
+                    <p><strong>Chemické složení:</strong> Cr 11.5-13.5%, C 0.08-0.15%</p>
+                    <p><strong>Vlastnosti:</strong> Magnetická, tvrditelná, dobrá pevnost, střední odolnost proti korozi</p>
+                    <p><strong>Použití:</strong> Nástroje, ventily, čerpadla, kuchyňské nože, mechanické součásti</p>
+                    <p><strong>Normy:</strong> ČSN 17020, EN 1.4006, DIN X12Cr13, AISI 410, UNS S41000</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="grade-row" onclick="toggleGrade('grade321')">
+              <div class="grade-header">
+                <span class="grade-code">AISI 321 / EN 1.4541</span>
+                <span class="material-symbols-outlined expand-icon">expand_more</span>
+              </div>
+              <div class="grade-content" id="grade321">
+                <div class="grade-info">
+                  <h3>Nerezová ocel 321</h3>
+                  <div class="grade-details">
+                    <p><strong>Typ:</strong> Austenitická nerezová ocel s titanem</p>
+                    <p><strong>Hustota:</strong> 7,93 g/cm³ (7930 kg/m³)</p>
+                    <p><strong>Chemické složení:</strong> Cr 17-19%, Ni 9-12%, Ti 5×C min, C max 0.08%</p>
+                    <p><strong>Vlastnosti:</strong> Odolnost proti interkrystalické korozi, vhodná pro vysoké teploty</p>
+                    <p><strong>Použití:</strong> Vysokoteplotní aplikace, výfukové systémy, chemický průmysl, letectví</p>
+                    <p><strong>Normy:</strong> EN 1.4541, DIN X6CrNiTi18-10, AISI 321, UNS S32100</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-
-          <!-- Výpočet hmotnosti plechu -->
-          <div class="calculator-card" id="weightSheet">
-            <div class="calculator-header" onclick="toggleCalculator('weightSheet')">
-              <span class="material-symbols-outlined">square</span>
-              <h2>Výpočet hmotnosti plechu</h2>
-              <span class="material-symbols-outlined expand-icon">expand_more</span>
+        </div>
+        
+        <!-- Kalkulačky -->
+        <div class="calculators-grid">
+          <!-- Nerezový plech -->
+          <div class="calculator-item">
+            <div class="calculator-icon">
+              <svg viewBox="0 0 100 100" width="80" height="80">
+                <rect x="10" y="30" width="80" height="40" fill="none" stroke="#0066cc" stroke-width="3"/>
+                <rect x="15" y="35" width="70" height="30" fill="#0066cc" opacity="0.3"/>
+              </svg>
             </div>
-            <div class="calculator-body" id="weightSheetBody">
+            <h3>Nerezový plech</h3>
+            <div class="calculator-form">
               <div class="form-group">
-                <label for="sheetLength">Délka (mm)</label>
-                <input type="number" id="sheetLength" step="0.1" min="0" placeholder="např. 1000">
+                <label>Jakost materiálu</label>
+                <select class="grade-select" data-calc="sheet">
+                  <option value="7930">AISI 304 (7930 kg/m³)</option>
+                  <option value="8000">AISI 316 (8000 kg/m³)</option>
+                  <option value="7700">AISI 430 (7700 kg/m³)</option>
+                  <option value="7700">AISI 410 (7700 kg/m³)</option>
+                  <option value="7930">AISI 321 (7930 kg/m³)</option>
+                </select>
               </div>
               <div class="form-group">
-                <label for="sheetWidth">Šířka (mm)</label>
-                <input type="number" id="sheetWidth" step="0.1" min="0" placeholder="např. 500">
-              </div>
-              <div class="form-group">
-                <label for="sheetThickness">Tloušťka (mm)</label>
+                <label>Tloušťka plechu (mm)</label>
                 <input type="number" id="sheetThickness" step="0.1" min="0" placeholder="např. 5">
               </div>
               <div class="form-group">
-                <label for="sheetDensity">Hustota materiálu (kg/m³)</label>
-                <input type="number" id="sheetDensity" value="7850" step="1" min="0" placeholder="7850 (ocel)">
-                <small>Výchozí: 7850 kg/m³ (ocel)</small>
+                <label>Šířka plechu (mm)</label>
+                <input type="number" id="sheetWidth" step="0.1" min="0" placeholder="např. 1000">
               </div>
-              <button class="btn btn-primary" onclick="calculateSheetWeight()">Vypočítat</button>
-              <div class="calculator-result" id="sheetResult"></div>
+              <div class="form-group">
+                <label>Délka plechu (mm)</label>
+                <input type="number" id="sheetLength" step="0.1" min="0" placeholder="např. 2000">
+              </div>
+              <button class="btn btn-primary" onclick="calculateSheet()">Vypočítat</button>
+              <div class="result-group">
+                <label>Hmotnost na m²</label>
+                <input type="text" id="sheetWeightPerM2" readonly>
+              </div>
+              <div class="result-group">
+                <label>Výsledná hmotnost</label>
+                <input type="text" id="sheetTotalWeight" readonly>
+              </div>
             </div>
           </div>
 
-          <!-- Výpočet tlaku v potrubí -->
-          <div class="calculator-card" id="pressurePipe">
-            <div class="calculator-header" onclick="toggleCalculator('pressurePipe')">
-              <span class="material-symbols-outlined">water_drop</span>
-              <h2>Výpočet tlaku v potrubí</h2>
-              <span class="material-symbols-outlined expand-icon">expand_more</span>
+          <!-- Nerezová trubka -->
+          <div class="calculator-item">
+            <div class="calculator-icon">
+              <svg viewBox="0 0 100 100" width="80" height="80">
+                <circle cx="50" cy="30" r="20" fill="none" stroke="#0066cc" stroke-width="3"/>
+                <circle cx="50" cy="30" r="12" fill="#fff"/>
+                <circle cx="50" cy="70" r="25" fill="none" stroke="#0066cc" stroke-width="3"/>
+                <circle cx="50" cy="70" r="15" fill="#fff"/>
+              </svg>
             </div>
-            <div class="calculator-body" id="pressurePipeBody">
+            <h3>Nerezová trubka</h3>
+            <div class="calculator-form">
               <div class="form-group">
-                <label for="pressureDiameter">Průměr potrubí (mm)</label>
-                <input type="number" id="pressureDiameter" step="0.1" min="0" placeholder="např. 50">
+                <label>Jakost materiálu</label>
+                <select class="grade-select" data-calc="pipe">
+                  <option value="7930">AISI 304 (7930 kg/m³)</option>
+                  <option value="8000">AISI 316 (8000 kg/m³)</option>
+                  <option value="7700">AISI 430 (7700 kg/m³)</option>
+                  <option value="7700">AISI 410 (7700 kg/m³)</option>
+                  <option value="7930">AISI 321 (7930 kg/m³)</option>
+                </select>
               </div>
               <div class="form-group">
-                <label for="pressureFlow">Průtok (l/min)</label>
-                <input type="number" id="pressureFlow" step="0.1" min="0" placeholder="např. 100">
+                <label>Vnější průměr (mm)</label>
+                <input type="number" id="pipeOuterDiameter" step="0.1" min="0" placeholder="např. 50">
               </div>
               <div class="form-group">
-                <label for="pressureViscosity">Viskozita (Pa·s)</label>
-                <input type="number" id="pressureViscosity" value="0.001" step="0.0001" min="0" placeholder="0.001 (voda)">
-                <small>Výchozí: 0.001 Pa·s (voda při 20°C)</small>
+                <label>Tloušťka stěny (mm)</label>
+                <input type="number" id="pipeWallThickness" step="0.1" min="0" placeholder="např. 2">
               </div>
               <div class="form-group">
-                <label for="pressureLength">Délka potrubí (m)</label>
-                <input type="number" id="pressureLength" step="0.1" min="0" placeholder="např. 10">
+                <label>Počet metrů (m)</label>
+                <input type="number" id="pipeLength" step="0.01" min="0" placeholder="např. 1">
               </div>
-              <button class="btn btn-primary" onclick="calculatePressure()">Vypočítat</button>
-              <div class="calculator-result" id="pressureResult"></div>
+              <button class="btn btn-primary" onclick="calculatePipe()">Vypočítat</button>
+              <div class="result-group">
+                <label>Hmotnost na m</label>
+                <input type="text" id="pipeWeightPerM" readonly>
+              </div>
+              <div class="result-group">
+                <label>Výsledná hmotnost</label>
+                <input type="text" id="pipeTotalWeight" readonly>
+              </div>
             </div>
           </div>
 
-          <!-- Převod jednotek -->
-          <div class="calculator-card" id="unitConverter">
-            <div class="calculator-header" onclick="toggleCalculator('unitConverter')">
-              <span class="material-symbols-outlined">swap_horiz</span>
-              <h2>Převod jednotek</h2>
-              <span class="material-symbols-outlined expand-icon">expand_more</span>
+          <!-- Nerezový jekl -->
+          <div class="calculator-item">
+            <div class="calculator-icon">
+              <svg viewBox="0 0 100 100" width="80" height="80">
+                <rect x="20" y="25" width="60" height="50" fill="none" stroke="#0066cc" stroke-width="3"/>
+                <rect x="30" y="35" width="40" height="30" fill="#fff"/>
+              </svg>
             </div>
-            <div class="calculator-body" id="unitConverterBody">
+            <h3>Nerezový jekl</h3>
+            <div class="calculator-form">
               <div class="form-group">
-                <label for="convertValue">Hodnota</label>
-                <input type="number" id="convertValue" step="0.01" placeholder="např. 100">
-              </div>
-              <div class="form-group">
-                <label for="convertFrom">Z jednotky</label>
-                <select id="convertFrom">
-                  <option value="mm">Milimetry (mm)</option>
-                  <option value="cm">Centimetry (cm)</option>
-                  <option value="m">Metry (m)</option>
-                  <option value="kg">Kilogramy (kg)</option>
-                  <option value="g">Gramy (g)</option>
-                  <option value="bar">Bar</option>
-                  <option value="psi">PSI</option>
-                  <option value="kpa">kPa</option>
+                <label>Jakost materiálu</label>
+                <select class="grade-select" data-calc="hollow">
+                  <option value="7930">AISI 304 (7930 kg/m³)</option>
+                  <option value="8000">AISI 316 (8000 kg/m³)</option>
+                  <option value="7700">AISI 430 (7700 kg/m³)</option>
+                  <option value="7700">AISI 410 (7700 kg/m³)</option>
+                  <option value="7930">AISI 321 (7930 kg/m³)</option>
                 </select>
               </div>
               <div class="form-group">
-                <label for="convertTo">Na jednotku</label>
-                <select id="convertTo">
-                  <option value="mm">Milimetry (mm)</option>
-                  <option value="cm">Centimetry (cm)</option>
-                  <option value="m">Metry (m)</option>
-                  <option value="kg">Kilogramy (kg)</option>
-                  <option value="g">Gramy (g)</option>
-                  <option value="bar">Bar</option>
-                  <option value="psi">PSI</option>
-                  <option value="kpa">kPa</option>
+                <label>Delší strana (mm)</label>
+                <input type="number" id="hollowLongSide" step="0.1" min="0" placeholder="např. 100">
+              </div>
+              <div class="form-group">
+                <label>Kratší strana (mm)</label>
+                <input type="number" id="hollowShortSide" step="0.1" min="0" placeholder="např. 50">
+              </div>
+              <div class="form-group">
+                <label>Tloušťka (mm)</label>
+                <input type="number" id="hollowThickness" step="0.1" min="0" placeholder="např. 3">
+              </div>
+              <div class="form-group">
+                <label>Počet metrů (m)</label>
+                <input type="number" id="hollowLength" step="0.01" min="0" placeholder="např. 1">
+              </div>
+              <button class="btn btn-primary" onclick="calculateHollow()">Vypočítat</button>
+              <div class="result-group">
+                <label>Hmotnost na m</label>
+                <input type="text" id="hollowWeightPerM" readonly>
+              </div>
+              <div class="result-group">
+                <label>Výsledná hmotnost</label>
+                <input type="text" id="hollowTotalWeight" readonly>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nerezová kulatina -->
+          <div class="calculator-item">
+            <div class="calculator-icon">
+              <svg viewBox="0 0 100 100" width="80" height="80">
+                <circle cx="50" cy="25" r="15" fill="#0066cc"/>
+                <circle cx="50" cy="50" r="18" fill="#0066cc"/>
+                <circle cx="50" cy="75" r="20" fill="#0066cc"/>
+              </svg>
+            </div>
+            <h3>Nerezová kulatina</h3>
+            <div class="calculator-form">
+              <div class="form-group">
+                <label>Jakost materiálu</label>
+                <select class="grade-select" data-calc="round">
+                  <option value="7930">AISI 304 (7930 kg/m³)</option>
+                  <option value="8000">AISI 316 (8000 kg/m³)</option>
+                  <option value="7700">AISI 430 (7700 kg/m³)</option>
+                  <option value="7700">AISI 410 (7700 kg/m³)</option>
+                  <option value="7930">AISI 321 (7930 kg/m³)</option>
                 </select>
               </div>
-              <button class="btn btn-primary" onclick="convertUnits()">Převést</button>
-              <div class="calculator-result" id="convertResult"></div>
+              <div class="form-group">
+                <label>Průměr (mm)</label>
+                <input type="number" id="roundDiameter" step="0.1" min="0" placeholder="např. 20">
+              </div>
+              <div class="form-group">
+                <label>Počet metrů (m)</label>
+                <input type="number" id="roundLength" step="0.01" min="0" placeholder="např. 1">
+              </div>
+              <button class="btn btn-primary" onclick="calculateRound()">Vypočítat</button>
+              <div class="result-group">
+                <label>Hmotnost na m</label>
+                <input type="text" id="roundWeightPerM" readonly>
+              </div>
+              <div class="result-group">
+                <label>Výsledná hmotnost</label>
+                <input type="text" id="roundTotalWeight" readonly>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nerezová plochá tyč -->
+          <div class="calculator-item">
+            <div class="calculator-icon">
+              <svg viewBox="0 0 100 100" width="80" height="80">
+                <rect x="15" y="30" width="70" height="15" fill="#0066cc"/>
+                <rect x="20" y="45" width="60" height="12" fill="#0066cc"/>
+                <rect x="25" y="60" width="50" height="10" fill="#0066cc"/>
+              </svg>
+            </div>
+            <h3>Nerezová plochá tyč</h3>
+            <div class="calculator-form">
+              <div class="form-group">
+                <label>Jakost materiálu</label>
+                <select class="grade-select" data-calc="flat">
+                  <option value="7930">AISI 304 (7930 kg/m³)</option>
+                  <option value="8000">AISI 316 (8000 kg/m³)</option>
+                  <option value="7700">AISI 430 (7700 kg/m³)</option>
+                  <option value="7700">AISI 410 (7700 kg/m³)</option>
+                  <option value="7930">AISI 321 (7930 kg/m³)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Šířka (mm)</label>
+                <input type="number" id="flatWidth" step="0.1" min="0" placeholder="např. 50">
+              </div>
+              <div class="form-group">
+                <label>Tloušťka (mm)</label>
+                <input type="number" id="flatThickness" step="0.1" min="0" placeholder="např. 10">
+              </div>
+              <div class="form-group">
+                <label>Počet metrů (m)</label>
+                <input type="number" id="flatLength" step="0.01" min="0" placeholder="např. 1">
+              </div>
+              <button class="btn btn-primary" onclick="calculateFlat()">Vypočítat</button>
+              <div class="result-group">
+                <label>Hmotnost na m</label>
+                <input type="text" id="flatWeightPerM" readonly>
+              </div>
+              <div class="result-group">
+                <label>Výsledná hmotnost</label>
+                <input type="text" id="flatTotalWeight" readonly>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nerezový čtyřhran -->
+          <div class="calculator-item">
+            <div class="calculator-icon">
+              <svg viewBox="0 0 100 100" width="80" height="80">
+                <rect x="25" y="25" width="20" height="20" fill="#0066cc"/>
+                <rect x="40" y="40" width="25" height="25" fill="#0066cc"/>
+                <rect x="55" y="55" width="20" height="20" fill="#0066cc"/>
+              </svg>
+            </div>
+            <h3>Nerezový čtyřhran</h3>
+            <div class="calculator-form">
+              <div class="form-group">
+                <label>Jakost materiálu</label>
+                <select class="grade-select" data-calc="square">
+                  <option value="7930">AISI 304 (7930 kg/m³)</option>
+                  <option value="8000">AISI 316 (8000 kg/m³)</option>
+                  <option value="7700">AISI 430 (7700 kg/m³)</option>
+                  <option value="7700">AISI 410 (7700 kg/m³)</option>
+                  <option value="7930">AISI 321 (7930 kg/m³)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Strana (mm)</label>
+                <input type="number" id="squareSide" step="0.1" min="0" placeholder="např. 20">
+              </div>
+              <div class="form-group">
+                <label>Počet metrů (m)</label>
+                <input type="number" id="squareLength" step="0.01" min="0" placeholder="např. 1">
+              </div>
+              <button class="btn btn-primary" onclick="calculateSquare()">Vypočítat</button>
+              <div class="result-group">
+                <label>Hmotnost na m</label>
+                <input type="text" id="squareWeightPerM" readonly>
+              </div>
+              <div class="result-group">
+                <label>Výsledná hmotnost</label>
+                <input type="text" id="squareTotalWeight" readonly>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nerezový šestihran -->
+          <div class="calculator-item">
+            <div class="calculator-icon">
+              <svg viewBox="0 0 100 100" width="80" height="80">
+                <polygon points="50,15 65,25 65,45 50,55 35,45 35,25" fill="#0066cc"/>
+                <polygon points="50,30 60,37 60,50 50,57 40,50 40,37" fill="#0066cc"/>
+                <polygon points="50,45 55,50 55,58 50,63 45,58 45,50" fill="#0066cc"/>
+              </svg>
+            </div>
+            <h3>Nerezový šestihran</h3>
+            <div class="calculator-form">
+              <div class="form-group">
+                <label>Jakost materiálu</label>
+                <select class="grade-select" data-calc="hex">
+                  <option value="7930">AISI 304 (7930 kg/m³)</option>
+                  <option value="8000">AISI 316 (8000 kg/m³)</option>
+                  <option value="7700">AISI 430 (7700 kg/m³)</option>
+                  <option value="7700">AISI 410 (7700 kg/m³)</option>
+                  <option value="7930">AISI 321 (7930 kg/m³)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Průměr přes plochy (mm)</label>
+                <input type="number" id="hexDiameter" step="0.1" min="0" placeholder="např. 20">
+              </div>
+              <div class="form-group">
+                <label>Počet metrů (m)</label>
+                <input type="number" id="hexLength" step="0.01" min="0" placeholder="např. 1">
+              </div>
+              <button class="btn btn-primary" onclick="calculateHex()">Vypočítat</button>
+              <div class="result-group">
+                <label>Hmotnost na m</label>
+                <input type="text" id="hexWeightPerM" readonly>
+              </div>
+              <div class="result-group">
+                <label>Výsledná hmotnost</label>
+                <input type="text" id="hexTotalWeight" readonly>
+              </div>
             </div>
           </div>
         </div>
@@ -309,5 +590,3 @@
   <script src="/src/js/calculators.js"></script>
 </body>
 </html>
-
-

@@ -3190,9 +3190,97 @@ main {
   margin-left: auto;
   margin-right: auto;
 }
+.calculators-page-section .steel-grades-section {
+  margin-bottom: 3rem;
+}
+.calculators-page-section .steel-grades-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.calculators-page-section .steel-grades-section .grades-intro {
+  font-size: 0.85rem;
+  color: #718096;
+  line-height: 1.6;
+  margin-bottom: 0;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.calculators-page-section .steel-grades-section .steel-grades-table {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.calculators-page-section .steel-grades-section .steel-grades-table .grade-row {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.calculators-page-section .steel-grades-section .steel-grades-table .grade-row:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.calculators-page-section .steel-grades-section .steel-grades-table .grade-row .grade-header {
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  background: #f7fafc;
+  transition: all 0.3s ease;
+}
+.calculators-page-section .steel-grades-section .steel-grades-table .grade-row .grade-header:hover {
+  background: rgba(49, 130, 206, 0.05);
+}
+.calculators-page-section .steel-grades-section .steel-grades-table .grade-row .grade-header .grade-code {
+  font-size: 1rem;
+  color: #2d3748;
+  line-height: 600;
+  margin-bottom: 0;
+}
+.calculators-page-section .steel-grades-section .steel-grades-table .grade-row .grade-header .expand-icon {
+  transition: all 0.3s ease;
+  transform: rotate(0deg);
+}
+.calculators-page-section .steel-grades-section .steel-grades-table .grade-row .grade-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.calculators-page-section .steel-grades-section .steel-grades-table .grade-row .grade-content.expanded {
+  max-height: 1000px;
+}
+.calculators-page-section .steel-grades-section .steel-grades-table .grade-row .grade-content .grade-info {
+  padding: 1.5rem;
+}
+.calculators-page-section .steel-grades-section .steel-grades-table .grade-row .grade-content .grade-info h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #3182ce;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+.calculators-page-section .steel-grades-section .steel-grades-table .grade-row .grade-content .grade-info .grade-details p {
+  font-size: 0.85rem;
+  color: #2d3748;
+  line-height: 1.6;
+  margin-bottom: 0;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+.calculators-page-section .steel-grades-section .steel-grades-table .grade-row .grade-content .grade-info .grade-details p strong {
+  color: #2d3748;
+  font-weight: 600;
+}
 .calculators-page-section .calculators-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2rem;
   margin-top: 2rem;
 }
@@ -3200,6 +3288,97 @@ main {
   .calculators-page-section .calculators-grid {
     grid-template-columns: 1fr;
   }
+}
+.calculators-page-section .calculator-item {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+.calculators-page-section .calculator-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+.calculators-page-section .calculator-item .calculator-icon {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.calculators-page-section .calculator-item .calculator-icon svg {
+  display: inline-block;
+}
+.calculators-page-section .calculator-item h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.calculators-page-section .calculator-item .calculator-form .form-group {
+  margin-bottom: 1rem;
+}
+.calculators-page-section .calculator-item .calculator-form .form-group label {
+  display: block;
+  font-size: 0.85rem;
+  color: #2d3748;
+  line-height: 600;
+  margin-bottom: 0;
+  margin-bottom: 0.25rem;
+}
+.calculators-page-section .calculator-item .calculator-form .form-group input[type=number],
+.calculators-page-section .calculator-item .calculator-form .form-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #2d3748;
+  line-height: 1.6;
+  margin-bottom: 0;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+.calculators-page-section .calculator-item .calculator-form .form-group input[type=number]:focus,
+.calculators-page-section .calculator-item .calculator-form .form-group select:focus {
+  outline: none;
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+}
+.calculators-page-section .calculator-item .calculator-form .form-group input[type=number][readonly],
+.calculators-page-section .calculator-item .calculator-form .form-group select[readonly] {
+  background: #f7fafc;
+  cursor: not-allowed;
+}
+.calculators-page-section .calculator-item .calculator-form .result-group {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+}
+.calculators-page-section .calculator-item .calculator-form .result-group label {
+  display: block;
+  font-size: 0.85rem;
+  color: #2d3748;
+  line-height: 600;
+  margin-bottom: 0;
+  margin-bottom: 0.25rem;
+}
+.calculators-page-section .calculator-item .calculator-form .result-group input[type=text] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #f7fafc;
+  font-size: 1rem;
+  color: #3182ce;
+  line-height: 600;
+  margin-bottom: 0;
+  text-align: center;
+}
+.calculators-page-section .calculator-item .calculator-form .btn {
+  width: 100%;
+  margin-top: 1rem;
 }
 .calculators-page-section .calculator-card {
   background: #ffffff;

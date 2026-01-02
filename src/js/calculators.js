@@ -2,255 +2,239 @@
  * ============================================
  * CALCULATORS LOGIC
  * ============================================
- * JavaScript pro kalkulačky (hmotnosti, tlaky, převody)
+ * JavaScript pro kalkulačky nerezových materiálů
  * ============================================
  */
 
-// Toggle kalkulačky (rozbalit/sbalit)
-function toggleCalculator(calculatorId) {
-    const body = document.getElementById(calculatorId + 'Body');
-    const header = document.querySelector(`#${calculatorId} .calculator-header`);
+// Toggle jakosti materiálu
+function toggleGrade(gradeId) {
+    const content = document.getElementById(gradeId);
+    const header = content.closest('.grade-row').querySelector('.grade-header');
     const expandIcon = header.querySelector('.expand-icon');
     
-    if (body) {
-        const isExpanded = body.classList.contains('expanded');
+    if (content) {
+        const isExpanded = content.classList.contains('expanded');
         
         if (isExpanded) {
-            body.classList.remove('expanded');
+            content.classList.remove('expanded');
             expandIcon.style.transform = 'rotate(0deg)';
         } else {
-            // Zavřít ostatní kalkulačky
-            document.querySelectorAll('.calculator-body').forEach(cb => {
-                cb.classList.remove('expanded');
+            // Zavřít ostatní jakosti
+            document.querySelectorAll('.grade-content').forEach(gc => {
+                gc.classList.remove('expanded');
             });
             document.querySelectorAll('.expand-icon').forEach(icon => {
                 icon.style.transform = 'rotate(0deg)';
             });
             
-            // Otevřít tuto kalkulačku
-            body.classList.add('expanded');
+            // Otevřít tuto jakost
+            content.classList.add('expanded');
             expandIcon.style.transform = 'rotate(180deg)';
         }
     }
 }
 
-// Inicializace - všechny kalkulačky jsou rozbalené
-document.addEventListener('DOMContentLoaded', () => {
-    // Všechny kalkulačky jsou zpočátku rozbalené
-    document.querySelectorAll('.calculator-body').forEach(body => {
-        body.classList.add('expanded');
-    });
-    // Nastavit ikony jako otočené
-    document.querySelectorAll('.expand-icon').forEach(icon => {
-        icon.style.transform = 'rotate(180deg)';
-    });
-});
-
-// Výpočet hmotnosti trubky
-function calculatePipeWeight() {
-    const diameter = parseFloat(document.getElementById('pipeDiameter').value);
-    const thickness = parseFloat(document.getElementById('pipeThickness').value);
-    const length = parseFloat(document.getElementById('pipeLength').value);
-    const density = parseFloat(document.getElementById('pipeDensity').value) || 7850;
-    
-    const resultDiv = document.getElementById('pipeResult');
-    
-    if (!diameter || !thickness || !length) {
-        resultDiv.innerHTML = '<div class="error">Vyplňte prosím všechny hodnoty.</div>';
-        return;
-    }
-    
-    if (thickness >= diameter / 2) {
-        resultDiv.innerHTML = '<div class="error">Tloušťka stěny musí být menší než polovina průměru.</div>';
-        return;
-    }
-    
-    // Vnitřní průměr
-    const innerDiameter = diameter - 2 * thickness;
-    
-    // Plocha průřezu (kruhová trubka)
-    const outerArea = Math.PI * Math.pow(diameter / 2 / 1000, 2);
-    const innerArea = Math.PI * Math.pow(innerDiameter / 2 / 1000, 2);
-    const crossSectionArea = outerArea - innerArea; // m²
-    
-    // Objem v m³
-    const volume = crossSectionArea * length; // m³
-    
-    // Hmotnost
-    const weight = volume * density; // kg
-    
-    resultDiv.innerHTML = `
-        <div class="result-success">
-            <h3>Výsledek:</h3>
-            <p><strong>Hmotnost:</strong> ${weight.toFixed(2)} kg</p>
-            <p><strong>Objem:</strong> ${(volume * 1000).toFixed(4)} l</p>
-            <p><strong>Průřez:</strong> ${(crossSectionArea * 1000000).toFixed(2)} mm²</p>
-        </div>
-    `;
+// Získání hustoty z selectu
+function getDensity(calcType) {
+    const select = document.querySelector(`.grade-select[data-calc="${calcType}"]`);
+    return parseFloat(select.value) || 7930;
 }
 
 // Výpočet hmotnosti plechu
-function calculateSheetWeight() {
-    const length = parseFloat(document.getElementById('sheetLength').value);
-    const width = parseFloat(document.getElementById('sheetWidth').value);
-    const thickness = parseFloat(document.getElementById('sheetThickness').value);
-    const density = parseFloat(document.getElementById('sheetDensity').value) || 7850;
+function calculateSheet() {
+    const thickness = parseFloat(document.getElementById('sheetThickness').value) / 1000; // mm -> m
+    const width = parseFloat(document.getElementById('sheetWidth').value) / 1000; // mm -> m
+    const length = parseFloat(document.getElementById('sheetLength').value) / 1000; // mm -> m
+    const density = getDensity('sheet');
     
-    const resultDiv = document.getElementById('sheetResult');
-    
-    if (!length || !width || !thickness) {
-        resultDiv.innerHTML = '<div class="error">Vyplňte prosím všechny hodnoty.</div>';
+    if (!thickness || !width || !length) {
+        alert('Vyplňte prosím všechny hodnoty.');
         return;
     }
     
-    // Objem v m³
-    const volume = (length / 1000) * (width / 1000) * (thickness / 1000); // m³
+    // Hmotnost na m²
+    const weightPerM2 = thickness * density; // kg/m²
     
-    // Hmotnost
-    const weight = volume * density; // kg
+    // Celková hmotnost
+    const totalWeight = weightPerM2 * width * length; // kg
     
-    resultDiv.innerHTML = `
-        <div class="result-success">
-            <h3>Výsledek:</h3>
-            <p><strong>Hmotnost:</strong> ${weight.toFixed(2)} kg</p>
-            <p><strong>Objem:</strong> ${(volume * 1000000).toFixed(2)} cm³</p>
-            <p><strong>Plocha:</strong> ${((length * width) / 1000000).toFixed(2)} m²</p>
-        </div>
-    `;
+    document.getElementById('sheetWeightPerM2').value = weightPerM2.toFixed(2) + ' kg/m²';
+    document.getElementById('sheetTotalWeight').value = totalWeight.toFixed(2) + ' kg';
 }
 
-// Výpočet tlaku v potrubí
-function calculatePressure() {
-    const diameter = parseFloat(document.getElementById('pressureDiameter').value);
-    const flow = parseFloat(document.getElementById('pressureFlow').value);
-    const viscosity = parseFloat(document.getElementById('pressureViscosity').value) || 0.001;
-    const length = parseFloat(document.getElementById('pressureLength').value);
+// Výpočet hmotnosti trubky
+function calculatePipe() {
+    const outerDiameter = parseFloat(document.getElementById('pipeOuterDiameter').value) / 1000; // mm -> m
+    const wallThickness = parseFloat(document.getElementById('pipeWallThickness').value) / 1000; // mm -> m
+    const length = parseFloat(document.getElementById('pipeLength').value); // m
+    const density = getDensity('pipe');
     
-    const resultDiv = document.getElementById('pressureResult');
-    
-    if (!diameter || !flow || !length) {
-        resultDiv.innerHTML = '<div class="error">Vyplňte prosím všechny hodnoty.</div>';
+    if (!outerDiameter || !wallThickness || !length) {
+        alert('Vyplňte prosím všechny hodnoty.');
         return;
     }
     
-    // Průměr v metrech
-    const diameterM = diameter / 1000;
-    
-    // Průřez potrubí
-    const area = Math.PI * Math.pow(diameterM / 2, 2); // m²
-    
-    // Rychlost proudění (m/s)
-    const flowM3s = flow / 1000 / 60; // l/min -> m³/s
-    const velocity = flowM3s / area; // m/s
-    
-    // Reynoldsovo číslo
-    const rho = 1000; // hustota vody kg/m³
-    const reynolds = (rho * velocity * diameterM) / viscosity;
-    
-    // Součinitel tření (Darcy-Weisbach, zjednodušeně)
-    let frictionFactor;
-    if (reynolds < 2300) {
-        // Laminární proudění
-        frictionFactor = 64 / reynolds;
-    } else {
-        // Turbulentní proudění (Blasius)
-        frictionFactor = 0.316 / Math.pow(reynolds, 0.25);
+    if (wallThickness >= outerDiameter / 2) {
+        alert('Tloušťka stěny musí být menší než polovina průměru.');
+        return;
     }
     
-    // Tlaková ztráta (Pa)
-    const pressureLoss = frictionFactor * (length / diameterM) * (rho * Math.pow(velocity, 2) / 2);
+    const innerDiameter = outerDiameter - 2 * wallThickness;
     
-    // Převod na bar
-    const pressureBar = pressureLoss / 100000;
+    // Plocha průřezu
+    const outerArea = Math.PI * Math.pow(outerDiameter / 2, 2);
+    const innerArea = Math.PI * Math.pow(innerDiameter / 2, 2);
+    const crossSectionArea = outerArea - innerArea; // m²
     
-    resultDiv.innerHTML = `
-        <div class="result-success">
-            <h3>Výsledek:</h3>
-            <p><strong>Tlaková ztráta:</strong> ${pressureBar.toFixed(4)} bar</p>
-            <p><strong>Tlaková ztráta:</strong> ${(pressureLoss / 1000).toFixed(2)} kPa</p>
-            <p><strong>Rychlost proudění:</strong> ${velocity.toFixed(2)} m/s</p>
-            <p><strong>Reynoldsovo číslo:</strong> ${reynolds.toFixed(0)}</p>
-            <p><small>${reynolds < 2300 ? 'Laminární proudění' : 'Turbulentní proudění'}</small></p>
-        </div>
-    `;
+    // Hmotnost na m
+    const weightPerM = crossSectionArea * density; // kg/m
+    
+    // Celková hmotnost
+    const totalWeight = weightPerM * length; // kg
+    
+    document.getElementById('pipeWeightPerM').value = weightPerM.toFixed(2) + ' kg/m';
+    document.getElementById('pipeTotalWeight').value = totalWeight.toFixed(2) + ' kg';
 }
 
-// Převod jednotek
-function convertUnits() {
-    const value = parseFloat(document.getElementById('convertValue').value);
-    const from = document.getElementById('convertFrom').value;
-    const to = document.getElementById('convertTo').value;
+// Výpočet hmotnosti jeklu (hollow square)
+function calculateHollow() {
+    const longSide = parseFloat(document.getElementById('hollowLongSide').value) / 1000; // mm -> m
+    const shortSide = parseFloat(document.getElementById('hollowShortSide').value) / 1000; // mm -> m
+    const thickness = parseFloat(document.getElementById('hollowThickness').value) / 1000; // mm -> m
+    const length = parseFloat(document.getElementById('hollowLength').value); // m
+    const density = getDensity('hollow');
     
-    const resultDiv = document.getElementById('convertResult');
-    
-    if (!value) {
-        resultDiv.innerHTML = '<div class="error">Zadejte hodnotu k převodu.</div>';
+    if (!longSide || !shortSide || !thickness || !length) {
+        alert('Vyplňte prosím všechny hodnoty.');
         return;
     }
     
-    if (from === to) {
-        resultDiv.innerHTML = '<div class="error">Vyberte různé jednotky.</div>';
+    if (thickness >= Math.min(longSide, shortSide) / 2) {
+        alert('Tloušťka musí být menší než polovina kratší strany.');
         return;
     }
     
-    // Převodní faktory
-    const conversions = {
-        // Délka
-        'mm': { 'cm': 0.1, 'm': 0.001 },
-        'cm': { 'mm': 10, 'm': 0.01 },
-        'm': { 'mm': 1000, 'cm': 100 },
-        // Hmotnost
-        'kg': { 'g': 1000 },
-        'g': { 'kg': 0.001 },
-        // Tlak
-        'bar': { 'psi': 14.504, 'kpa': 100 },
-        'psi': { 'bar': 0.069, 'kpa': 6.895 },
-        'kpa': { 'bar': 0.01, 'psi': 0.145 }
-    };
+    // Vnější a vnitřní rozměry
+    const outerArea = longSide * shortSide;
+    const innerLong = longSide - 2 * thickness;
+    const innerShort = shortSide - 2 * thickness;
+    const innerArea = innerLong * innerShort;
+    const crossSectionArea = outerArea - innerArea; // m²
     
-    let result;
+    // Hmotnost na m
+    const weightPerM = crossSectionArea * density; // kg/m
     
-    // Kontrola, jestli jsou jednotky stejného typu
-    const lengthUnits = ['mm', 'cm', 'm'];
-    const weightUnits = ['kg', 'g'];
-    const pressureUnits = ['bar', 'psi', 'kpa'];
+    // Celková hmotnost
+    const totalWeight = weightPerM * length; // kg
     
-    if (lengthUnits.includes(from) && lengthUnits.includes(to)) {
-        // Převod přes metry
-        let inMeters = value;
-        if (from === 'mm') inMeters = value / 1000;
-        else if (from === 'cm') inMeters = value / 100;
-        
-        if (to === 'mm') result = inMeters * 1000;
-        else if (to === 'cm') result = inMeters * 100;
-        else result = inMeters;
-    } else if (weightUnits.includes(from) && weightUnits.includes(to)) {
-        if (from === 'kg') result = value * 1000;
-        else result = value / 1000;
-    } else if (pressureUnits.includes(from) && pressureUnits.includes(to)) {
-        if (conversions[from] && conversions[from][to]) {
-            result = value * conversions[from][to];
-        } else {
-            // Převod přes bar
-            let inBar = value;
-            if (from === 'psi') inBar = value * 0.069;
-            else if (from === 'kpa') inBar = value * 0.01;
-            
-            if (to === 'psi') result = inBar * 14.504;
-            else if (to === 'kpa') result = inBar * 100;
-            else result = inBar;
-        }
-    } else {
-        resultDiv.innerHTML = '<div class="error">Nelze převádět mezi různými typy jednotek.</div>';
-        return;
-    }
-    
-    resultDiv.innerHTML = `
-        <div class="result-success">
-            <h3>Výsledek:</h3>
-            <p><strong>${value} ${from}</strong> = <strong>${result.toFixed(4)} ${to}</strong></p>
-        </div>
-    `;
+    document.getElementById('hollowWeightPerM').value = weightPerM.toFixed(2) + ' kg/m';
+    document.getElementById('hollowTotalWeight').value = totalWeight.toFixed(2) + ' kg';
 }
 
+// Výpočet hmotnosti kulatiny
+function calculateRound() {
+    const diameter = parseFloat(document.getElementById('roundDiameter').value) / 1000; // mm -> m
+    const length = parseFloat(document.getElementById('roundLength').value); // m
+    const density = getDensity('round');
+    
+    if (!diameter || !length) {
+        alert('Vyplňte prosím všechny hodnoty.');
+        return;
+    }
+    
+    // Plocha průřezu
+    const crossSectionArea = Math.PI * Math.pow(diameter / 2, 2); // m²
+    
+    // Hmotnost na m
+    const weightPerM = crossSectionArea * density; // kg/m
+    
+    // Celková hmotnost
+    const totalWeight = weightPerM * length; // kg
+    
+    document.getElementById('roundWeightPerM').value = weightPerM.toFixed(2) + ' kg/m';
+    document.getElementById('roundTotalWeight').value = totalWeight.toFixed(2) + ' kg';
+}
 
+// Výpočet hmotnosti ploché tyče
+function calculateFlat() {
+    const width = parseFloat(document.getElementById('flatWidth').value) / 1000; // mm -> m
+    const thickness = parseFloat(document.getElementById('flatThickness').value) / 1000; // mm -> m
+    const length = parseFloat(document.getElementById('flatLength').value); // m
+    const density = getDensity('flat');
+    
+    if (!width || !thickness || !length) {
+        alert('Vyplňte prosím všechny hodnoty.');
+        return;
+    }
+    
+    // Plocha průřezu
+    const crossSectionArea = width * thickness; // m²
+    
+    // Hmotnost na m
+    const weightPerM = crossSectionArea * density; // kg/m
+    
+    // Celková hmotnost
+    const totalWeight = weightPerM * length; // kg
+    
+    document.getElementById('flatWeightPerM').value = weightPerM.toFixed(2) + ' kg/m';
+    document.getElementById('flatTotalWeight').value = totalWeight.toFixed(2) + ' kg';
+}
+
+// Výpočet hmotnosti čtyřhranu
+function calculateSquare() {
+    const side = parseFloat(document.getElementById('squareSide').value) / 1000; // mm -> m
+    const length = parseFloat(document.getElementById('squareLength').value); // m
+    const density = getDensity('square');
+    
+    if (!side || !length) {
+        alert('Vyplňte prosím všechny hodnoty.');
+        return;
+    }
+    
+    // Plocha průřezu
+    const crossSectionArea = side * side; // m²
+    
+    // Hmotnost na m
+    const weightPerM = crossSectionArea * density; // kg/m
+    
+    // Celková hmotnost
+    const totalWeight = weightPerM * length; // kg
+    
+    document.getElementById('squareWeightPerM').value = weightPerM.toFixed(2) + ' kg/m';
+    document.getElementById('squareTotalWeight').value = totalWeight.toFixed(2) + ' kg';
+}
+
+// Výpočet hmotnosti šestihranu
+function calculateHex() {
+    const diameter = parseFloat(document.getElementById('hexDiameter').value) / 1000; // mm -> m (průměr přes plochy)
+    const length = parseFloat(document.getElementById('hexLength').value); // m
+    const density = getDensity('hex');
+    
+    if (!diameter || !length) {
+        alert('Vyplňte prosím všechny hodnoty.');
+        return;
+    }
+    
+    // Strana šestihranu (průměr přes plochy = 2 * strana)
+    const side = diameter / 2;
+    
+    // Plocha průřezu (pravidelný šestihran)
+    const crossSectionArea = (3 * Math.sqrt(3) / 2) * Math.pow(side, 2); // m²
+    
+    // Hmotnost na m
+    const weightPerM = crossSectionArea * density; // kg/m
+    
+    // Celková hmotnost
+    const totalWeight = weightPerM * length; // kg
+    
+    document.getElementById('hexWeightPerM').value = weightPerM.toFixed(2) + ' kg/m';
+    document.getElementById('hexTotalWeight').value = totalWeight.toFixed(2) + ' kg';
+}
+
+// Inicializace
+document.addEventListener('DOMContentLoaded', () => {
+    // Všechny jakosti jsou zpočátku sbalené
+    document.querySelectorAll('.grade-content').forEach(content => {
+        content.classList.remove('expanded');
+    });
+});

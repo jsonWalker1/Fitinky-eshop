@@ -407,14 +407,193 @@
         margin-right: auto;
     }
     
+    // Tabulka jakostí nerezových materiálů
+    .steel-grades-section {
+        margin-bottom: $spacing-2xl;
+        
+        h2 {
+            @include text-heading($font-size-xl, $font-weight-semibold, $color-text-primary);
+            margin-bottom: $spacing-md;
+            text-align: center;
+        }
+        
+        .grades-intro {
+            @include text-body($font-size-sm, $color-text-secondary);
+            text-align: center;
+            margin-bottom: $spacing-lg;
+        }
+        
+        .steel-grades-table {
+            max-width: 1000px;
+            margin: 0 auto;
+            
+            .grade-row {
+                background: $color-bg-white;
+                border: $border-width solid $color-border-light;
+                border-radius: $border-radius-md;
+                margin-bottom: $spacing-md;
+                overflow: hidden;
+                @include transition-base;
+                
+                &:hover {
+                    box-shadow: $shadow-md;
+                }
+                
+                .grade-header {
+                    padding: $spacing-md $spacing-lg;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    cursor: pointer;
+                    background: $color-bg-light;
+                    @include transition-base;
+                    
+                    &:hover {
+                        background: rgba($color-primary, 0.05);
+                    }
+                    
+                    .grade-code {
+                        @include text-body($font-size-base, $color-text-primary, $font-weight-semibold);
+                    }
+                    
+                    .expand-icon {
+                        @include transition-base;
+                        transform: rotate(0deg);
+                    }
+                }
+                
+                .grade-content {
+                    max-height: 0;
+                    overflow: hidden;
+                    @include transition-base;
+                    
+                    &.expanded {
+                        max-height: 1000px;
+                    }
+                    
+                    .grade-info {
+                        padding: $spacing-lg;
+                        
+                        h3 {
+                            @include text-heading($font-size-lg, $font-weight-semibold, $color-primary);
+                            margin-bottom: $spacing-md;
+                        }
+                        
+                        .grade-details {
+                            p {
+                                @include text-body($font-size-sm, $color-text-primary);
+                                margin-bottom: $spacing-sm;
+                                line-height: 1.6;
+                                
+                                strong {
+                                    color: $color-text-primary;
+                                    font-weight: $font-weight-semibold;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     .calculators-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
         gap: $spacing-xl;
         margin-top: $spacing-xl;
         
         @media (max-width: $breakpoint-md) {
             grid-template-columns: 1fr;
+        }
+    }
+    
+    .calculator-item {
+        background: $color-bg-white;
+        border: $border-width solid $color-border-light;
+        border-radius: $border-radius-lg;
+        padding: $spacing-lg;
+        @include transition-base;
+        
+        &:hover {
+            box-shadow: $shadow-lg;
+            transform: translateY(-2px);
+        }
+        
+        .calculator-icon {
+            text-align: center;
+            margin-bottom: $spacing-md;
+            
+            svg {
+                display: inline-block;
+            }
+        }
+        
+        h3 {
+            @include text-heading($font-size-lg, $font-weight-semibold, $color-text-primary);
+            text-align: center;
+            margin-bottom: $spacing-lg;
+        }
+        
+        .calculator-form {
+            .form-group {
+                margin-bottom: $spacing-md;
+                
+                label {
+                    display: block;
+                    @include text-body($font-size-sm, $color-text-primary, $font-weight-semibold);
+                    margin-bottom: $spacing-xs;
+                }
+                
+                input[type="number"],
+                select {
+                    width: 100%;
+                    padding: $spacing-sm;
+                    border: $border-width solid $color-border-light;
+                    border-radius: $border-radius-md;
+                    @include text-body($font-size-base, $color-text-primary);
+                    @include transition-base;
+                    box-sizing: border-box;
+                    
+                    &:focus {
+                        outline: none;
+                        border-color: $color-primary;
+                        box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+                    }
+                    
+                    &[readonly] {
+                        background: $color-bg-light;
+                        cursor: not-allowed;
+                    }
+                }
+            }
+            
+            .result-group {
+                margin-top: $spacing-md;
+                padding-top: $spacing-md;
+                border-top: $border-width solid $color-border-light;
+                
+                label {
+                    display: block;
+                    @include text-body($font-size-sm, $color-text-primary, $font-weight-semibold);
+                    margin-bottom: $spacing-xs;
+                }
+                
+                input[type="text"] {
+                    width: 100%;
+                    padding: $spacing-sm;
+                    border: $border-width solid $color-border-light;
+                    border-radius: $border-radius-md;
+                    background: $color-bg-light;
+                    @include text-body($font-size-base, $color-primary, $font-weight-semibold);
+                    text-align: center;
+                }
+            }
+            
+            .btn {
+                width: 100%;
+                margin-top: $spacing-md;
+            }
         }
     }
     
