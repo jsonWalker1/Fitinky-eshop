@@ -109,11 +109,12 @@
         <div class="calculators-grid">
           <!-- Výpočet hmotnosti trubky -->
           <div class="calculator-card" id="weightPipe">
-            <div class="calculator-header">
+            <div class="calculator-header" onclick="toggleCalculator('weightPipe')">
               <span class="material-symbols-outlined">straighten</span>
               <h2>Výpočet hmotnosti trubky</h2>
+              <span class="material-symbols-outlined expand-icon">expand_more</span>
             </div>
-            <div class="calculator-body">
+            <div class="calculator-body" id="weightPipeBody">
               <div class="form-group">
                 <label for="pipeDiameter">Vnější průměr (mm)</label>
                 <input type="number" id="pipeDiameter" step="0.1" min="0" placeholder="např. 50">
@@ -138,11 +139,12 @@
 
           <!-- Výpočet hmotnosti plechu -->
           <div class="calculator-card" id="weightSheet">
-            <div class="calculator-header">
+            <div class="calculator-header" onclick="toggleCalculator('weightSheet')">
               <span class="material-symbols-outlined">square</span>
               <h2>Výpočet hmotnosti plechu</h2>
+              <span class="material-symbols-outlined expand-icon">expand_more</span>
             </div>
-            <div class="calculator-body">
+            <div class="calculator-body" id="weightSheetBody">
               <div class="form-group">
                 <label for="sheetLength">Délka (mm)</label>
                 <input type="number" id="sheetLength" step="0.1" min="0" placeholder="např. 1000">
@@ -167,11 +169,12 @@
 
           <!-- Výpočet tlaku v potrubí -->
           <div class="calculator-card" id="pressurePipe">
-            <div class="calculator-header">
+            <div class="calculator-header" onclick="toggleCalculator('pressurePipe')">
               <span class="material-symbols-outlined">water_drop</span>
               <h2>Výpočet tlaku v potrubí</h2>
+              <span class="material-symbols-outlined expand-icon">expand_more</span>
             </div>
-            <div class="calculator-body">
+            <div class="calculator-body" id="pressurePipeBody">
               <div class="form-group">
                 <label for="pressureDiameter">Průměr potrubí (mm)</label>
                 <input type="number" id="pressureDiameter" step="0.1" min="0" placeholder="např. 50">
@@ -196,11 +199,12 @@
 
           <!-- Převod jednotek -->
           <div class="calculator-card" id="unitConverter">
-            <div class="calculator-header">
+            <div class="calculator-header" onclick="toggleCalculator('unitConverter')">
               <span class="material-symbols-outlined">swap_horiz</span>
               <h2>Převod jednotek</h2>
+              <span class="material-symbols-outlined expand-icon">expand_more</span>
             </div>
-            <div class="calculator-body">
+            <div class="calculator-body" id="unitConverterBody">
               <div class="form-group">
                 <label for="convertValue">Hodnota</label>
                 <input type="number" id="convertValue" step="0.01" placeholder="např. 100">

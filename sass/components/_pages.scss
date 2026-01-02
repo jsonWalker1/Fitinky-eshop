@@ -437,19 +437,45 @@
             display: flex;
             align-items: center;
             gap: $spacing-md;
+            cursor: pointer;
+            @include transition-base;
+            
+            &:hover {
+                background: linear-gradient(135deg, $color-primary-dark 0%, $color-primary 100%);
+            }
             
             .material-symbols-outlined {
                 font-size: 32px;
+                
+                &.expand-icon {
+                    margin-left: auto;
+                    font-size: 24px;
+                    @include transition-base;
+                }
             }
             
             h2 {
                 @include text-heading($font-size-lg, $font-weight-semibold, $color-text-white);
                 margin: 0;
+                flex: 1;
             }
         }
         
         .calculator-body {
             padding: $spacing-lg;
+            max-height: 0;
+            overflow: hidden;
+            @include transition-base;
+            
+            &.expanded {
+                max-height: 2000px;
+                padding: $spacing-lg;
+            }
+            
+            &.collapsed {
+                max-height: 0;
+                padding: 0 $spacing-lg;
+            }
             
             .form-group {
                 margin-bottom: $spacing-md;

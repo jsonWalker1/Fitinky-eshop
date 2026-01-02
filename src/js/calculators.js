@@ -6,6 +6,46 @@
  * ============================================
  */
 
+// Toggle kalkulačky (rozbalit/sbalit)
+function toggleCalculator(calculatorId) {
+    const body = document.getElementById(calculatorId + 'Body');
+    const header = document.querySelector(`#${calculatorId} .calculator-header`);
+    const expandIcon = header.querySelector('.expand-icon');
+    
+    if (body) {
+        const isExpanded = body.classList.contains('expanded');
+        
+        if (isExpanded) {
+            body.classList.remove('expanded');
+            expandIcon.style.transform = 'rotate(0deg)';
+        } else {
+            // Zavřít ostatní kalkulačky
+            document.querySelectorAll('.calculator-body').forEach(cb => {
+                cb.classList.remove('expanded');
+            });
+            document.querySelectorAll('.expand-icon').forEach(icon => {
+                icon.style.transform = 'rotate(0deg)';
+            });
+            
+            // Otevřít tuto kalkulačku
+            body.classList.add('expanded');
+            expandIcon.style.transform = 'rotate(180deg)';
+        }
+    }
+}
+
+// Inicializace - všechny kalkulačky jsou rozbalené
+document.addEventListener('DOMContentLoaded', () => {
+    // Všechny kalkulačky jsou zpočátku rozbalené
+    document.querySelectorAll('.calculator-body').forEach(body => {
+        body.classList.add('expanded');
+    });
+    // Nastavit ikony jako otočené
+    document.querySelectorAll('.expand-icon').forEach(icon => {
+        icon.style.transform = 'rotate(180deg)';
+    });
+});
+
 // Výpočet hmotnosti trubky
 function calculatePipeWeight() {
     const diameter = parseFloat(document.getElementById('pipeDiameter').value);

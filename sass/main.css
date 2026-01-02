@@ -3219,9 +3219,19 @@ main {
   display: flex;
   align-items: center;
   gap: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.calculators-page-section .calculator-card .calculator-header:hover {
+  background: linear-gradient(135deg, #2c5282 0%, #3182ce 100%);
 }
 .calculators-page-section .calculator-card .calculator-header .material-symbols-outlined {
   font-size: 32px;
+}
+.calculators-page-section .calculator-card .calculator-header .material-symbols-outlined.expand-icon {
+  margin-left: auto;
+  font-size: 24px;
+  transition: all 0.3s ease;
 }
 .calculators-page-section .calculator-card .calculator-header h2 {
   font-size: 1.25rem;
@@ -3230,9 +3240,21 @@ main {
   margin-bottom: 1rem;
   line-height: 1.2;
   margin: 0;
+  flex: 1;
 }
 .calculators-page-section .calculator-card .calculator-body {
   padding: 1.5rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.calculators-page-section .calculator-card .calculator-body.expanded {
+  max-height: 2000px;
+  padding: 1.5rem;
+}
+.calculators-page-section .calculator-card .calculator-body.collapsed {
+  max-height: 0;
+  padding: 0 1.5rem;
 }
 .calculators-page-section .calculator-card .calculator-body .form-group {
   margin-bottom: 1rem;
