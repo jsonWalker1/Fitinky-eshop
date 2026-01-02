@@ -131,7 +131,9 @@ function displaySearchResults(products, showDropdown) {
         
         return `
             <div class="search-result-item" onclick="window.location.href='/products?product=${product.id}'">
-                <img src="${productImage}" alt="${escapeHtml(product.name)}" onerror="this.src='/assets/pic/trubka.webp'">
+                <div class="result-image">
+                    <img src="${productImage}" alt="${escapeHtml(product.name)}" onerror="this.src='/assets/pic/trubka.webp'">
+                </div>
                 <div class="result-info">
                     <div class="result-name">${escapeHtml(product.name)}</div>
                     <div class="result-price">${formatPrice(price)}</div>

@@ -346,6 +346,7 @@ header {
   border-bottom: 1px solid #e2e8f0;
   width: 100%;
   box-sizing: border-box;
+  gap: 1rem;
 }
 .right-menu .search-wrapper .search-results .search-result-item:last-child {
   border-bottom: none;
@@ -353,30 +354,36 @@ header {
 .right-menu .search-wrapper .search-results .search-result-item:hover {
   background-color: #f7fafc;
 }
-.right-menu .search-wrapper .search-results .search-result-item img {
-  width: 50px;
-  height: 50px;
-  min-width: 50px;
+.right-menu .search-wrapper .search-results .search-result-item .result-image {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+}
+.right-menu .search-wrapper .search-results .search-result-item .result-image img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   border-radius: 4px;
-  margin-right: 1rem;
-  flex-shrink: 0;
+  display: block;
 }
 .right-menu .search-wrapper .search-results .search-result-item .result-info {
   flex: 1;
   min-width: 0;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.25rem;
 }
 .right-menu .search-wrapper .search-results .search-result-item .result-info .result-name {
   font-size: 1rem;
   color: #2d3748;
   line-height: 600;
   margin-bottom: 0;
-  margin-bottom: 0.25rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   display: block;
+  line-height: 1.4;
 }
 .right-menu .search-wrapper .search-results .search-result-item .result-info .result-price {
   font-size: 0.85rem;
@@ -384,6 +391,7 @@ header {
   line-height: 600;
   margin-bottom: 0;
   display: block;
+  line-height: 1.4;
 }
 .right-menu .search-wrapper .search-results .search-no-results {
   padding: 1.5rem;
