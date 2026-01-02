@@ -6,6 +6,8 @@
  * ============================================
  */
 
+import { formatPrice } from './currency.js';
+
 const API_BASE = '/api';
 let searchTimeout = null;
 
@@ -102,17 +104,29 @@ function displaySearchResults(products, showDropdown) {
     const displayProducts = showDropdown ? products.slice(0, 5) : products;
     
     searchResults.innerHTML = displayProducts.map(product => {
-        const image = product.images && product.images.length > 0 
-            ? product.images[0].image_url || product.images[0] 
-            : product.image || '/assets/pic/trubka.webp';
+        // Zpracování obrázků - stejně jako v products.js
+        let productImage = '/assets/pic/trubka.webp';
+        if (product.images && Array.isArray(product.images) && product.images.length > 0) {
+            const firstImage = product.images[0];
+            if (typeof firstImage === 'string') {
+                productImage = firstImage;
+            } else if (typeof firstImage === 'object' && firstImage.url) {
+                productImage = firstImage.url;
+            } else if (typeof firstImage === 'object' && firstImage.image_url) {
+                productImage = firstImage.image_url;
+            }
+        } else if (product.image) {
+            productImage = product.image;
+        }
+        
         const price = typeof product.price === 'number' ? product.price : parseFloat(product.price) || 0;
         
         return `
             <div class="search-result-item" onclick="window.location.href='/products?product=${product.id}'">
-                <img src="${image}" alt="${product.name}" onerror="this.src='/assets/pic/trubka.webp'">
+                <img src="${productImage}" alt="${escapeHtml(product.name)}" onerror="this.src='/assets/pic/trubka.webp'">
                 <div class="result-info">
                     <div class="result-name">${escapeHtml(product.name)}</div>
-                    <div class="result-price">${price.toFixed(2)} Kč</div>
+                    <div class="result-price">${formatPrice(price)}</div>
                 </div>
             </div>
         `;

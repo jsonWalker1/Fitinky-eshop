@@ -252,10 +252,14 @@ header {
                 
                 .result-info {
                     flex: 1;
+                    min-width: 0; // Aby se text správně zalamoval
                     
                     .result-name {
                         @include text-body($font-size-base, $color-text-primary, $font-weight-semibold);
                         margin-bottom: $spacing-xs;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
                     }
                     
                     .result-price {

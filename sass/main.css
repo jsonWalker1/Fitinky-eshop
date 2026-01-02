@@ -358,6 +358,7 @@ header {
 }
 .right-menu .search-wrapper .search-results .search-result-item .result-info {
   flex: 1;
+  min-width: 0;
 }
 .right-menu .search-wrapper .search-results .search-result-item .result-info .result-name {
   font-size: 1rem;
@@ -365,6 +366,9 @@ header {
   line-height: 600;
   margin-bottom: 0;
   margin-bottom: 0.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .right-menu .search-wrapper .search-results .search-result-item .result-info .result-price {
   font-size: 0.85rem;
