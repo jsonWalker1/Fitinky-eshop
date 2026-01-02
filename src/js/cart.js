@@ -8,6 +8,7 @@
 
 import { isAuthenticated, getUserId, requireAuth } from './auth.js';
 import { handleLogout } from './main.js';
+import { formatPrice } from './currency.js';
 
 const API_BASE = '/api';
 
