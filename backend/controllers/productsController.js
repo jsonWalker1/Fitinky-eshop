@@ -70,16 +70,22 @@ export const getCategory = async (req, res) => {
 /**
  * GET /api/products
  * Vrací všechny produkty nebo produkty podle kategorie
+ * Podporuje search parametr pro vyhledávání
  */
 export const getProducts = async (req, res) => {
     try {
-        const { category } = req.query;
+        const { category, search } = req.query;
         
         let products;
         if (category) {
             products = await getProductsByCategory(category);
         } else {
-            products = await getAllProducts();
+            // Přidat search do filters
+            const filters = {};
+            if (search && search.trim()) {
+                filters.search = search.trim();
+            }
+            products = await getAllProducts(filters);
         }
         
         res.json({

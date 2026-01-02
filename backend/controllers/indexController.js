@@ -115,3 +115,33 @@ export const getOrders = (req, res) => {
         res.status(500).send('Chyba při načítání stránky');
     }
 };
+
+/**
+ * Načte a vrátí calculators.html jako HTML
+ */
+export const getCalculators = (req, res) => {
+    try {
+        const calculatorsPath = path.join(paths.root, 'calculators.html');
+        const calculatorsContent = fs.readFileSync(calculatorsPath, 'utf8');
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.send(calculatorsContent);
+    } catch (error) {
+        console.error('Chyba při načítání calculators.html:', error);
+        res.status(500).send('Chyba při načítání stránky');
+    }
+};
+
+/**
+ * Načte a vrátí search.html jako HTML
+ */
+export const getSearch = (req, res) => {
+    try {
+        const searchPath = path.join(paths.root, 'search.html');
+        const searchContent = fs.readFileSync(searchPath, 'utf8');
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.send(searchContent);
+    } catch (error) {
+        console.error('Chyba při načítání search.html:', error);
+        res.status(500).send('Chyba při načítání stránky');
+    }
+};

@@ -18,6 +18,7 @@ import {
     getAdminOrders,
     getAdminCategories,
     getAdminAttributes,
+    getAdminSettings,
     getProducts,
     addProduct,
     updateProduct,
@@ -54,6 +55,7 @@ router.get('/admin/categories', getAdminCategories);
 router.get('/admin/users', getAdminUsers);
 router.get('/admin/orders', getAdminOrders);
 router.get('/admin/attributes', getAdminAttributes);
+router.get('/admin/settings', getAdminSettings);
 
 // Admin API - Dashboard
 router.get('/admin/api/dashboard', getDashboardStats);

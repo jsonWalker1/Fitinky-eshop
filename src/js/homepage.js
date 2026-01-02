@@ -6,6 +6,8 @@
  * ============================================
  */
 
+import { formatPrice } from './currency.js';
+
 const API_BASE = '/api';
 
 // Ikony pro kategorie (mapování podle názvu kategorie)
@@ -112,8 +114,8 @@ function displayBestsellers(products) {
                 <div class="product-info">
                     <h3 class="product-title">${escapeHtml(product.name)}</h3>
                     <div class="product-price">
-                        <div class="price-from">od ${price.toLocaleString('cs-CZ')} Kč</div>
-                        <div class="price-vat">${priceVat.toLocaleString('cs-CZ')} Kč s DPH</div>
+                        <div class="price-from" data-price="${price}">od ${formatPrice(price)}</div>
+                        <div class="price-vat" data-price="${priceVat}">${formatPrice(priceVat)} s DPH</div>
                     </div>
                     <a href="/products" class="btn-detail">Detail</a>
                 </div>

@@ -83,7 +83,7 @@ function displayCart(cart) {
             </div>
             <div class="item-info">
                 <h3>${item.name}</h3>
-                <div class="item-price">${price.toFixed(2)} Kč / ks</div>
+                <div class="item-price" data-price="${price}">${formatPrice(price)} / ks</div>
             </div>
             <div class="item-quantity">
                 <button class="quantity-btn" onclick="updateQuantity('${item.productId}', ${quantity - 1})">-</button>
@@ -92,7 +92,7 @@ function displayCart(cart) {
                 <button class="quantity-btn" onclick="updateQuantity('${item.productId}', ${quantity + 1})">+</button>
             </div>
             <div class="item-total">
-                <span>${(price * quantity).toFixed(2)} Kč</span>
+                <span data-price="${price * quantity}">${formatPrice(price * quantity)}</span>
             </div>
             <button class="btn-remove" onclick="removeItem('${item.productId}')">
                 <span>×</span>
@@ -106,9 +106,9 @@ function displayCart(cart) {
     const vat = subtotal * 0.21;
     const total = subtotal + vat;
     
-    document.getElementById('subtotal').textContent = subtotal.toFixed(2) + ' Kč';
-    document.getElementById('vat').textContent = vat.toFixed(2) + ' Kč';
-    document.getElementById('total').textContent = total.toFixed(2) + ' Kč';
+    document.getElementById('subtotal').textContent = formatPrice(subtotal);
+    document.getElementById('vat').textContent = formatPrice(vat);
+    document.getElementById('total').textContent = formatPrice(total);
 }
 
 // Aktualizace množství
@@ -184,6 +184,11 @@ document.getElementById('checkoutBtn')?.addEventListener('click', () => {
         return;
     }
     window.location.href = '/checkout';
+});
+
+// Listen for currency changes
+window.addEventListener('currencyChanged', () => {
+    loadCart();
 });
 
 document.getElementById('clearCartBtn')?.addEventListener('click', async () => {

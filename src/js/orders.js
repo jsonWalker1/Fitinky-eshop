@@ -111,7 +111,7 @@ function displayOrders(orders) {
                                 <li>
                                     <span class="item-name">${item.name}</span>
                                     <span class="item-quantity">${itemQuantity}ks</span>
-                                    <span class="item-price">${(itemPrice * itemQuantity).toFixed(2)} Kč</span>
+                                    <span class="item-price">${formatPrice(itemPrice * itemQuantity)}</span>
                                 </li>
                                 `;
                             }).join('')}
@@ -124,11 +124,11 @@ function displayOrders(orders) {
                             const shippingPrice = typeof order.shippingPrice === 'number' ? order.shippingPrice : parseFloat(order.shippingPrice) || 0;
                             const total = typeof order.total === 'number' ? order.total : parseFloat(order.total) || (subtotal + shippingPrice);
                             return `
-                                ${subtotal > 0 ? `<div class="summary-row"><span>Mezisoučet:</span><span>${subtotal.toFixed(2)} Kč</span></div>` : ''}
-                                ${shippingPrice > 0 ? `<div class="summary-row"><span>Doprava:</span><span>${shippingPrice.toFixed(2)} Kč</span></div>` : ''}
+                                ${subtotal > 0 ? `<div class="summary-row"><span>Mezisoučet:</span><span>${formatPrice(subtotal)}</span></div>` : ''}
+                                ${shippingPrice > 0 ? `<div class="summary-row"><span>Doprava:</span><span>${formatPrice(shippingPrice)}</span></div>` : ''}
                                 <div class="summary-row summary-total">
                                     <span><strong>Celkem:</strong></span>
-                                    <span><strong>${total.toFixed(2)} Kč</strong></span>
+                                    <span><strong>${formatPrice(total)}</strong></span>
                                 </div>
                             `;
                         })()}

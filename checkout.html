@@ -58,12 +58,30 @@
         </div>
         
         <div class="right-menu">
-            <a href="/products" class="menu-icon" title="Vyhledat">
-                <span class="material-symbols-outlined">search</span>
-            </a>
-            <div class="menu-icon" title="Měna: Kč">
+            <div class="search-wrapper">
+                <input type="search" id="globalSearchInput" placeholder="Hledat produkty..." class="search-input">
+                <button class="search-button" onclick="performSearch()" title="Vyhledat">
+                    <span class="material-symbols-outlined">search</span>
+                </button>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+            <div class="menu-icon currency-icon" title="Měna" style="cursor: pointer; position: relative;">
                 <span class="material-symbols-outlined">currency_exchange</span>
-                <span class="currency-text">Kč</span>
+                <span class="currency-text">CZK</span>
+                <div class="currency-menu">
+                  <div class="currency-option active" data-currency="CZK">
+                    <span class="currency-code">CZK</span>
+                    <span class="currency-name">Česká koruna</span>
+                  </div>
+                  <div class="currency-option" data-currency="EUR">
+                    <span class="currency-code">EUR</span>
+                    <span class="currency-name">Euro</span>
+                  </div>
+                  <div class="currency-option" data-currency="USD">
+                    <span class="currency-code">USD</span>
+                    <span class="currency-name">US Dollar</span>
+                  </div>
+                </div>
             </div>
             <a href="/login" class="menu-icon" id="loginIcon" title="Přihlásit se">
                 <span class="material-symbols-outlined">person</span>
@@ -272,6 +290,8 @@
     </div>
     
     <script type="module" src="/src/js/main.js"></script>
+    <script type="module" src="/src/js/currency.js"></script>
+    <script type="module" src="/src/js/search.js"></script>
     <script type="module" src="/src/js/checkout.js"></script>
 </body>
 </html>

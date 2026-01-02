@@ -58,9 +58,13 @@
         </div>
         
         <div class="right-menu">
-            <a href="/products" class="menu-icon" title="Vyhledat">
-                <span class="material-symbols-outlined">search</span>
-            </a>
+            <div class="search-wrapper">
+                <input type="search" id="globalSearchInput" placeholder="Hledat produkty..." class="search-input">
+                <button class="search-button" onclick="performSearch()" title="Vyhledat">
+                    <span class="material-symbols-outlined">search</span>
+                </button>
+                <div class="search-results" id="searchResults"></div>
+            </div>
             <div class="menu-icon" title="Měna: Kč">
                 <span class="material-symbols-outlined">currency_exchange</span>
                 <span class="currency-text">Kč</span>

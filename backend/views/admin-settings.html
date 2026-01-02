@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nastavení - Admin</title>
+    <link rel="stylesheet" href="/sass/admin.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="/assets/pic/logo.png" alt="logo">
+            <h2>Eshop Admin</h2>
+        </div>
+        
+        <ul class="sidebar-links">
+            <li>
+                <a href="/admin/dashboard">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            
+            <h4 class="sidebar-section-title">Hlavní menu</h4>
+            
+            <li>
+                <a href="/admin/products">
+                    <span class="material-symbols-outlined">inventory</span>
+                    <span>Produkty</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/categories">
+                    <span class="material-symbols-outlined">folder</span>
+                    <span>Kategorie</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/orders">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                    <span>Objednávky</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/users">
+                    <span class="material-symbols-outlined">people</span>
+                    <span>Uživatelé</span>
+                </a>
+            </li>
+            
+            <h4 class="sidebar-section-title">Další</h4>
+            
+            <li>
+                <a href="/admin/statistics">
+                    <span class="material-symbols-outlined">analytics</span>
+                    <span>Statistiky</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/settings" class="active">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span>Nastavení</span>
+                </a>
+            </li>
+            <li>
+                <a href="/" target="_blank">
+                    <span class="material-symbols-outlined">open_in_new</span>
+                    <span>Zobrazit eshop</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/logout">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span>Odhlásit se</span>
+                </a>
+            </li>
+        </ul>
+        
+        <div class="sidebar-user">
+            <div class="user-profile">
+                <img src="/assets/pic/personalicon.bmp" alt="profile">
+                <div class="user-info">
+                    <h3>Admin</h3>
+                    <span>Administrátor</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+    
+    <!-- Overlay pro mobil -->
+    <div class="admin-sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Main Layout -->
+    <div class="admin-layout">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="header-left">
+                <button class="hamburger-menu" id="hamburgerMenu" aria-label="Menu">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <h1>Nastavení</h1>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="admin-main">
+            <div class="admin-content">
+                <!-- Currency Settings Section -->
+                <section class="settings-section">
+                    <h2>Správa měn</h2>
+                    <p class="section-description">Nastavte dostupné měny a jejich kurzy pro přepočet cen produktů.</p>
+                    
+                    <div class="currency-settings">
+                        <div class="currency-list">
+                            <h3>Dostupné měny</h3>
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Kód</th>
+                                        <th>Název</th>
+                                        <th>Symbol</th>
+                                        <th>Kurz (k CZK)</th>
+                                        <th>Výchozí</th>
+                                        <th>Akce</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="currencyTableBody">
+                                    <tr>
+                                        <td>CZK</td>
+                                        <td>Česká koruna</td>
+                                        <td>Kč</td>
+                                        <td>1.00</td>
+                                        <td><span class="badge badge-success">Ano</span></td>
+                                        <td>
+                                            <button class="btn-icon" onclick="editCurrency('CZK')" title="Upravit">
+                                                <span class="material-symbols-outlined">edit</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>EUR</td>
+                                        <td>Euro</td>
+                                        <td>€</td>
+                                        <td id="eurRate">24.50</td>
+                                        <td><span class="badge">Ne</span></td>
+                                        <td>
+                                            <button class="btn-icon" onclick="editCurrency('EUR')" title="Upravit">
+                                                <span class="material-symbols-outlined">edit</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>USD</td>
+                                        <td>US Dollar</td>
+                                        <td>$</td>
+                                        <td id="usdRate">22.50</td>
+                                        <td><span class="badge">Ne</span></td>
+                                        <td>
+                                            <button class="btn-icon" onclick="editCurrency('USD')" title="Upravit">
+                                                <span class="material-symbols-outlined">edit</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Edit Currency Modal -->
+                        <div class="modal" id="currencyModal" style="display: none;">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3>Upravit měnu</h3>
+                                    <button class="modal-close" onclick="closeCurrencyModal()">
+                                        <span class="material-symbols-outlined">close</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="currencyForm">
+                                        <input type="hidden" id="currencyCode" name="code">
+                                        
+                                        <div class="form-group">
+                                            <label for="currencyName">Název měny *</label>
+                                            <input type="text" id="currencyName" name="name" required>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="currencySymbol">Symbol *</label>
+                                            <input type="text" id="currencySymbol" name="symbol" required maxlength="5">
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="currencyRate">Kurz k CZK *</label>
+                                            <input type="number" id="currencyRate" name="rate" step="0.01" min="0.01" required>
+                                            <small>Kolik jednotek této měny odpovídá 1 CZK</small>
+                                        </div>
+                                        
+                                        <div class="form-actions">
+                                            <button type="button" class="btn btn-secondary" onclick="closeCurrencyModal()">Zrušit</button>
+                                            <button type="submit" class="btn btn-primary">Uložit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Currency management
+        const currencies = {
+            'CZK': { code: 'CZK', name: 'Česká koruna', symbol: 'Kč', rate: 1.0 },
+            'EUR': { code: 'EUR', name: 'Euro', symbol: '€', rate: 24.5 },
+            'USD': { code: 'USD', name: 'US Dollar', symbol: '$', rate: 22.5 }
+        };
+        
+        function editCurrency(code) {
+            const currency = currencies[code];
+            if (!currency) return;
+            
+            document.getElementById('currencyCode').value = currency.code;
+            document.getElementById('currencyName').value = currency.name;
+            document.getElementById('currencySymbol').value = currency.symbol;
+            document.getElementById('currencyRate').value = currency.rate;
+            
+            document.getElementById('currencyModal').style.display = 'flex';
+        }
+        
+        function closeCurrencyModal() {
+            document.getElementById('currencyModal').style.display = 'none';
+        }
+        
+        document.getElementById('currencyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const code = document.getElementById('currencyCode').value;
+            const name = document.getElementById('currencyName').value;
+            const symbol = document.getElementById('currencySymbol').value;
+            const rate = parseFloat(document.getElementById('currencyRate').value);
+            
+            // Update local storage (v produkci by to mělo jít na server)
+            currencies[code] = { code, name, symbol, rate };
+            
+            // Update table
+            if (code === 'EUR') {
+                document.getElementById('eurRate').textContent = rate.toFixed(2);
+            } else if (code === 'USD') {
+                document.getElementById('usdRate').textContent = rate.toFixed(2);
+            }
+            
+            // Save to localStorage (temporary solution)
+            localStorage.setItem('currencyRates', JSON.stringify(currencies));
+            
+            alert('Měna byla úspěšně aktualizována!');
+            closeCurrencyModal();
+        });
+        
+        // Load saved rates
+        const savedRates = localStorage.getItem('currencyRates');
+        if (savedRates) {
+            const parsed = JSON.parse(savedRates);
+            Object.assign(currencies, parsed);
+            if (currencies.EUR) document.getElementById('eurRate').textContent = currencies.EUR.rate.toFixed(2);
+            if (currencies.USD) document.getElementById('usdRate').textContent = currencies.USD.rate.toFixed(2);
+        }
+        
+        // Hamburger menu pro mobil
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+        
+        if (hamburgerMenu) {
+            hamburgerMenu.addEventListener('click', toggleSidebar);
+        }
+        
+        if (overlay) {
+            overlay.addEventListener('click', toggleSidebar);
+        }
+    </script>
+</body>
+</html>
+

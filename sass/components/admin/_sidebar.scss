@@ -50,32 +50,33 @@
         }
     }
     
-    // Na mobilu - hamburger menu
+    // Na mobilu - hamburger menu (skrytý, zobrazí se přes hamburger)
     @include admin-mobile {
-        width: 0;
+        width: $admin-sidebar-width-expanded;
         transform: translateX(-100%);
         transition: transform $admin-transition-slow;
+        z-index: 1001; // Nad overlay
         
+        // Zobrazit texty vždy na mobilu (když je otevřený)
+        .sidebar-header h2,
+        .sidebar-links li a span:not(.material-symbols-outlined),
+        .sidebar-section-title,
+        .sidebar-user .user-info {
+            opacity: 1;
+        }
+        
+        // Opravit pozici obrázků na mobilu
+        .sidebar-header img {
+            margin-left: 0;
+        }
+        
+        .sidebar-user .user-profile img {
+            margin-left: 0;
+        }
+        
+        // Otevřený stav
         &.open {
             transform: translateX(0);
-            width: $admin-sidebar-width-expanded;
-            
-            // Zobrazit texty při otevření na mobilu
-            .sidebar-header h2,
-            .sidebar-links li a span:not(.material-symbols-outlined),
-            .sidebar-section-title,
-            .sidebar-user .user-info {
-                opacity: 1;
-            }
-            
-            // Opravit pozici obrázků
-            .sidebar-header img {
-                margin-left: 0;
-            }
-            
-            .sidebar-user .user-profile img {
-                margin-left: 0;
-            }
         }
     }
 }

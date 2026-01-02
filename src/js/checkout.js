@@ -59,10 +59,10 @@ function displayOrderSummary(cart) {
             <div class="order-item">
                 <div>
                     <strong>${item.name}</strong><br>
-                    <small>${quantity}ks x ${price.toFixed(2)} Kč</small>
+                    <small>${quantity}ks x ${formatPrice(price)}</small>
                 </div>
                 <div>
-                    ${(quantity * price).toFixed(2)} Kč
+                    ${formatPrice(quantity * price)}
                 </div>
             </div>
         `;
@@ -126,7 +126,7 @@ function updateTotal(subtotal) {
     
     const totalElement = document.getElementById('orderTotal');
     if (totalElement) {
-        totalElement.textContent = total.toFixed(2) + ' Kč';
+        totalElement.textContent = formatPrice(total);
     }
 }
 

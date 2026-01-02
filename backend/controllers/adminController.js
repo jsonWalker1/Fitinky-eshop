@@ -684,3 +684,22 @@ export const updateProductImageOrderAPI = async (req, res) => {
     }
 };
 
+/**
+ * Načte admin settings stránku
+ */
+export const getAdminSettings = (req, res) => {
+    try {
+        const settingsPath = path.join(paths.root, 'backend', 'views', 'admin-settings.html');
+        if (fs.existsSync(settingsPath)) {
+            const settingsContent = fs.readFileSync(settingsPath, 'utf8');
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
+            res.send(settingsContent);
+        } else {
+            res.status(404).send('Admin settings stránka nenalezena');
+        }
+    } catch (error) {
+        console.error('Chyba při načítání admin settings:', error);
+        res.status(500).send('Chyba při načítání stránky');
+    }
+};
+

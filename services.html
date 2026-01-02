@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fitinky - Nerezové armatury a fitinky</title>
+  <title>Služby - E-Shop</title>
   <link rel="stylesheet" href="/sass/main.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 </head>
@@ -33,8 +33,8 @@
       <a href="/" class="menu-icon">
         <img src="/assets/pic/logo.png" alt="logo">
         <span class="logo-text">
-          <span class="logo-name">Fitinky</span>
-          <span class="logo-tagline">nerezové armatury a fitinky</span>
+          <span class="logo-name">E-Shop</span>
+          <span class="logo-tagline">kvalitní produkty</span>
         </span>
       </a>
     </div>
@@ -100,128 +100,59 @@
   </header>
 
   <!-- Main Content -->
-  <main class="homepage-main">
-    <!-- Sidebar with Categories -->
-    <aside class="categories-sidebar">
-      <h2 class="sidebar-title">NAŠE NABÍDKA NEREZOVÉHO MATERIÁLU</h2>
-      <nav class="categories-nav" id="categoriesNav">
-        <p>Načítám kategorie...</p>
-      </nav>
-      
-      <a href="#contact" class="btn-inquiry-sidebar">
-        <span class="material-symbols-outlined">send</span>
-        Nezávazná poptávka
-      </a>
-      
-      <div class="quick-contact">
-        <h3>Rychlý kontakt</h3>
-        <div class="contact-person">
-          <div class="contact-photo">
-            <img src="/assets/pic/personalicon.bmp" alt="Kontaktní osoba">
+  <main class="mainContainer">
+    <div class="container">
+      <section class="services-page-section">
+        <h1>Naše služby</h1>
+        
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="service-icon">
+              <span class="material-symbols-outlined">local_shipping</span>
+            </div>
+            <h2>Rychlá doprava</h2>
+            <p>Zajišťujeme rychlou a spolehlivou dopravu vašich objednávek. Nabízíme několik způsobů dopravy včetně expresní dopravy.</p>
           </div>
-          <div class="contact-details">
-            <a href="tel:+420123456789" class="contact-phone">
-              <span class="material-symbols-outlined">phone</span>
-              +420 123 456 789
-            </a>
-            <a href="mailto:info@example.com" class="contact-email">
-              <span class="material-symbols-outlined">email</span>
-              info@example.com
-            </a>
+          
+          <div class="service-card">
+            <div class="service-icon">
+              <span class="material-symbols-outlined">support_agent</span>
+            </div>
+            <h2>Zákaznická podpora</h2>
+            <p>Naše zákaznická podpora je vám k dispozici pro jakékoli dotazy nebo problémy. Jsme tu pro vás!</p>
           </div>
-        </div>
-        <div class="contact-address">
-          <p>Název firmy s.r.o.</p>
-          <p>Adresa 123</p>
-          <p>123 45 Město</p>
-        </div>
-        <a href="#contact" class="btn-all-contacts">Všechny kontakty</a>
-      </div>
-    </aside>
-
-    <!-- Main Content Area -->
-    <div class="homepage-content">
-      <!-- Promotional Blocks -->
-      <section class="promotional-blocks">
-        <div class="promo-block">
-          <div class="promo-icon">
-            <span class="material-symbols-outlined">inventory_2</span>
+          
+          <div class="service-card">
+            <div class="service-icon">
+              <span class="material-symbols-outlined">verified</span>
+            </div>
+            <h2>Záruka kvality</h2>
+            <p>Všechny naše produkty procházejí přísnou kontrolou kvality. Garantujeme vysokou kvalitu všech produktů.</p>
           </div>
-          <div class="promo-text">
-            <p>NAŠE PRODUKTOVÉ PORTFOLIO</p>
-            <p>STAVEBNICE PRO VAŠE NÁROČNÉ PROJEKTY</p>
+          
+          <div class="service-card">
+            <div class="service-icon">
+              <span class="material-symbols-outlined">payments</span>
+            </div>
+            <h2>Různé způsoby platby</h2>
+            <p>Nabízíme širokou škálu platebních metod pro vaše pohodlí - kreditní karty, bankovní převod, hotovost při převzetí.</p>
           </div>
-        </div>
-        <div class="promo-block">
-          <div class="promo-icon">
-            <span class="material-symbols-outlined">warehouse</span>
+          
+          <div class="service-card">
+            <div class="service-icon">
+              <span class="material-symbols-outlined">assignment_return</span>
+            </div>
+            <h2>Jednoduché vrácení</h2>
+            <p>Máte právo vrátit zboží do 14 dnů od nákupu. Proces vrácení je jednoduchý a rychlý.</p>
           </div>
-          <div class="promo-text">
-            <p>NAŠE SKLADOVÉ ZÁSOBY</p>
-            <p>VAŠE JISTOTA RYCHLÉHO DODÁNÍ</p>
+          
+          <div class="service-card">
+            <div class="service-icon">
+              <span class="material-symbols-outlined">inventory_2</span>
+            </div>
+            <h2>Široký sortiment</h2>
+            <p>Nabízíme široký výběr produktů v různých kategoriích. Najdete u nás vše, co potřebujete.</p>
           </div>
-        </div>
-        <div class="promo-block">
-          <div class="promo-icon">
-            <span class="material-symbols-outlined">cut</span>
-          </div>
-          <div class="promo-text">
-            <p>NAŠE OPTIMALIZACE ŘEZU</p>
-            <p>VAŠE OPTIMÁLNÍ CENA</p>
-          </div>
-        </div>
-        <div class="promo-block">
-          <div class="promo-icon">
-            <span class="material-symbols-outlined">engineering</span>
-          </div>
-          <div class="promo-text">
-            <p>NAŠE ZNALOSTI</p>
-            <p>VAŠE VÝHODA</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- About Section -->
-      <section class="about-section">
-        <div class="about-content">
-          <div class="about-text">
-            <h2>Žijeme nerezem...</h2>
-            <p>Zajišťujeme širokým portfoliem produktů a služeb projekty svých zákazníků. Za více než 10 let této spolupráce jsme umožnili realizaci mnoha náročných a technicky složitých projektů.</p>
-            <a href="#about" class="btn-read-more">
-              Celý příběh
-              <span class="material-symbols-outlined">arrow_forward</span>
-            </a>
-          </div>
-          <div class="about-image">
-            <img src="/assets/pic/personalicon.bmp" alt="O nás">
-          </div>
-        </div>
-      </section>
-
-      <!-- Bestsellers Section -->
-      <section class="bestsellers-section">
-        <h2 class="section-title">Nejprodávanější</h2>
-        <div class="products-grid" id="bestsellersGrid">
-          <p>Načítám produkty...</p>
-        </div>
-      </section>
-
-      <!-- Useful Links Section -->
-      <section class="useful-links-section">
-        <h2 class="section-title">Mohlo by se Vám hodit</h2>
-        <div class="useful-links">
-          <a href="#materials" class="useful-link link-blue">
-            Jakosti nerezových materiálů
-            <span class="material-symbols-outlined">arrow_forward</span>
-          </a>
-          <a href="/calculators#weightPipe" class="useful-link link-red">
-            Výpočet hmotností
-            <span class="material-symbols-outlined">arrow_forward</span>
-          </a>
-          <a href="/calculators#pressurePipe" class="useful-link link-yellow">
-            Výpočet tlaku v potrubí
-            <span class="material-symbols-outlined">arrow_forward</span>
-          </a>
         </div>
       </section>
     </div>
@@ -231,16 +162,16 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-column">
-          <h3>Fitinky</h3>
-          <p>Váš spolehlivý partner pro vodovodní fitinky a příslušenství z nerezové oceli.</p>
+          <h3>E-Shop</h3>
+          <p>Váš spolehlivý partner pro kvalitní produkty a služby.</p>
         </div>
         
         <div class="footer-column">
           <h4>Důležité odkazy</h4>
           <ul>
-            <li><a href="#about">O nás</a></li>
+            <li><a href="/about">O nás</a></li>
             <li><a href="/products">Katalog produktů</a></li>
-            <li><a href="#contact">Kontakt</a></li>
+            <li><a href="/contact">Kontakt</a></li>
             <li><a href="/orders">Moje objednávky</a></li>
           </ul>
         </div>
@@ -248,10 +179,10 @@
         <div class="footer-column">
           <h4>K nákupu</h4>
           <ul>
-            <li><a href="#contact">Doprava a platba</a></li>
-            <li><a href="#contact">Obchodní podmínky</a></li>
-            <li><a href="#contact">Reklamace</a></li>
-            <li><a href="#contact">GDPR</a></li>
+            <li><a href="/shipping">Doprava a platba</a></li>
+            <li><a href="/terms">Obchodní podmínky</a></li>
+            <li><a href="/complaints">Reklamace</a></li>
+            <li><a href="/gdpr">GDPR</a></li>
           </ul>
         </div>
         
@@ -281,7 +212,7 @@
       </div>
       
       <div class="footer-bottom">
-        <p>&copy; 2024 Fitinky. Všechna práva vyhrazena.</p>
+        <p>&copy; 2024 E-Shop. Všechna práva vyhrazena.</p>
       </div>
     </div>
   </footer>
@@ -289,6 +220,7 @@
   <script type="module" src="/src/js/main.js"></script>
   <script type="module" src="/src/js/currency.js"></script>
   <script type="module" src="/src/js/search.js"></script>
-  <script type="module" src="/src/js/homepage.js"></script>
 </body>
 </html>
+
+

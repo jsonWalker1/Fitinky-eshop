@@ -7,6 +7,7 @@
  */
 
 import { isAuthenticated, getUserId } from './auth.js';
+import { formatPrice } from './currency.js';
 
 const API_BASE = '/api';
 
@@ -134,7 +135,7 @@ function displayProducts(products) {
             <div class="product-info">
                 <h3>${product.name}</h3>
                 <p class="product-description">${product.description || ''}</p>
-                <div class="product-price">${(typeof product.price === 'number' ? product.price : parseFloat(product.price) || 0).toFixed(2)} Kč</div>
+                <div class="product-price" data-price="${product.price}">${formatPrice(typeof product.price === 'number' ? product.price : parseFloat(product.price) || 0)}</div>
                 ${status === 'in_stock' ? `<div class="product-availability product-available">✓ Skladem</div>` : ''}
                 ${status === 'on_order' ? `<div class="product-availability product-on-order">⏱ Na objednávku</div>` : ''}
                 ${status === 'out_of_stock' ? `<div class="product-availability product-out-of-stock">✗ Nedostupné</div>` : ''}
@@ -297,5 +298,27 @@ function showError(message) {
 document.addEventListener('DOMContentLoaded', () => {
     loadCategories();
     updateCartBadge();
+});
+
+// Listen for currency changes
+window.addEventListener('currencyChanged', () => {
+    // Update all prices on the page
+    document.querySelectorAll('.product-price[data-price]').forEach(el => {
+        const price = parseFloat(el.dataset.price);
+        if (!isNaN(price)) {
+            el.textContent = formatPrice(price);
+        }
+    });
+    
+    // Reload products if on products page
+    const productsGrid = document.getElementById('productsGrid');
+    if (productsGrid && productsGrid.children.length > 0) {
+        const categorySlug = window.currentCategorySlug;
+        if (categorySlug) {
+            loadCategoryProducts(categorySlug);
+        } else {
+            loadProducts();
+        }
+    }
 });
 

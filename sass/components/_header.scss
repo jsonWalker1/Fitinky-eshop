@@ -162,6 +162,116 @@ header {
     @include flex-center;
     gap: $spacing-lg;
     
+    .search-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        
+        .search-input {
+            width: 250px;
+            padding: $spacing-sm $spacing-md;
+            padding-right: 45px;
+            border: $border-width solid $color-border-light;
+            border-radius: $border-radius-md;
+            @include text-body($font-size-sm, $color-text-primary);
+            @include transition-base;
+            
+            &:focus {
+                outline: none;
+                border-color: $color-primary;
+                box-shadow: 0 0 0 3px rgba($color-primary, 0.1);
+            }
+            
+            &::placeholder {
+                color: $color-text-secondary;
+            }
+        }
+        
+        .search-button {
+            position: absolute;
+            right: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: $spacing-xs;
+            @include flex-center;
+            color: $color-text-secondary;
+            @include transition-base;
+            
+            &:hover {
+                color: $color-primary;
+            }
+            
+            .material-symbols-outlined {
+                font-size: $font-size-lg;
+            }
+        }
+        
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: $spacing-xs;
+            background: $color-bg-white;
+            border: $border-width solid $color-border-light;
+            border-radius: $border-radius-md;
+            box-shadow: $shadow-lg;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            
+            &.show {
+                display: block;
+            }
+            
+            .search-result-item {
+                display: flex;
+                align-items: center;
+                padding: $spacing-md;
+                cursor: pointer;
+                @include transition-base;
+                border-bottom: $border-width solid $color-border-light;
+                
+                &:last-child {
+                    border-bottom: none;
+                }
+                
+                &:hover {
+                    background-color: $color-bg-light;
+                }
+                
+                img {
+                    width: 50px;
+                    height: 50px;
+                    object-fit: cover;
+                    border-radius: $border-radius-sm;
+                    margin-right: $spacing-md;
+                }
+                
+                .result-info {
+                    flex: 1;
+                    
+                    .result-name {
+                        @include text-body($font-size-base, $color-text-primary, $font-weight-semibold);
+                        margin-bottom: $spacing-xs;
+                    }
+                    
+                    .result-price {
+                        @include text-body($font-size-sm, $color-primary, $font-weight-semibold);
+                    }
+                }
+            }
+            
+            .search-no-results {
+                padding: $spacing-lg;
+                text-align: center;
+                @include text-body($font-size-sm, $color-text-secondary);
+            }
+        }
+    }
+    
     .menu-icon {
         @include flex-center;
         gap: $spacing-xs;
@@ -187,6 +297,57 @@ header {
         .currency-text {
             @include text-body($font-size-sm, $color-text-primary);
             margin-left: $spacing-xs;
+        }
+        
+        &.currency-icon {
+            position: relative;
+            
+            .currency-menu {
+                position: absolute;
+                top: 100%;
+                right: 0;
+                margin-top: $spacing-sm;
+                background: $color-bg-white;
+                border: $border-width solid $color-border-light;
+                border-radius: $border-radius-md;
+                box-shadow: $shadow-lg;
+                min-width: 180px;
+                display: none;
+                z-index: 1000;
+                
+                &.show {
+                    display: block;
+                }
+                
+                .currency-option {
+                    padding: $spacing-md;
+                    cursor: pointer;
+                    @include transition-base;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    
+                    &:hover {
+                        background-color: $color-bg-light;
+                    }
+                    
+                    &.active {
+                        background-color: rgba($color-primary, 0.1);
+                        color: $color-primary;
+                        font-weight: $font-weight-semibold;
+                    }
+                    
+                    .currency-code {
+                        font-weight: $font-weight-semibold;
+                        font-size: $font-size-base;
+                    }
+                    
+                    .currency-name {
+                        font-size: $font-size-sm;
+                        color: $color-text-secondary;
+                    }
+                }
+            }
         }
         
         &.cart-icon {
@@ -305,6 +466,10 @@ header {
     .right-menu {
         gap: 0.75rem;
         
+        .search-wrapper {
+            display: none; // Skrýt search bar na mobilu (může se zobrazit v hamburger menu)
+        }
+        
         .menu-icon {
             width: 35px;
             height: 35px;
@@ -325,6 +490,11 @@ header {
     .logo .menu-icon img {
         width: 45px;
         height: 45px;
+    }
+    
+    // Skrýt tagline na mobilu
+    .logo .logo-text .logo-tagline {
+        display: none;
     }
     
     // Zablokovat scroll když je menu otevřené
