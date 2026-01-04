@@ -3196,57 +3196,13 @@ main {
   line-height: 1.6;
   margin-bottom: 0;
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
 }
-.calculators-page-section .section-button {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  margin-bottom: 1.5rem;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-.calculators-page-section .section-button:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.calculators-page-section .section-button .section-button-header {
-  padding: 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  background: #f7fafc;
-  transition: all 0.3s ease;
-}
-.calculators-page-section .section-button .section-button-header:hover {
-  background: rgba(49, 130, 206, 0.05);
-}
-.calculators-page-section .section-button .section-button-header h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #2d3748;
-  margin-bottom: 1rem;
-  line-height: 1.2;
-  margin: 0;
-}
-.calculators-page-section .section-button .section-button-header .expand-icon {
-  transition: all 0.3s ease;
-  transform: rotate(0deg);
-}
-.calculators-page-section .section-button .section-button-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-.calculators-page-section .section-button .section-button-content.expanded {
-  max-height: 10000px;
-  padding: 1.5rem;
-}
 .calculators-page-section .steel-grades-section {
-  margin-bottom: 0;
+  margin-bottom: 3rem;
 }
 .calculators-page-section .steel-grades-section h2 {
   font-size: 1.5rem;
@@ -3340,22 +3296,24 @@ main {
 .calculators-page-section .calculators-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
+  gap: 1rem;
+  margin-top: 1rem;
   background: #f5f5f5;
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 8px;
 }
 @media (max-width: 768px) {
   .calculators-page-section .calculators-grid {
     grid-template-columns: 1fr;
-    padding: 1rem;
+    padding: 0.5rem;
+    gap: 0.5rem;
   }
 }
 .calculators-page-section .calculator-item {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 6px;
-  padding: 1.5rem;
+  padding: 1rem;
   transition: all 0.3s ease;
 }
 .calculators-page-section .calculator-item:hover {
@@ -3363,7 +3321,7 @@ main {
 }
 .calculators-page-section .calculator-item .calculator-icon {
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 .calculators-page-section .calculator-item .calculator-icon svg {
   display: inline-block;
@@ -3375,11 +3333,11 @@ main {
   margin-bottom: 1rem;
   line-height: 1.2;
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 .calculators-page-section .calculator-item .calculator-form .input-group,
 .calculators-page-section .calculator-item .calculator-form .output-group {
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 .calculators-page-section .calculator-item .calculator-form .input-group label,
 .calculators-page-section .calculator-item .calculator-form .output-group label {
@@ -3448,7 +3406,7 @@ main {
   white-space: nowrap;
 }
 .calculators-page-section .calculator-item .calculator-form .output-group {
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 .calculators-page-section .calculator-item .calculator-form .output-group label:empty {
   display: none;
