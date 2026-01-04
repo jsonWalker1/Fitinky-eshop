@@ -1929,6 +1929,57 @@ body {
   font-style: italic;
 }
 
+.product-sortiment-category {
+  margin: 0.5rem 0;
+}
+.product-sortiment-category .sortiment-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.product-sortiment-category .sortiment-nejprodavanejsi {
+  background: #3182ce;
+  color: white;
+}
+.product-sortiment-category .sortiment-skladem {
+  background: #27ae60;
+  color: white;
+}
+.product-sortiment-category .sortiment-zlevnene {
+  background: #e53e3e;
+  color: white;
+}
+
+.sortiment-info {
+  margin: 0.5rem 0;
+}
+.sortiment-info .sortiment-badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.sortiment-info .sortiment-nejprodavanejsi {
+  background: #3182ce;
+  color: white;
+}
+.sortiment-info .sortiment-skladem {
+  background: #27ae60;
+  color: white;
+}
+.sortiment-info .sortiment-zlevnene {
+  background: #e53e3e;
+  color: white;
+}
+.sortiment-info .sortiment-none {
+  color: #718096;
+  font-style: italic;
+}
+
 .categories-list {
   display: flex;
   flex-direction: column;

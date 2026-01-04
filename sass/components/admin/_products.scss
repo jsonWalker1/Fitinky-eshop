@@ -824,3 +824,64 @@
     margin-top: 0.5rem;
     font-style: italic;
 }
+
+// Sortiment category badge
+.product-sortiment-category {
+    margin: 0.5rem 0;
+    
+    .sortiment-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+    
+    .sortiment-nejprodavanejsi {
+        background: #3182ce;
+        color: white;
+    }
+    
+    .sortiment-skladem {
+        background: #27ae60;
+        color: white;
+    }
+    
+    .sortiment-zlevnene {
+        background: #e53e3e;
+        color: white;
+    }
+}
+
+.sortiment-info {
+    margin: 0.5rem 0;
+    
+    .sortiment-badge {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+    
+    .sortiment-nejprodavanejsi {
+        background: #3182ce;
+        color: white;
+    }
+    
+    .sortiment-skladem {
+        background: #27ae60;
+        color: white;
+    }
+    
+    .sortiment-zlevnene {
+        background: #e53e3e;
+        color: white;
+    }
+    
+    .sortiment-none {
+        color: #718096;
+        font-style: italic;
+    }
+}

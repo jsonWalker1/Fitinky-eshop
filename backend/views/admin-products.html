@@ -534,6 +534,20 @@
                                     edit
                                 </span>
                             </div>
+                            ${(() => {
+                                const sortimentSlug = product.category_slug || product.categorySlug;
+                                if (sortimentSlug && ['nejprodavanejsi', 'skladem', 'zlevnene'].includes(sortimentSlug)) {
+                                    const sortimentNames = {
+                                        'nejprodavanejsi': 'Nejprodávanější',
+                                        'skladem': 'Skladem',
+                                        'zlevnene': 'Zlevněné'
+                                    };
+                                    return `<div class="product-sortiment-category">
+                                        <span class="sortiment-badge sortiment-${sortimentSlug}">${sortimentNames[sortimentSlug]}</span>
+                                    </div>`;
+                                }
+                                return '';
+                            })()}
                             <div class="product-price">${(typeof product.price === 'number' ? product.price : parseFloat(product.price) || 0).toFixed(2)} Kč</div>
                         </div>
                         
@@ -557,6 +571,24 @@
                                 <div class="details-section">
                                     <h4 class="section-title">Popis</h4>
                                     <div class="product-description">${product.description || 'Žádný popis'}</div>
+                                </div>
+                                
+                                <div class="details-section">
+                                    <h4 class="section-title">Kategorie sortimentu</h4>
+                                    ${(() => {
+                                        const sortimentSlug = product.category_slug || product.categorySlug;
+                                        if (sortimentSlug && ['nejprodavanejsi', 'skladem', 'zlevnene'].includes(sortimentSlug)) {
+                                            const sortimentNames = {
+                                                'nejprodavanejsi': 'Nejprodávanější',
+                                                'skladem': 'Skladem',
+                                                'zlevnene': 'Zlevněné'
+                                            };
+                                            return `<div class="sortiment-info">
+                                                <span class="sortiment-badge sortiment-${sortimentSlug}">${sortimentNames[sortimentSlug]}</span>
+                                            </div>`;
+                                        }
+                                        return '<div class="sortiment-info"><span class="sortiment-none">Žádná kategorie sortimentu</span></div>';
+                                    })()}
                                 </div>
                                 
                                 <div class="details-section">
