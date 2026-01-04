@@ -356,6 +356,9 @@ export const getProductById = async (id) => {
  */
 export const getProductsByCategory = async (categorySlug) => {
     try {
+        // categorySlug může být buď:
+        // 1. Technická kategorie (spojky-redukce, tvarovky, atd.) - filtruj podle c.slug
+        // 2. Sortiment kategorie (nejprodavanejsi, skladem, zlevnene) - filtruj podle p.category_slug
         const result = await pool.query(`
             SELECT p.*, c.name as category_name, c.slug as category_slug_db
             FROM products p
@@ -391,31 +394,26 @@ export const getProductsByCategory = async (categorySlug) => {
  */
 export const addProduct = async (productData) => {
     try {
-        // Najít category_id a slug podle category ID nebo slug
+        // Najít category_id pro technickou kategorii (Filtry, Okroužky, atd.)
         let categoryId = null;
-        let categorySlug = null;
         if (productData.categoryId) {
             const category = await getCategoryById(productData.categoryId);
             if (category) {
                 categoryId = category.id;
-                categorySlug = category.slug;
             }
         } else if (productData.categorySlug || productData.category) {
             const category = await getCategoryBySlug(productData.categorySlug || productData.category);
             if (category) {
                 categoryId = category.id;
-                categorySlug = category.slug;
             }
         }
 
-        // Pokud je zadána sortimentCategory, použij ji jako category_slug
-        // Pokud je prázdný string, vymaž category_slug (nastav na null)
-        let finalCategorySlug = categorySlug;
+        // category_slug v products je pro kategorii sortimentu (nejprodavanejsi, skladem, zlevnene)
+        // NENÍ to technická kategorie!
+        let sortimentCategorySlug = null;
         if (productData.sortimentCategory !== undefined) {
-            if (productData.sortimentCategory === '' || productData.sortimentCategory === null) {
-                finalCategorySlug = null;
-            } else {
-                finalCategorySlug = productData.sortimentCategory;
+            if (productData.sortimentCategory !== '' && productData.sortimentCategory !== null) {
+                sortimentCategorySlug = productData.sortimentCategory;
             }
         }
         
@@ -431,7 +429,7 @@ export const addProduct = async (productData) => {
             productData.price,
             productData.image || null,
             categoryId,
-            finalCategorySlug,
+            sortimentCategorySlug, // category_slug = sortiment kategorie, NENÍ technická kategorie
             productData.availabilityStatus || 'in_stock'
         ]);
 
@@ -462,30 +460,17 @@ export const addProduct = async (productData) => {
  */
 export const updateProduct = async (id, productData) => {
     try {
-        // Najít category_id a slug podle category ID nebo slug
+        // Najít category_id pro technickou kategorii (Filtry, Okroužky, atd.)
         let categoryId = null;
-        let categorySlug = null;
         if (productData.categoryId) {
             const category = await getCategoryById(productData.categoryId);
             if (category) {
                 categoryId = category.id;
-                categorySlug = category.slug;
             }
         } else if (productData.categorySlug || productData.category) {
             const category = await getCategoryBySlug(productData.categorySlug || productData.category);
             if (category) {
                 categoryId = category.id;
-                categorySlug = category.slug;
-            }
-        }
-        
-        // Pokud je zadána sortimentCategory, použij ji jako category_slug
-        // Pokud je prázdný string, vymaž category_slug (nastav na null)
-        if (productData.sortimentCategory !== undefined) {
-            if (productData.sortimentCategory === '' || productData.sortimentCategory === null) {
-                categorySlug = null;
-            } else {
-                categorySlug = productData.sortimentCategory;
             }
         }
 
@@ -509,14 +494,19 @@ export const updateProduct = async (id, productData) => {
             updates.push(`image = $${paramIndex++}`);
             values.push(productData.image);
         }
-        if (categoryId !== null || productData.category !== undefined) {
+        // category_id = technická kategorie (Filtry, Okroužky, atd.)
+        if (categoryId !== null || productData.category !== undefined || productData.categoryId !== undefined) {
             updates.push(`category_id = $${paramIndex++}`);
             values.push(categoryId);
         }
-        // category_slug se aktualizuje vždy, pokud je sortimentCategory zadán (i když je null)
+        // category_slug = sortiment kategorie (nejprodavanejsi, skladem, zlevnene)
+        // NENÍ to technická kategorie!
         if (productData.sortimentCategory !== undefined) {
+            const sortimentSlug = (productData.sortimentCategory === '' || productData.sortimentCategory === null) 
+                ? null 
+                : productData.sortimentCategory;
             updates.push(`category_slug = $${paramIndex++}`);
-            values.push(categorySlug);
+            values.push(sortimentSlug);
         }
         if (productData.availabilityStatus !== undefined) {
             updates.push(`availability_status = $${paramIndex++}`);
@@ -719,20 +709,26 @@ export const deleteCategory = async (id) => {
  * Mapuje SQL řádek na JSON formát (pro kompatibilitu s frontendem)
  */
 function mapProductToJSON(row) {
-    // category_slug z produktu má prioritu před category_slug_db z JOIN (hlavní kategorie)
-    // category_slug se používá pro kategorie sortimentu (nejprodavanejsi, skladem, zlevnene)
-    const categorySlug = row.category_slug || row.category_slug_db || null;
+    // DŮLEŽITÉ: Jsou to DVA různé typy kategorií!
+    // 1. Technická kategorie (Filtry, Okroužky, atd.) - z tabulky categories přes category_id
+    //    - category_slug_db = slug z categories (např. "spojky-redukce")
+    // 2. Kategorie sortimentu (Nejprodávanější, Skladem, Zlevněné) - přímo v products
+    //    - category_slug = sortiment slug (např. "nejprodavanejsi", "skladem", "zlevnene")
+    
+    const technicalCategorySlug = row.category_slug_db || null; // Technická kategorie z categories
+    const sortimentCategorySlug = row.category_slug || null; // Sortiment kategorie z products
     
     return {
         id: row.id,
         name: row.name,
         description: row.description,
-        price: parseFloat(row.price) || 0,
+        price: parseFloat(row.price) || 0),
         image: row.image,
-        categoryId: row.category_id,
-        categorySlug: categorySlug,
-        category_slug: categorySlug, // Přidat i jako category_slug pro kompatibilitu
-        category: row.category_name || row.category_slug || row.category_slug_db,
+        categoryId: row.category_id, // ID technické kategorie
+        categorySlug: technicalCategorySlug, // Slug technické kategorie (pro kompatibilitu)
+        category_slug: sortimentCategorySlug, // Slug sortiment kategorie (nejprodavanejsi, skladem, zlevnene)
+        sortimentCategory: sortimentCategorySlug, // Alias pro sortiment kategorii
+        category: row.category_name || technicalCategorySlug, // Název technické kategorie
         availabilityStatus: row.availability_status,
         createdAt: row.created_at ? new Date(row.created_at).toISOString() : new Date().toISOString(),
         updatedAt: row.updated_at ? new Date(row.updated_at).toISOString() : null
