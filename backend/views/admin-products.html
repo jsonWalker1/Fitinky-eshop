@@ -207,7 +207,7 @@
                     
                     <div class="form-group">
                         <label for="productName">Název produktu *</label>
-                        <input type="text" id="productName" name="name" maxlength="255" required>
+                        <input type="text" id="productName" name="name" required>
                     </div>
                     
                     <div class="form-group">
@@ -217,7 +217,7 @@
                     
                     <div class="form-group">
                         <label for="productPrice">Cena (Kč) *</label>
-                        <input type="number" id="productPrice" name="price" step="0.01" min="0" inputmode="decimal" pattern="[0-9]+([.,][0-9]{1,2})?" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 44 || event.charCode === 46" required>
+                        <input type="number" id="productPrice" name="price" step="0.01" required>
                     </div>
                     
                     <div class="form-group">
@@ -260,7 +260,7 @@
                     
                     <div class="form-group">
                         <label for="productDescription">Popis</label>
-                        <textarea id="productDescription" name="description" rows="4" maxlength="2000"></textarea>
+                        <textarea id="productDescription" name="description" rows="4"></textarea>
                     </div>
                     
                     <div class="form-group">
@@ -297,7 +297,7 @@
                         <div class="attributes-section">
                             <div class="form-group-inline">
                                 <label for="attributeDiameter">Průměr (DN)</label>
-                                <input type="text" id="attributeDiameter" name="attributeDiameter" placeholder="např. 20" maxlength="10" pattern="[0-9]+" onkeypress="return event.charCode >= 48 && event.charCode <= 57" data-diameter-input="true">
+                                <input type="text" id="attributeDiameter" name="attributeDiameter" placeholder="např. 20" data-diameter-input="true">
                             </div>
                             
                             <div class="form-group-inline">
@@ -664,7 +664,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Cena (Kč)</label>
-                                            <input type="number" name="price" step="0.01" min="0" inputmode="decimal" value="${product.price}" pattern="[0-9]+([.,][0-9]{1,2})?" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 44 || event.charCode === 46" required>
+                                            <input type="number" name="price" step="0.01" value="${product.price}" required>
                                         </div>
                                         <div class="form-group">
                                             <label>URL obrázku</label>
@@ -672,7 +672,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Popis</label>
-                                            <textarea name="description" rows="3" maxlength="2000">${escapeHtml(product.description || '')}</textarea>
+                                            <textarea name="description" rows="3">${escapeHtml(product.description || '')}</textarea>
                                         </div>
                                         <div class="form-group">
                                             <label>Status</label>
