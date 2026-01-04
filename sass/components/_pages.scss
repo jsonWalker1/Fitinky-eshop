@@ -460,7 +460,10 @@
                     }
                     
                     .grade-code {
-                        @include text-body($font-size-base, $color-text-primary, $font-weight-semibold);
+                        font-size: $font-size-base;
+                        color: $color-text-primary;
+                        font-weight: $font-weight-semibold;
+                        line-height: $line-height-normal;
                     }
                     
                     .expand-icon {
@@ -687,7 +690,10 @@
                 
                 label {
                     display: block;
-                    @include text-body($font-size-sm, $color-text-primary, $font-weight-semibold);
+                    font-size: $font-size-sm;
+                    color: $color-text-primary;
+                    font-weight: $font-weight-semibold;
+                    line-height: $line-height-normal;
                     margin-bottom: $spacing-xs;
                 }
                 

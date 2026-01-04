@@ -3258,8 +3258,8 @@ main {
 .calculators-page-section .steel-grades-section .steel-grades-table .grade-row .grade-header .grade-code {
   font-size: 1rem;
   color: #2d3748;
-  line-height: 600;
-  margin-bottom: 0;
+  font-weight: 600;
+  line-height: 1.5;
 }
 .calculators-page-section .steel-grades-section .steel-grades-table .grade-row .grade-header .expand-icon {
   transition: all 0.3s ease;
@@ -3485,8 +3485,8 @@ main {
   display: block;
   font-size: 0.85rem;
   color: #2d3748;
-  line-height: 600;
-  margin-bottom: 0;
+  font-weight: 600;
+  line-height: 1.5;
   margin-bottom: 0.25rem;
 }
 .calculators-page-section .calculator-card .calculator-body .form-group input,
