@@ -160,3 +160,18 @@ export const getGrades = (req, res) => {
         res.status(500).send('Chyba při načítání stránky');
     }
 };
+
+/**
+ * Načte a vrátí about.html jako HTML
+ */
+export const getAbout = (req, res) => {
+    try {
+        const aboutPath = path.join(paths.root, 'about.html');
+        const aboutContent = fs.readFileSync(aboutPath, 'utf8');
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.send(aboutContent);
+    } catch (error) {
+        console.error('Chyba při načítání about.html:', error);
+        res.status(500).send('Chyba při načítání stránky');
+    }
+};
