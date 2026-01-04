@@ -969,8 +969,7 @@
                             const subOption = document.createElement('option');
                             subOption.value = subcategory.id;
                             // Zobrazit název hlavní kategorie > podkategorie pro přehlednost
-                            subOption.textContent = `    ├─ ${subcategory.name}`;
-                            subOption.style.paddingLeft = '1rem';
+                            subOption.textContent = `${category.name} > ${subcategory.name}`;
                             if (subcategory.id === currentCategoryId) {
                                 subOption.selected = true;
                             }
@@ -982,10 +981,12 @@
                 // Zobrazit podkategorie, které nemají hlavní kategorii (orphaned)
                 subcategories.forEach(sub => {
                     if (!mainCategories.find(main => main.id === sub.parent_id)) {
+                        const parentCategory = categories.find(c => c.id === sub.parent_id);
                         const orphanOption = document.createElement('option');
                         orphanOption.value = sub.id;
-                        orphanOption.textContent = `    ├─ ${sub.name}`;
-                        orphanOption.style.paddingLeft = '1rem';
+                        orphanOption.textContent = parentCategory 
+                            ? `${parentCategory.name} > ${sub.name}`
+                            : sub.name;
                         if (sub.id === currentCategoryId) {
                             orphanOption.selected = true;
                         }
