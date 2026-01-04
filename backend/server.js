@@ -26,6 +26,7 @@ import authRoutes from './routes/authRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import adminUsersRoutes from './routes/adminUsersRoutes.js';
 import adminOrdersRoutes from './routes/adminOrdersRoutes.js';
+import adminMessagesRoutes from './routes/adminMessagesRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 
 const app = express();
@@ -54,6 +55,7 @@ app.use('/', authRoutes);
 app.use('/', adminRoutes);
 app.use('/', adminUsersRoutes);
 app.use('/', adminOrdersRoutes);
+app.use('/', adminMessagesRoutes);
 
 // 404 handler
 app.use((req, res) => {

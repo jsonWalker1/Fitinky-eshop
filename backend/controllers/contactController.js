@@ -2,11 +2,13 @@
  * Controller pro kontaktní formulář
  */
 
+import * as contactRepository from '../repositories/contactRepository.js';
+
 /**
  * Odeslání kontaktního formuláře
- * Pro demo účely pouze loguje data a vrací úspěch
+ * Ukládá zprávu do databáze
  */
-export const submitContact = (req, res) => {
+export const submitContact = async (req, res) => {
     try {
         const { name, email, phone, subject, message } = req.body;
         
@@ -27,7 +29,16 @@ export const submitContact = (req, res) => {
             });
         }
         
-        // Logování (v produkci by se zde odeslal email nebo uložilo do DB)
+        // Uložení do databáze
+        await contactRepository.createContactMessage({
+            name,
+            email,
+            phone,
+            subject,
+            message
+        });
+        
+        // Logování
         console.log('=== NOVÁ KONTAKTNÍ POPTÁVKA ===');
         console.log('Jméno:', name);
         console.log('Email:', email);
@@ -38,9 +49,8 @@ export const submitContact = (req, res) => {
         console.log('================================');
         
         // V produkci by se zde:
-        // 1. Uložilo do databáze
-        // 2. Odeslal email na info@example.com
-        // 3. Odeslal potvrzovací email zákazníkovi
+        // 1. Odeslal email na info@example.com
+        // 2. Odeslal potvrzovací email zákazníkovi
         
         res.json({
             success: true,
