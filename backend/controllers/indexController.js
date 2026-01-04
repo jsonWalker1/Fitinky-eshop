@@ -190,3 +190,18 @@ export const getContact = (req, res) => {
         res.status(500).send('Chyba při načítání stránky');
     }
 };
+
+/**
+ * Načte a vrátí category.html jako HTML
+ */
+export const getCategory = (req, res) => {
+    try {
+        const categoryPath = path.join(paths.root, 'category.html');
+        const categoryContent = fs.readFileSync(categoryPath, 'utf8');
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.send(categoryContent);
+    } catch (error) {
+        console.error('Chyba při načítání category.html:', error);
+        res.status(500).send('Chyba při načítání stránky');
+    }
+};

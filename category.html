@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kategorie - Fitinky</title>
+    <link rel="icon" type="image/png" href="/assets/pic/logo.png">
+    <link rel="apple-touch-icon" href="/assets/pic/logo.png">
+    <link rel="stylesheet" href="/sass/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-section">
+                <a href="/" class="logo-link">
+                    <img src="/assets/pic/logo.png" alt="Logo" class="logo">
+                    <div class="logo-text">
+                        <h1 class="logo-title">Fitinky</h1>
+                        <p class="logo-tagline">Nerezové armatury a fitinky</p>
+                    </div>
+                </a>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="/">Domů</a>
+                <a href="/products">Produkty</a>
+                <a href="/about">O nás</a>
+                <a href="/calculators">Převodní tabulky</a>
+                <a href="/contact">Kontakt</a>
+            </nav>
+            
+            <div class="header-actions">
+                <div class="search-wrapper">
+                    <input type="text" id="globalSearchInput" class="search-input" placeholder="Hledat produkty...">
+                    <button class="search-button" onclick="performGlobalSearch()">
+                        <span class="material-symbols-outlined">search</span>
+                    </button>
+                    <div class="search-results" id="globalSearchResults"></div>
+                </div>
+                
+                <div class="currency-selector">
+                    <select id="currencySelector" onchange="changeCurrency(this.value)">
+                        <option value="CZK">CZK</option>
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                    </select>
+                </div>
+                
+                <a href="/cart" class="cart-link">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                    <span class="cart-badge" id="cartBadge" style="display: none;">0</span>
+                </a>
+                
+                <div class="user-menu">
+                    <span class="material-symbols-outlined" id="userIcon">account_circle</span>
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="/login" id="loginLink">Přihlásit se</a>
+                        <a href="/orders" id="ordersLink" style="display: none;">Moje objednávky</a>
+                        <a href="#" id="logoutLink" style="display: none;" onclick="logout()">Odhlásit se</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="category-page-main">
+        <div class="category-page-container">
+            <!-- Category Header -->
+            <div class="category-header" id="categoryHeader">
+                <div class="category-header-content">
+                    <h1 class="category-title" id="categoryTitle">Načítám kategorii...</h1>
+                    <p class="category-description" id="categoryDescription"></p>
+                </div>
+                <div class="category-image" id="categoryImage"></div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-section">
+                <div class="products-header">
+                    <h2>Produkty v kategorii</h2>
+                    <div class="products-count" id="productsCount"></div>
+                </div>
+                <div class="products-grid" id="productsGrid">
+                    <p>Načítám produkty...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>O společnosti</h3>
+                <p>Váš spolehlivý partner pro nerezové armatury a fitinky. Kvalitní produkty a profesionální služby.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Kontakt</h3>
+                <p>Email: info@fitinky.cz</p>
+                <p>Telefon: +420 123 456 789</p>
+            </div>
+            <div class="footer-section">
+                <h3>Užitečné odkazy</h3>
+                <a href="/about">O nás</a>
+                <a href="/contact">Kontakt</a>
+                <a href="/calculators">Převodní tabulky</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Fitinky. Všechna práva vyhrazena.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="/src/js/main.js"></script>
+    <script type="module" src="/src/js/category.js"></script>
+    <script type="module" src="/src/js/search.js"></script>
+    <script type="module" src="/src/js/currency.js"></script>
+</body>
+</html>
+
