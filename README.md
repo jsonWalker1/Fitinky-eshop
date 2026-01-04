@@ -387,34 +387,6 @@ Styly pro hlavní kontejner.
 
 **Důležité:** `@use` musí být na začátku souboru, před jakýmkoli jiným kódem!
 
-## 📝 Poznámky
-
-- Všechny Sass soubory začínají podtržítkem `_` (partials)
-- CSS se kompiluje do `sass/main.css`
-- HTML odkazuje na `/sass/main.css`
-- Při změnách v Sass vždy zkompiluj nebo použij watch mode
-- Mixiny jsou v `_mixins.scss` a používají se pomocí `@include`
-- Proměnné jsou v `_variables.scss` (aktuálně prázdné, připravené k použití)
-
-## 🐛 Řešení problémů
-
-### Sass se nekompiluje
-- Zkontroluj, že máš správnou cestu v `main.scss`
-- Zkontroluj syntaxi Sass (žádné chyby)
-- Zkus smazat `main.css` a zkompilovat znovu
-
-### Změny se nezobrazují
-- Zkontroluj, že jsi zkompiloval Sass (`npm run sass:compile`)
-- Obnov stránku v prohlížeči (Ctrl+F5 pro hard refresh)
-- Zkontroluj, že HTML odkazuje na správný CSS soubor
-
-### Mixiny nefungují
-- Zkontroluj, že máš `@use '../mixins' as *;` na začátku souboru
-- Zkontroluj, že mixin existuje v `_mixins.scss`
-- Zkontroluj syntaxi `@include mixin-name;`
-
----
-
 ## 💡 O projektu a AI spolupráci
 
 Tento projekt vznikl jako experimentální zkouška programování s AI asistencí. Cílem bylo:
