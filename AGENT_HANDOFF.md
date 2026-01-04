@@ -460,6 +460,11 @@ Request → Route → Controller → Service → Repository → Database
 - **Connection:** `backend/db/connection.js` - connection pool
 - **Schema:** `backend/db/schema.sql`
 - **Migrace:** `backend/db/migrate.js`
+- **Production DATABASE_URL (Railway):**
+  ```
+  postgresql://postgres:YfQusObLDYtvOEZTQMBkBbQRxYUuFJcx@shortline.proxy.rlwy.net:16553/railway
+  ```
+  ⚠️ **DŮLEŽITÉ:** Tento URL je pro produkční databázi na Railway. Používejte opatrně při migracích a změnách!
 
 ### CSS/SASS
 
