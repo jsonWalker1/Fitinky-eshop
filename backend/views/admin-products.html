@@ -900,10 +900,19 @@
                 document.getElementById('productCategory').value = category.id;
             }
             
-            // Naplnit kategorie sortimentu
-            document.getElementById('sortimentBestsellers').checked = product.categorySlug === 'nejprodavanejsi';
-            document.getElementById('sortimentInStock').checked = product.categorySlug === 'skladem';
-            document.getElementById('sortimentDiscounted').checked = product.categorySlug === 'zlevnene';
+            // Naplnit kategorie sortimentu - zkontrolovat category_slug produktu
+            const currentSortiment = product.categorySlug || product.category_slug || null;
+            document.getElementById('sortimentBestsellers').checked = currentSortiment === 'nejprodavanejsi';
+            document.getElementById('sortimentInStock').checked = currentSortiment === 'skladem';
+            document.getElementById('sortimentDiscounted').checked = currentSortiment === 'zlevnene';
+            
+            // Debug log
+            console.log('Product categorySlug:', currentSortiment);
+            console.log('Checkboxes:', {
+                bestsellers: document.getElementById('sortimentBestsellers').checked,
+                inStock: document.getElementById('sortimentInStock').checked,
+                discounted: document.getElementById('sortimentDiscounted').checked
+            });
             
             // Načíst hodnoty atributů z API před naplněním formuláře
             await loadAttributeValues();
