@@ -3352,8 +3352,7 @@ main {
   display: block;
   font-size: 0.85rem;
   color: #2d3748;
-  line-height: 600;
-  margin-bottom: 0;
+  font-weight: 600;
   margin-bottom: 0.25rem;
 }
 .calculators-page-section .calculator-item .calculator-form .input-group .input-with-unit,

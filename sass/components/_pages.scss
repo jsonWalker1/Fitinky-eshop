@@ -557,7 +557,9 @@
                 
                 label {
                     display: block;
-                    @include text-body($font-size-sm, $color-text-primary, $font-weight-semibold);
+                    font-size: $font-size-sm;
+                    color: $color-text-primary;
+                    font-weight: $font-weight-semibold;
                     margin-bottom: $spacing-xs;
                 }
                 
