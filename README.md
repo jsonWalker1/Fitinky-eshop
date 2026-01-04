@@ -36,6 +36,9 @@ Projekt zahrnuje jak zákaznickou část (storefront), tak komplexní admin rozh
 
 ### Deployment
 - **Railway** - cloud hosting platforma
+  - Frontend: [https://web-production-fa55.up.railway.app/](https://web-production-fa55.up.railway.app/)
+  - Admin Dashboard: [https://web-production-fa55.up.railway.app/admin/dashboard](https://web-production-fa55.up.railway.app/admin/dashboard)
+  - PostgreSQL databáze běží na Railway
 
 ## 📁 Struktura projektu
 
