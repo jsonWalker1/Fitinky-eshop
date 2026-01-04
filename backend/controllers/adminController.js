@@ -139,7 +139,7 @@ export const getProducts = async (req, res) => {
  */
 export const addProduct = async (req, res) => {
     try {
-        const { name, category, price, description, availabilityStatus, image, attributes } = req.body;
+        const { name, category, price, description, availabilityStatus, image, attributes, sortimentCategories, sortimentCategory } = req.body;
         
         if (!name || !category || !price) {
             return res.status(400).json({
@@ -163,6 +163,13 @@ export const addProduct = async (req, res) => {
             image: image || null,
             attributes: attributes || {}
         };
+        
+        // Podporovat jak sortimentCategories (pole), tak sortimentCategory (string) pro zpětnou kompatibilitu
+        if (sortimentCategories !== undefined) {
+            productData.sortimentCategories = sortimentCategories;
+        } else if (sortimentCategory !== undefined) {
+            productData.sortimentCategory = sortimentCategory;
+        }
         
         const newProduct = await productsService.addProduct(productData);
         
