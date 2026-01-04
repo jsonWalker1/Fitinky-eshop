@@ -13,17 +13,33 @@ DECLARE
     timestamp_val TIMESTAMP := CURRENT_TIMESTAMP;
     product_count INTEGER := 0;
 BEGIN
-    -- Najít nebo vytvořit kategorii "Závitové fitinky - 1.4401"
-    SELECT id INTO category_id_var FROM categories WHERE slug = 'z-vitov-fitinky-1-4401' LIMIT 1;
+    -- Najít existující kategorii "Závitové fitinky - 1.4401" (podkategorie)
+    -- Podle obrázku je to podkategorie s názvem obsahujícím "308" nebo "1.4401"
+    SELECT id INTO category_id_var FROM categories 
+    WHERE (slug LIKE '%z-vitov-fitinky-1-4401%' 
+       OR slug LIKE '%zavitove-fitinky-1-4401%'
+       OR slug LIKE '%308%'
+       OR name LIKE '%308%'
+       OR name LIKE '%Závitové fitinky%1.4401%'
+       OR name LIKE '%Závitové fitinky%308%')
+       AND parent_id IS NOT NULL  -- Je to podkategorie
+    LIMIT 1;
+    
+    -- Pokud nenajdeme jako podkategorii, zkusíme najít bez ohledu na parent_id
+    IF category_id_var IS NULL THEN
+        SELECT id INTO category_id_var FROM categories 
+        WHERE slug LIKE '%z-vitov-fitinky-1-4401%' 
+           OR slug LIKE '%308%'
+           OR name LIKE '%308%'
+           OR name LIKE '%Závitové fitinky%1.4401%'
+        LIMIT 1;
+    END IF;
     
     IF category_id_var IS NULL THEN
-        -- Pokud kategorie neexistuje, vytvořit ji
-        category_id_var := 'zavitove-fitinky-1-4401';
-        INSERT INTO categories (id, name, slug, description, created_at)
-        VALUES (category_id_var, 'Závitové fitinky - 1.4401', 'z-vitov-fitinky-1-4401', 
-                'Závitové fitinky vyrobené z nerezové oceli 1.4401', timestamp_val)
-        ON CONFLICT (id) DO NOTHING;
+        RAISE EXCEPTION 'Kategorie "Závitové fitinky - 1.4401" (typ 308) nebyla nalezena. Zkontrolujte, zda kategorie existuje v databázi.';
     END IF;
+    
+    RAISE NOTICE 'Používám kategorii ID: %', category_id_var;
 
     -- Pole produktů: (velikost, cena, status)
     -- status: 'in_stock' = Skladem, 'on_order' = Do 10 dnů
