@@ -434,11 +434,47 @@
                 select.innerHTML = isFilter 
                     ? '<option value="">Všechny kategorie</option>'
                     : '<option value="">Vyberte kategorii</option>';
-                categories.forEach(category => {
-                    const option = document.createElement('option');
-                    option.value = category.id;
-                    option.textContent = category.name;
-                    select.appendChild(option);
+                
+                // Rozdělit kategorie na hlavní a podkategorie
+                const mainCategories = categories.filter(c => !c.parent_id);
+                const subcategories = categories.filter(c => c.parent_id);
+                
+                // Vytvořit mapu podkategorií podle parent_id
+                const subcategoriesMap = {};
+                subcategories.forEach(sub => {
+                    if (!subcategoriesMap[sub.parent_id]) {
+                        subcategoriesMap[sub.parent_id] = [];
+                    }
+                    subcategoriesMap[sub.parent_id].push(sub);
+                });
+                
+                // Zobrazit hlavní kategorie a jejich podkategorie
+                mainCategories.forEach(category => {
+                    // Hlavní kategorie
+                    const mainOption = document.createElement('option');
+                    mainOption.value = category.id;
+                    mainOption.textContent = category.name;
+                    select.appendChild(mainOption);
+                    
+                    // Podkategorie této hlavní kategorie
+                    if (subcategoriesMap[category.id]) {
+                        subcategoriesMap[category.id].forEach(subcategory => {
+                            const subOption = document.createElement('option');
+                            subOption.value = subcategory.id;
+                            subOption.textContent = `  └─ ${subcategory.name}`; // Odsazení a znak pro podkategorii
+                            select.appendChild(subOption);
+                        });
+                    }
+                });
+                
+                // Zobrazit podkategorie, které nemají hlavní kategorii (orphaned)
+                subcategories.forEach(sub => {
+                    if (!mainCategories.find(main => main.id === sub.parent_id)) {
+                        const orphanOption = document.createElement('option');
+                        orphanOption.value = sub.id;
+                        orphanOption.textContent = `  └─ ${sub.name}`;
+                        select.appendChild(orphanOption);
+                    }
                 });
             });
         }
