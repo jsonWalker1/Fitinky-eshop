@@ -901,17 +901,34 @@
             }
             
             // Naplnit kategorie sortimentu - zkontrolovat category_slug produktu
-            const currentSortiment = product.categorySlug || product.category_slug || null;
-            document.getElementById('sortimentBestsellers').checked = currentSortiment === 'nejprodavanejsi';
-            document.getElementById('sortimentInStock').checked = currentSortiment === 'skladem';
-            document.getElementById('sortimentDiscounted').checked = currentSortiment === 'zlevnene';
+            // category_slug má prioritu před categorySlug (pro kompatibilitu)
+            const currentSortiment = product.category_slug || product.categorySlug || null;
+            
+            // Resetovat všechny checkboxy
+            document.getElementById('sortimentBestsellers').checked = false;
+            document.getElementById('sortimentInStock').checked = false;
+            document.getElementById('sortimentDiscounted').checked = false;
+            
+            // Zaškrtnout správný checkbox podle category_slug
+            if (currentSortiment === 'nejprodavanejsi') {
+                document.getElementById('sortimentBestsellers').checked = true;
+            } else if (currentSortiment === 'skladem') {
+                document.getElementById('sortimentInStock').checked = true;
+            } else if (currentSortiment === 'zlevnene') {
+                document.getElementById('sortimentDiscounted').checked = true;
+            }
             
             // Debug log
-            console.log('Product categorySlug:', currentSortiment);
-            console.log('Checkboxes:', {
-                bestsellers: document.getElementById('sortimentBestsellers').checked,
-                inStock: document.getElementById('sortimentInStock').checked,
-                discounted: document.getElementById('sortimentDiscounted').checked
+            console.log('Loading product for edit:', {
+                productId: product.id,
+                category_slug: product.category_slug,
+                categorySlug: product.categorySlug,
+                currentSortiment: currentSortiment,
+                checkboxes: {
+                    bestsellers: document.getElementById('sortimentBestsellers').checked,
+                    inStock: document.getElementById('sortimentInStock').checked,
+                    discounted: document.getElementById('sortimentDiscounted').checked
+                }
             });
             
             // Načíst hodnoty atributů z API před naplněním formuláře
