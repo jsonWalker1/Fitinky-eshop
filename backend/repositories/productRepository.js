@@ -409,7 +409,15 @@ export const addProduct = async (productData) => {
         }
 
         // Pokud je zadána sortimentCategory, použij ji jako category_slug
-        const finalCategorySlug = productData.sortimentCategory || categorySlug;
+        // Pokud je prázdný string, vymaž category_slug (nastav na null)
+        let finalCategorySlug = categorySlug;
+        if (productData.sortimentCategory !== undefined) {
+            if (productData.sortimentCategory === '' || productData.sortimentCategory === null) {
+                finalCategorySlug = null;
+            } else {
+                finalCategorySlug = productData.sortimentCategory;
+            }
+        }
         
         const id = productData.id || String(Date.now());
         const result = await pool.query(`
@@ -472,8 +480,13 @@ export const updateProduct = async (id, productData) => {
         }
         
         // Pokud je zadána sortimentCategory, použij ji jako category_slug
-        if (productData.sortimentCategory) {
-            categorySlug = productData.sortimentCategory;
+        // Pokud je prázdný string, vymaž category_slug (nastav na null)
+        if (productData.sortimentCategory !== undefined) {
+            if (productData.sortimentCategory === '' || productData.sortimentCategory === null) {
+                categorySlug = null;
+            } else {
+                categorySlug = productData.sortimentCategory;
+            }
         }
 
         const updates = [];
@@ -496,11 +509,12 @@ export const updateProduct = async (id, productData) => {
             updates.push(`image = $${paramIndex++}`);
             values.push(productData.image);
         }
-        if (categoryId !== null) {
+        if (categoryId !== null || productData.category !== undefined) {
             updates.push(`category_id = $${paramIndex++}`);
             values.push(categoryId);
         }
-        if (categorySlug !== null) {
+        // category_slug se aktualizuje vždy, pokud je sortimentCategory zadán (i když je null)
+        if (productData.sortimentCategory !== undefined) {
             updates.push(`category_slug = $${paramIndex++}`);
             values.push(categorySlug);
         }

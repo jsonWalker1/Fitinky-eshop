@@ -1171,7 +1171,8 @@
             
             // Získat zaškrtnuté kategorie sortimentu
             const sortimentCheckboxes = form.querySelectorAll('input[name="sortimentCategories"]:checked');
-            const sortimentCategory = sortimentCheckboxes.length > 0 ? sortimentCheckboxes[0].value : null; // Pro teď jen první
+            // Pokud není žádná zaškrtnutá, nastav na null (odstraní kategorii sortimentu)
+            const sortimentCategory = sortimentCheckboxes.length > 0 ? sortimentCheckboxes[0].value : null;
             
             const formData = {
                 name: form.name.value,
@@ -1179,9 +1180,16 @@
                 price: parseFloat(form.price.value),
                 image: currentProductGallery.length > 0 ? currentProductGallery[0].url : null, // Pro zpětnou kompatibilitu
                 description: form.description.value,
-                availabilityStatus: form.availabilityStatus.value,
-                sortimentCategory: sortimentCategory // Přidat kategorii sortimentu
+                availabilityStatus: form.availabilityStatus.value
             };
+            
+            // Přidat sortimentCategory pouze pokud je zaškrtnutá
+            if (sortimentCategory) {
+                formData.sortimentCategory = sortimentCategory;
+            } else {
+                // Pokud není žádná zaškrtnutá, nastav prázdný string pro vymazání
+                formData.sortimentCategory = '';
+            }
             
             // Sbírat atributy - pouze pokud mají hodnotu
             const attributes = {};
