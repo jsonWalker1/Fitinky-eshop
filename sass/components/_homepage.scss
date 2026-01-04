@@ -218,12 +218,15 @@
     }
     
     .useful-links {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        display: flex;
+        justify-content: center;
+        align-items: center;
         gap: $spacing-lg;
+        flex-wrap: wrap;
         
         @media (max-width: $breakpoint-md) {
-            grid-template-columns: 1fr;
+            flex-direction: column;
+            align-items: stretch;
         }
         
         .useful-link {
