@@ -26,6 +26,7 @@ import authRoutes from './routes/authRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import adminUsersRoutes from './routes/adminUsersRoutes.js';
 import adminOrdersRoutes from './routes/adminOrdersRoutes.js';
+import contactRoutes from './routes/contactRoutes.js';
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.use('/', cartRoutes);
 app.use('/', userAuthRoutes);
 app.use('/', checkoutRoutes);
 app.use('/', ordersRoutes);
+app.use('/', contactRoutes);
 
 // Admin routy (dostupné na /admin/*)
 app.use('/', authRoutes);

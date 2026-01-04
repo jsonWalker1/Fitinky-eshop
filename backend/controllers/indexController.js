@@ -175,3 +175,18 @@ export const getAbout = (req, res) => {
         res.status(500).send('Chyba při načítání stránky');
     }
 };
+
+/**
+ * Načte a vrátí contact.html jako HTML
+ */
+export const getContact = (req, res) => {
+    try {
+        const contactPath = path.join(paths.root, 'contact.html');
+        const contactContent = fs.readFileSync(contactPath, 'utf8');
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.send(contactContent);
+    } catch (error) {
+        console.error('Chyba při načítání contact.html:', error);
+        res.status(500).send('Chyba při načítání stránky');
+    }
+};

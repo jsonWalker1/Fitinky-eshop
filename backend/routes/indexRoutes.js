@@ -1,5 +1,5 @@
 import express from 'express';
-import { getIndex, getIndexJson, getProducts, getCart, getLogin, getCheckout, getOrders, getCalculators, getSearch, getGrades, getAbout } from '../controllers/indexController.js';
+import { getIndex, getIndexJson, getProducts, getCart, getLogin, getCheckout, getOrders, getCalculators, getSearch, getGrades, getAbout, getContact } from '../controllers/indexController.js';
 
 const router = express.Router();
 
@@ -32,6 +32,9 @@ router.get('/grades', getGrades);
 
 // GET /about - vrací about.html jako HTML
 router.get('/about', getAbout);
+
+// GET /contact - vrací contact.html jako HTML
+router.get('/contact', getContact);
 
 // GET /api/index - vrací index.html jako JSON
 router.get('/api/index', getIndexJson);
