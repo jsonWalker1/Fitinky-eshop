@@ -45,21 +45,22 @@ function calculateSheet() {
     const thickness = parseFloat(document.getElementById('sheetThickness').value) / 1000; // mm -> m
     const width = parseFloat(document.getElementById('sheetWidth').value) / 1000; // mm -> m
     const length = parseFloat(document.getElementById('sheetLength').value) / 1000; // mm -> m
-    const density = getDensity('sheet');
+    const density = 7930; // Default density (AISI 304)
     
     if (!thickness || !width || !length) {
-        alert('Vyplňte prosím všechny hodnoty.');
+        document.getElementById('sheetWeightPerM').value = '';
+        document.getElementById('sheetTotalWeight').value = '';
         return;
     }
     
-    // Hmotnost na m²
-    const weightPerM2 = thickness * density; // kg/m²
+    // Hmotnost na m (pro šířku 1m)
+    const weightPerM = thickness * width * density; // kg/m
     
     // Celková hmotnost
-    const totalWeight = weightPerM2 * width * length; // kg
+    const totalWeight = weightPerM * length; // kg
     
-    document.getElementById('sheetWeightPerM2').value = weightPerM2.toFixed(2) + ' kg/m²';
-    document.getElementById('sheetTotalWeight').value = totalWeight.toFixed(2) + ' kg';
+    document.getElementById('sheetWeightPerM').value = weightPerM.toFixed(2);
+    document.getElementById('sheetTotalWeight').value = totalWeight.toFixed(2);
 }
 
 // Výpočet hmotnosti trubky
@@ -67,15 +68,17 @@ function calculatePipe() {
     const outerDiameter = parseFloat(document.getElementById('pipeOuterDiameter').value) / 1000; // mm -> m
     const wallThickness = parseFloat(document.getElementById('pipeWallThickness').value) / 1000; // mm -> m
     const length = parseFloat(document.getElementById('pipeLength').value); // m
-    const density = getDensity('pipe');
+    const density = 7930; // Default density (AISI 304)
     
     if (!outerDiameter || !wallThickness || !length) {
-        alert('Vyplňte prosím všechny hodnoty.');
+        document.getElementById('pipeWeightPerM').value = '';
+        document.getElementById('pipeTotalWeight').value = '';
         return;
     }
     
     if (wallThickness >= outerDiameter / 2) {
-        alert('Tloušťka stěny musí být menší než polovina průměru.');
+        document.getElementById('pipeWeightPerM').value = '';
+        document.getElementById('pipeTotalWeight').value = '';
         return;
     }
     
@@ -92,8 +95,8 @@ function calculatePipe() {
     // Celková hmotnost
     const totalWeight = weightPerM * length; // kg
     
-    document.getElementById('pipeWeightPerM').value = weightPerM.toFixed(2) + ' kg/m';
-    document.getElementById('pipeTotalWeight').value = totalWeight.toFixed(2) + ' kg';
+    document.getElementById('pipeWeightPerM').value = weightPerM.toFixed(2);
+    document.getElementById('pipeTotalWeight').value = totalWeight.toFixed(2);
 }
 
 // Výpočet hmotnosti jeklu (hollow square)
@@ -102,15 +105,17 @@ function calculateHollow() {
     const shortSide = parseFloat(document.getElementById('hollowShortSide').value) / 1000; // mm -> m
     const thickness = parseFloat(document.getElementById('hollowThickness').value) / 1000; // mm -> m
     const length = parseFloat(document.getElementById('hollowLength').value); // m
-    const density = getDensity('hollow');
+    const density = 7930; // Default density (AISI 304)
     
     if (!longSide || !shortSide || !thickness || !length) {
-        alert('Vyplňte prosím všechny hodnoty.');
+        document.getElementById('hollowWeightPerM').value = '';
+        document.getElementById('hollowTotalWeight').value = '';
         return;
     }
     
     if (thickness >= Math.min(longSide, shortSide) / 2) {
-        alert('Tloušťka musí být menší než polovina kratší strany.');
+        document.getElementById('hollowWeightPerM').value = '';
+        document.getElementById('hollowTotalWeight').value = '';
         return;
     }
     
@@ -127,18 +132,19 @@ function calculateHollow() {
     // Celková hmotnost
     const totalWeight = weightPerM * length; // kg
     
-    document.getElementById('hollowWeightPerM').value = weightPerM.toFixed(2) + ' kg/m';
-    document.getElementById('hollowTotalWeight').value = totalWeight.toFixed(2) + ' kg';
+    document.getElementById('hollowWeightPerM').value = weightPerM.toFixed(2);
+    document.getElementById('hollowTotalWeight').value = totalWeight.toFixed(2);
 }
 
 // Výpočet hmotnosti kulatiny
 function calculateRound() {
     const diameter = parseFloat(document.getElementById('roundDiameter').value) / 1000; // mm -> m
     const length = parseFloat(document.getElementById('roundLength').value); // m
-    const density = getDensity('round');
+    const density = 7930; // Default density (AISI 304)
     
     if (!diameter || !length) {
-        alert('Vyplňte prosím všechny hodnoty.');
+        document.getElementById('roundWeightPerM').value = '';
+        document.getElementById('roundTotalWeight').value = '';
         return;
     }
     
@@ -151,8 +157,8 @@ function calculateRound() {
     // Celková hmotnost
     const totalWeight = weightPerM * length; // kg
     
-    document.getElementById('roundWeightPerM').value = weightPerM.toFixed(2) + ' kg/m';
-    document.getElementById('roundTotalWeight').value = totalWeight.toFixed(2) + ' kg';
+    document.getElementById('roundWeightPerM').value = weightPerM.toFixed(2);
+    document.getElementById('roundTotalWeight').value = totalWeight.toFixed(2);
 }
 
 // Výpočet hmotnosti ploché tyče
@@ -160,10 +166,11 @@ function calculateFlat() {
     const width = parseFloat(document.getElementById('flatWidth').value) / 1000; // mm -> m
     const thickness = parseFloat(document.getElementById('flatThickness').value) / 1000; // mm -> m
     const length = parseFloat(document.getElementById('flatLength').value); // m
-    const density = getDensity('flat');
+    const density = 7930; // Default density (AISI 304)
     
     if (!width || !thickness || !length) {
-        alert('Vyplňte prosím všechny hodnoty.');
+        document.getElementById('flatWeightPerM').value = '';
+        document.getElementById('flatTotalWeight').value = '';
         return;
     }
     
@@ -176,18 +183,19 @@ function calculateFlat() {
     // Celková hmotnost
     const totalWeight = weightPerM * length; // kg
     
-    document.getElementById('flatWeightPerM').value = weightPerM.toFixed(2) + ' kg/m';
-    document.getElementById('flatTotalWeight').value = totalWeight.toFixed(2) + ' kg';
+    document.getElementById('flatWeightPerM').value = weightPerM.toFixed(2);
+    document.getElementById('flatTotalWeight').value = totalWeight.toFixed(2);
 }
 
 // Výpočet hmotnosti čtyřhranu
 function calculateSquare() {
     const side = parseFloat(document.getElementById('squareSide').value) / 1000; // mm -> m
     const length = parseFloat(document.getElementById('squareLength').value); // m
-    const density = getDensity('square');
+    const density = 7930; // Default density (AISI 304)
     
     if (!side || !length) {
-        alert('Vyplňte prosím všechny hodnoty.');
+        document.getElementById('squareWeightPerM').value = '';
+        document.getElementById('squareTotalWeight').value = '';
         return;
     }
     
@@ -200,18 +208,19 @@ function calculateSquare() {
     // Celková hmotnost
     const totalWeight = weightPerM * length; // kg
     
-    document.getElementById('squareWeightPerM').value = weightPerM.toFixed(2) + ' kg/m';
-    document.getElementById('squareTotalWeight').value = totalWeight.toFixed(2) + ' kg';
+    document.getElementById('squareWeightPerM').value = weightPerM.toFixed(2);
+    document.getElementById('squareTotalWeight').value = totalWeight.toFixed(2);
 }
 
 // Výpočet hmotnosti šestihranu
 function calculateHex() {
     const diameter = parseFloat(document.getElementById('hexDiameter').value) / 1000; // mm -> m (průměr přes plochy)
     const length = parseFloat(document.getElementById('hexLength').value); // m
-    const density = getDensity('hex');
+    const density = 7930; // Default density (AISI 304)
     
     if (!diameter || !length) {
-        alert('Vyplňte prosím všechny hodnoty.');
+        document.getElementById('hexWeightPerM').value = '';
+        document.getElementById('hexTotalWeight').value = '';
         return;
     }
     
@@ -227,14 +236,82 @@ function calculateHex() {
     // Celková hmotnost
     const totalWeight = weightPerM * length; // kg
     
-    document.getElementById('hexWeightPerM').value = weightPerM.toFixed(2) + ' kg/m';
-    document.getElementById('hexTotalWeight').value = totalWeight.toFixed(2) + ' kg';
+    document.getElementById('hexWeightPerM').value = weightPerM.toFixed(2);
+    document.getElementById('hexTotalWeight').value = totalWeight.toFixed(2);
 }
 
-// Inicializace
+// Inicializace - automatické výpočty při změně hodnot
 document.addEventListener('DOMContentLoaded', () => {
     // Všechny jakosti jsou zpočátku sbalené
     document.querySelectorAll('.grade-content').forEach(content => {
         content.classList.remove('expanded');
+    });
+    
+    // Přidat event listenery pro automatické výpočty
+    const inputs = {
+        sheet: ['sheetThickness', 'sheetWidth', 'sheetLength'],
+        pipe: ['pipeOuterDiameter', 'pipeWallThickness', 'pipeLength'],
+        hollow: ['hollowLongSide', 'hollowShortSide', 'hollowThickness', 'hollowLength'],
+        round: ['roundDiameter', 'roundLength'],
+        flat: ['flatWidth', 'flatThickness', 'flatLength'],
+        square: ['squareSide', 'squareLength'],
+        hex: ['hexDiameter', 'hexLength']
+    };
+    
+    // Přidat event listenery pro každou kalkulačku
+    inputs.sheet.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener('input', calculateSheet);
+            input.addEventListener('change', calculateSheet);
+        }
+    });
+    
+    inputs.pipe.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener('input', calculatePipe);
+            input.addEventListener('change', calculatePipe);
+        }
+    });
+    
+    inputs.hollow.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener('input', calculateHollow);
+            input.addEventListener('change', calculateHollow);
+        }
+    });
+    
+    inputs.round.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener('input', calculateRound);
+            input.addEventListener('change', calculateRound);
+        }
+    });
+    
+    inputs.flat.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener('input', calculateFlat);
+            input.addEventListener('change', calculateFlat);
+        }
+    });
+    
+    inputs.square.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener('input', calculateSquare);
+            input.addEventListener('change', calculateSquare);
+        }
+    });
+    
+    inputs.hex.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener('input', calculateHex);
+            input.addEventListener('change', calculateHex);
+        }
     });
 });

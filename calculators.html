@@ -219,42 +219,46 @@
           <div class="calculator-item">
             <div class="calculator-icon">
               <svg viewBox="0 0 100 100" width="80" height="80">
-                <rect x="10" y="30" width="80" height="40" fill="none" stroke="#0066cc" stroke-width="3"/>
-                <rect x="15" y="35" width="70" height="30" fill="#0066cc" opacity="0.3"/>
+                <rect x="10" y="30" width="80" height="40" fill="none" stroke="#333" stroke-width="2"/>
+                <rect x="15" y="35" width="70" height="30" fill="none" stroke="#333" stroke-width="1" stroke-dasharray="2,2"/>
               </svg>
             </div>
             <h3>Nerezový plech</h3>
             <div class="calculator-form">
-              <div class="form-group">
-                <label>Jakost materiálu</label>
-                <select class="grade-select" data-calc="sheet">
-                  <option value="7930">AISI 304 (7930 kg/m³)</option>
-                  <option value="8000">AISI 316 (8000 kg/m³)</option>
-                  <option value="7700">AISI 430 (7700 kg/m³)</option>
-                  <option value="7700">AISI 410 (7700 kg/m³)</option>
-                  <option value="7930">AISI 321 (7930 kg/m³)</option>
-                </select>
+              <div class="input-group">
+                <label>Tloušťka plechu</label>
+                <div class="input-with-unit">
+                  <input type="number" id="sheetThickness" step="0.1" min="0" class="calc-input">
+                  <span class="unit">mm</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Tloušťka plechu (mm)</label>
-                <input type="number" id="sheetThickness" step="0.1" min="0" placeholder="např. 5">
+              <div class="input-group">
+                <label>Šířka plechu</label>
+                <div class="input-with-unit">
+                  <input type="number" id="sheetWidth" step="0.1" min="0" class="calc-input">
+                  <span class="unit">mm</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Šířka plechu (mm)</label>
-                <input type="number" id="sheetWidth" step="0.1" min="0" placeholder="např. 1000">
+              <div class="input-group">
+                <label>Délka plechu</label>
+                <div class="input-with-unit">
+                  <input type="number" id="sheetLength" step="0.1" min="0" class="calc-input">
+                  <span class="unit">mm</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Délka plechu (mm)</label>
-                <input type="number" id="sheetLength" step="0.1" min="0" placeholder="např. 2000">
+              <div class="output-group">
+                <label></label>
+                <div class="input-with-unit">
+                  <input type="text" id="sheetWeightPerM" readonly class="calc-output">
+                  <span class="unit">kg/m</span>
+                </div>
               </div>
-              <button class="btn btn-primary" onclick="calculateSheet()">Vypočítat</button>
-              <div class="result-group">
-                <label>Hmotnost na m²</label>
-                <input type="text" id="sheetWeightPerM2" readonly>
-              </div>
-              <div class="result-group">
+              <div class="output-group">
                 <label>Výsledná hmotnost</label>
-                <input type="text" id="sheetTotalWeight" readonly>
+                <div class="input-with-unit">
+                  <input type="text" id="sheetTotalWeight" readonly class="calc-output">
+                  <span class="unit">kg</span>
+                </div>
               </div>
             </div>
           </div>
@@ -263,44 +267,48 @@
           <div class="calculator-item">
             <div class="calculator-icon">
               <svg viewBox="0 0 100 100" width="80" height="80">
-                <circle cx="50" cy="30" r="20" fill="none" stroke="#0066cc" stroke-width="3"/>
-                <circle cx="50" cy="30" r="12" fill="#fff"/>
-                <circle cx="50" cy="70" r="25" fill="none" stroke="#0066cc" stroke-width="3"/>
-                <circle cx="50" cy="70" r="15" fill="#fff"/>
+                <circle cx="50" cy="30" r="20" fill="none" stroke="#333" stroke-width="2"/>
+                <circle cx="50" cy="30" r="12" fill="none" stroke="#333" stroke-width="1"/>
+                <circle cx="50" cy="70" r="25" fill="none" stroke="#333" stroke-width="2"/>
+                <circle cx="50" cy="70" r="15" fill="none" stroke="#333" stroke-width="1"/>
               </svg>
             </div>
             <h3>Nerezová trubka</h3>
             <div class="calculator-form">
-              <div class="form-group">
-                <label>Jakost materiálu</label>
-                <select class="grade-select" data-calc="pipe">
-                  <option value="7930">AISI 304 (7930 kg/m³)</option>
-                  <option value="8000">AISI 316 (8000 kg/m³)</option>
-                  <option value="7700">AISI 430 (7700 kg/m³)</option>
-                  <option value="7700">AISI 410 (7700 kg/m³)</option>
-                  <option value="7930">AISI 321 (7930 kg/m³)</option>
-                </select>
+              <div class="input-group">
+                <label>Vnější průměr</label>
+                <div class="input-with-unit">
+                  <input type="number" id="pipeOuterDiameter" step="0.1" min="0" class="calc-input">
+                  <span class="unit">mm</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Vnější průměr (mm)</label>
-                <input type="number" id="pipeOuterDiameter" step="0.1" min="0" placeholder="např. 50">
+              <div class="input-group">
+                <label>Tloušťka stěny</label>
+                <div class="input-with-unit">
+                  <input type="number" id="pipeWallThickness" step="0.1" min="0" class="calc-input">
+                  <span class="unit">mm</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Tloušťka stěny (mm)</label>
-                <input type="number" id="pipeWallThickness" step="0.1" min="0" placeholder="např. 2">
+              <div class="input-group">
+                <label>Počet metrů</label>
+                <div class="input-with-unit">
+                  <input type="number" id="pipeLength" step="0.01" min="0" class="calc-input">
+                  <span class="unit">m</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Počet metrů (m)</label>
-                <input type="number" id="pipeLength" step="0.01" min="0" placeholder="např. 1">
+              <div class="output-group">
+                <label></label>
+                <div class="input-with-unit">
+                  <input type="text" id="pipeWeightPerM" readonly class="calc-output">
+                  <span class="unit">kg/m</span>
+                </div>
               </div>
-              <button class="btn btn-primary" onclick="calculatePipe()">Vypočítat</button>
-              <div class="result-group">
-                <label>Hmotnost na m</label>
-                <input type="text" id="pipeWeightPerM" readonly>
-              </div>
-              <div class="result-group">
+              <div class="output-group">
                 <label>Výsledná hmotnost</label>
-                <input type="text" id="pipeTotalWeight" readonly>
+                <div class="input-with-unit">
+                  <input type="text" id="pipeTotalWeight" readonly class="calc-output">
+                  <span class="unit">kg</span>
+                </div>
               </div>
             </div>
           </div>
@@ -309,46 +317,53 @@
           <div class="calculator-item">
             <div class="calculator-icon">
               <svg viewBox="0 0 100 100" width="80" height="80">
-                <rect x="20" y="25" width="60" height="50" fill="none" stroke="#0066cc" stroke-width="3"/>
-                <rect x="30" y="35" width="40" height="30" fill="#fff"/>
+                <rect x="20" y="25" width="60" height="50" fill="none" stroke="#333" stroke-width="2"/>
+                <rect x="30" y="35" width="40" height="30" fill="none" stroke="#333" stroke-width="1"/>
               </svg>
             </div>
             <h3>Nerezový jekl</h3>
             <div class="calculator-form">
-              <div class="form-group">
-                <label>Jakost materiálu</label>
-                <select class="grade-select" data-calc="hollow">
-                  <option value="7930">AISI 304 (7930 kg/m³)</option>
-                  <option value="8000">AISI 316 (8000 kg/m³)</option>
-                  <option value="7700">AISI 430 (7700 kg/m³)</option>
-                  <option value="7700">AISI 410 (7700 kg/m³)</option>
-                  <option value="7930">AISI 321 (7930 kg/m³)</option>
-                </select>
+              <div class="input-group">
+                <label>Delší strana</label>
+                <div class="input-with-unit">
+                  <input type="number" id="hollowLongSide" step="0.1" min="0" class="calc-input">
+                  <span class="unit">mm</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Delší strana (mm)</label>
-                <input type="number" id="hollowLongSide" step="0.1" min="0" placeholder="např. 100">
+              <div class="input-group">
+                <label>Kratší strana</label>
+                <div class="input-with-unit">
+                  <input type="number" id="hollowShortSide" step="0.1" min="0" class="calc-input">
+                  <span class="unit">mm</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Kratší strana (mm)</label>
-                <input type="number" id="hollowShortSide" step="0.1" min="0" placeholder="např. 50">
+              <div class="input-group">
+                <label>Tloušťka</label>
+                <div class="input-with-unit">
+                  <input type="number" id="hollowThickness" step="0.1" min="0" class="calc-input">
+                  <span class="unit">mm</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Tloušťka (mm)</label>
-                <input type="number" id="hollowThickness" step="0.1" min="0" placeholder="např. 3">
+              <div class="input-group">
+                <label>Počet metrů</label>
+                <div class="input-with-unit">
+                  <input type="number" id="hollowLength" step="0.01" min="0" class="calc-input">
+                  <span class="unit">m</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Počet metrů (m)</label>
-                <input type="number" id="hollowLength" step="0.01" min="0" placeholder="např. 1">
+              <div class="output-group">
+                <label></label>
+                <div class="input-with-unit">
+                  <input type="text" id="hollowWeightPerM" readonly class="calc-output">
+                  <span class="unit">kg/m</span>
+                </div>
               </div>
-              <button class="btn btn-primary" onclick="calculateHollow()">Vypočítat</button>
-              <div class="result-group">
-                <label>Hmotnost na m</label>
-                <input type="text" id="hollowWeightPerM" readonly>
-              </div>
-              <div class="result-group">
+              <div class="output-group">
                 <label>Výsledná hmotnost</label>
-                <input type="text" id="hollowTotalWeight" readonly>
+                <div class="input-with-unit">
+                  <input type="text" id="hollowTotalWeight" readonly class="calc-output">
+                  <span class="unit">kg</span>
+                </div>
               </div>
             </div>
           </div>
@@ -357,39 +372,40 @@
           <div class="calculator-item">
             <div class="calculator-icon">
               <svg viewBox="0 0 100 100" width="80" height="80">
-                <circle cx="50" cy="25" r="15" fill="#0066cc"/>
-                <circle cx="50" cy="50" r="18" fill="#0066cc"/>
-                <circle cx="50" cy="75" r="20" fill="#0066cc"/>
+                <circle cx="50" cy="25" r="15" fill="#333"/>
+                <circle cx="50" cy="50" r="18" fill="#333"/>
+                <circle cx="50" cy="75" r="20" fill="#333"/>
               </svg>
             </div>
             <h3>Nerezová kulatina</h3>
             <div class="calculator-form">
-              <div class="form-group">
-                <label>Jakost materiálu</label>
-                <select class="grade-select" data-calc="round">
-                  <option value="7930">AISI 304 (7930 kg/m³)</option>
-                  <option value="8000">AISI 316 (8000 kg/m³)</option>
-                  <option value="7700">AISI 430 (7700 kg/m³)</option>
-                  <option value="7700">AISI 410 (7700 kg/m³)</option>
-                  <option value="7930">AISI 321 (7930 kg/m³)</option>
-                </select>
+              <div class="input-group">
+                <label>Průměr</label>
+                <div class="input-with-unit">
+                  <input type="number" id="roundDiameter" step="0.1" min="0" class="calc-input">
+                  <span class="unit">mm</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Průměr (mm)</label>
-                <input type="number" id="roundDiameter" step="0.1" min="0" placeholder="např. 20">
+              <div class="input-group">
+                <label>Počet metrů</label>
+                <div class="input-with-unit">
+                  <input type="number" id="roundLength" step="0.01" min="0" class="calc-input">
+                  <span class="unit">m</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Počet metrů (m)</label>
-                <input type="number" id="roundLength" step="0.01" min="0" placeholder="např. 1">
+              <div class="output-group">
+                <label></label>
+                <div class="input-with-unit">
+                  <input type="text" id="roundWeightPerM" readonly class="calc-output">
+                  <span class="unit">kg/m</span>
+                </div>
               </div>
-              <button class="btn btn-primary" onclick="calculateRound()">Vypočítat</button>
-              <div class="result-group">
-                <label>Hmotnost na m</label>
-                <input type="text" id="roundWeightPerM" readonly>
-              </div>
-              <div class="result-group">
+              <div class="output-group">
                 <label>Výsledná hmotnost</label>
-                <input type="text" id="roundTotalWeight" readonly>
+                <div class="input-with-unit">
+                  <input type="text" id="roundTotalWeight" readonly class="calc-output">
+                  <span class="unit">kg</span>
+                </div>
               </div>
             </div>
           </div>
@@ -398,43 +414,47 @@
           <div class="calculator-item">
             <div class="calculator-icon">
               <svg viewBox="0 0 100 100" width="80" height="80">
-                <rect x="15" y="30" width="70" height="15" fill="#0066cc"/>
-                <rect x="20" y="45" width="60" height="12" fill="#0066cc"/>
-                <rect x="25" y="60" width="50" height="10" fill="#0066cc"/>
+                <rect x="15" y="30" width="70" height="15" fill="#333"/>
+                <rect x="20" y="45" width="60" height="12" fill="#333"/>
+                <rect x="25" y="60" width="50" height="10" fill="#333"/>
               </svg>
             </div>
             <h3>Nerezová plochá tyč</h3>
             <div class="calculator-form">
-              <div class="form-group">
-                <label>Jakost materiálu</label>
-                <select class="grade-select" data-calc="flat">
-                  <option value="7930">AISI 304 (7930 kg/m³)</option>
-                  <option value="8000">AISI 316 (8000 kg/m³)</option>
-                  <option value="7700">AISI 430 (7700 kg/m³)</option>
-                  <option value="7700">AISI 410 (7700 kg/m³)</option>
-                  <option value="7930">AISI 321 (7930 kg/m³)</option>
-                </select>
+              <div class="input-group">
+                <label>Šířka</label>
+                <div class="input-with-unit">
+                  <input type="number" id="flatWidth" step="0.1" min="0" class="calc-input">
+                  <span class="unit">mm</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Šířka (mm)</label>
-                <input type="number" id="flatWidth" step="0.1" min="0" placeholder="např. 50">
+              <div class="input-group">
+                <label>Tloušťka</label>
+                <div class="input-with-unit">
+                  <input type="number" id="flatThickness" step="0.1" min="0" class="calc-input">
+                  <span class="unit">mm</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Tloušťka (mm)</label>
-                <input type="number" id="flatThickness" step="0.1" min="0" placeholder="např. 10">
+              <div class="input-group">
+                <label>Počet metrů</label>
+                <div class="input-with-unit">
+                  <input type="number" id="flatLength" step="0.01" min="0" class="calc-input">
+                  <span class="unit">m</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Počet metrů (m)</label>
-                <input type="number" id="flatLength" step="0.01" min="0" placeholder="např. 1">
+              <div class="output-group">
+                <label></label>
+                <div class="input-with-unit">
+                  <input type="text" id="flatWeightPerM" readonly class="calc-output">
+                  <span class="unit">kg/m</span>
+                </div>
               </div>
-              <button class="btn btn-primary" onclick="calculateFlat()">Vypočítat</button>
-              <div class="result-group">
-                <label>Hmotnost na m</label>
-                <input type="text" id="flatWeightPerM" readonly>
-              </div>
-              <div class="result-group">
+              <div class="output-group">
                 <label>Výsledná hmotnost</label>
-                <input type="text" id="flatTotalWeight" readonly>
+                <div class="input-with-unit">
+                  <input type="text" id="flatTotalWeight" readonly class="calc-output">
+                  <span class="unit">kg</span>
+                </div>
               </div>
             </div>
           </div>
@@ -443,39 +463,40 @@
           <div class="calculator-item">
             <div class="calculator-icon">
               <svg viewBox="0 0 100 100" width="80" height="80">
-                <rect x="25" y="25" width="20" height="20" fill="#0066cc"/>
-                <rect x="40" y="40" width="25" height="25" fill="#0066cc"/>
-                <rect x="55" y="55" width="20" height="20" fill="#0066cc"/>
+                <rect x="25" y="25" width="20" height="20" fill="#333"/>
+                <rect x="40" y="40" width="25" height="25" fill="#333"/>
+                <rect x="55" y="55" width="20" height="20" fill="#333"/>
               </svg>
             </div>
             <h3>Nerezový čtyřhran</h3>
             <div class="calculator-form">
-              <div class="form-group">
-                <label>Jakost materiálu</label>
-                <select class="grade-select" data-calc="square">
-                  <option value="7930">AISI 304 (7930 kg/m³)</option>
-                  <option value="8000">AISI 316 (8000 kg/m³)</option>
-                  <option value="7700">AISI 430 (7700 kg/m³)</option>
-                  <option value="7700">AISI 410 (7700 kg/m³)</option>
-                  <option value="7930">AISI 321 (7930 kg/m³)</option>
-                </select>
+              <div class="input-group">
+                <label>Strana</label>
+                <div class="input-with-unit">
+                  <input type="number" id="squareSide" step="0.1" min="0" class="calc-input">
+                  <span class="unit">mm</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Strana (mm)</label>
-                <input type="number" id="squareSide" step="0.1" min="0" placeholder="např. 20">
+              <div class="input-group">
+                <label>Počet metrů</label>
+                <div class="input-with-unit">
+                  <input type="number" id="squareLength" step="0.01" min="0" class="calc-input">
+                  <span class="unit">m</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Počet metrů (m)</label>
-                <input type="number" id="squareLength" step="0.01" min="0" placeholder="např. 1">
+              <div class="output-group">
+                <label></label>
+                <div class="input-with-unit">
+                  <input type="text" id="squareWeightPerM" readonly class="calc-output">
+                  <span class="unit">kg/m</span>
+                </div>
               </div>
-              <button class="btn btn-primary" onclick="calculateSquare()">Vypočítat</button>
-              <div class="result-group">
-                <label>Hmotnost na m</label>
-                <input type="text" id="squareWeightPerM" readonly>
-              </div>
-              <div class="result-group">
+              <div class="output-group">
                 <label>Výsledná hmotnost</label>
-                <input type="text" id="squareTotalWeight" readonly>
+                <div class="input-with-unit">
+                  <input type="text" id="squareTotalWeight" readonly class="calc-output">
+                  <span class="unit">kg</span>
+                </div>
               </div>
             </div>
           </div>
@@ -484,39 +505,40 @@
           <div class="calculator-item">
             <div class="calculator-icon">
               <svg viewBox="0 0 100 100" width="80" height="80">
-                <polygon points="50,15 65,25 65,45 50,55 35,45 35,25" fill="#0066cc"/>
-                <polygon points="50,30 60,37 60,50 50,57 40,50 40,37" fill="#0066cc"/>
-                <polygon points="50,45 55,50 55,58 50,63 45,58 45,50" fill="#0066cc"/>
+                <polygon points="50,15 65,25 65,45 50,55 35,45 35,25" fill="#333"/>
+                <polygon points="50,30 60,37 60,50 50,57 40,50 40,37" fill="#333"/>
+                <polygon points="50,45 55,50 55,58 50,63 45,58 45,50" fill="#333"/>
               </svg>
             </div>
             <h3>Nerezový šestihran</h3>
             <div class="calculator-form">
-              <div class="form-group">
-                <label>Jakost materiálu</label>
-                <select class="grade-select" data-calc="hex">
-                  <option value="7930">AISI 304 (7930 kg/m³)</option>
-                  <option value="8000">AISI 316 (8000 kg/m³)</option>
-                  <option value="7700">AISI 430 (7700 kg/m³)</option>
-                  <option value="7700">AISI 410 (7700 kg/m³)</option>
-                  <option value="7930">AISI 321 (7930 kg/m³)</option>
-                </select>
+              <div class="input-group">
+                <label>Průměr přes plochy</label>
+                <div class="input-with-unit">
+                  <input type="number" id="hexDiameter" step="0.1" min="0" class="calc-input">
+                  <span class="unit">mm</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Průměr přes plochy (mm)</label>
-                <input type="number" id="hexDiameter" step="0.1" min="0" placeholder="např. 20">
+              <div class="input-group">
+                <label>Počet metrů</label>
+                <div class="input-with-unit">
+                  <input type="number" id="hexLength" step="0.01" min="0" class="calc-input">
+                  <span class="unit">m</span>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Počet metrů (m)</label>
-                <input type="number" id="hexLength" step="0.01" min="0" placeholder="např. 1">
+              <div class="output-group">
+                <label></label>
+                <div class="input-with-unit">
+                  <input type="text" id="hexWeightPerM" readonly class="calc-output">
+                  <span class="unit">kg/m</span>
+                </div>
               </div>
-              <button class="btn btn-primary" onclick="calculateHex()">Vypočítat</button>
-              <div class="result-group">
-                <label>Hmotnost na m</label>
-                <input type="text" id="hexWeightPerM" readonly>
-              </div>
-              <div class="result-group">
+              <div class="output-group">
                 <label>Výsledná hmotnost</label>
-                <input type="text" id="hexTotalWeight" readonly>
+                <div class="input-with-unit">
+                  <input type="text" id="hexTotalWeight" readonly class="calc-output">
+                  <span class="unit">kg</span>
+                </div>
               </div>
             </div>
           </div>
