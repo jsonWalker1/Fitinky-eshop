@@ -160,4 +160,30 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Načíst počet položek v košíku
   updateCartBadge();
+  
+  // Dynamický title text (pouze na index stránce)
+  if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+    const titleMessages = [
+      'Fitinky - Nerezové armatury a fitinky',
+      'Vítejte! Sleva na fitinky až 20%',
+      'Kvalitní nerezové armatury skladem',
+      'Rychlé dodání nerezových materiálů',
+      'Profesionální řešení pro vaše projekty',
+      'Nejširší sortiment nerezových fitinek',
+      'Odborné poradenství zdarma'
+    ];
+    
+    let currentTitleIndex = 0;
+    
+    function updatePageTitle() {
+      const titleElement = document.getElementById('pageTitle');
+      if (titleElement) {
+        titleElement.textContent = titleMessages[currentTitleIndex];
+        currentTitleIndex = (currentTitleIndex + 1) % titleMessages.length;
+      }
+    }
+    
+    // Změnit title každých 3 sekundy
+    setInterval(updatePageTitle, 3000);
+  }
 });
