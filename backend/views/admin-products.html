@@ -825,13 +825,63 @@
         });
         
         // Toggle product details
-        window.toggleProductDetails = function(productId) {
+        window.toggleProductDetails = async function(productId) {
             const details = document.getElementById(`product-details-${productId}`);
             const icon = details.previousElementSibling.querySelector('.expand-icon');
+            
+            // Pokud se detail otevírá poprvé, načíst hodnoty atributů pro selecty v inline editoru
+            if (!details.classList.contains('expanded')) {
+                // Zkontrolovat, jestli jsou hodnoty atributů načtené
+                if (!attributeValues.material || attributeValues.material.length === 0) {
+                    await loadAttributeValues();
+                }
+                
+                // Naplnit selecty v inline editoru pro tento produkt
+                const form = details.querySelector(`#edit-form-${productId}`);
+                if (form) {
+                    populateInlineAttributeSelects(form, productId);
+                }
+            }
             
             details.classList.toggle('expanded');
             icon.classList.toggle('expanded');
         };
+        
+        // Naplnit selecty atributů v inline editoru
+        function populateInlineAttributeSelects(form, productId) {
+            const product = allProducts.find(p => p.id === productId);
+            if (!product) return;
+            
+            // Typ připojení
+            const connectionTypeSelect = form.querySelector('select[name="attributeConnectionType"]');
+            if (connectionTypeSelect && attributeValues.connection_type && attributeValues.connection_type.length > 0) {
+                const currentValue = product.attributes?.connection_type?.value || '';
+                connectionTypeSelect.innerHTML = '<option value="">Vyberte typ</option>' +
+                    attributeValues.connection_type.map(v => 
+                        `<option value="${escapeHtml(v.value)}" ${v.value === currentValue ? 'selected' : ''}>${escapeHtml(v.display_name)}</option>`
+                    ).join('');
+            }
+            
+            // Tvar
+            const shapeSelect = form.querySelector('select[name="attributeShape"]');
+            if (shapeSelect && attributeValues.shape && attributeValues.shape.length > 0) {
+                const currentValue = product.attributes?.shape?.value || '';
+                shapeSelect.innerHTML = '<option value="">Vyberte tvar</option>' +
+                    attributeValues.shape.map(v => 
+                        `<option value="${escapeHtml(v.value)}" ${v.value === currentValue ? 'selected' : ''}>${escapeHtml(v.display_name)}</option>`
+                    ).join('');
+            }
+            
+            // Materiál
+            const materialSelect = form.querySelector('select[name="attributeMaterial"]');
+            if (materialSelect && attributeValues.material && attributeValues.material.length > 0) {
+                const currentValue = product.attributes?.material?.value || '';
+                materialSelect.innerHTML = '<option value="">Vyberte materiál</option>' +
+                    attributeValues.material.map(v => 
+                        `<option value="${escapeHtml(v.value)}" ${v.value === currentValue ? 'selected' : ''}>${escapeHtml(v.display_name)}</option>`
+                    ).join('');
+            }
+        }
         
         // Product gallery management
         let currentProductGallery = [];
