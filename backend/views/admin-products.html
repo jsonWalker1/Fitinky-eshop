@@ -1123,6 +1123,31 @@
                 const data = await response.json();
                 
                 if (data.success) {
+                    // Zkontrolovat hodnoty produktu z SQL
+                    console.log('=== PRODUKT ÚSPĚŠNĚ ULOŽEN (INLINE EDITOR) ===');
+                    console.log('Product ID:', productId);
+                    console.log('Form data:', formData);
+                    console.log('Response data:', data);
+                    
+                    // Načíst produkt znovu z API pro kontrolu hodnot z SQL
+                    const checkResponse = await fetch(`${API_BASE}/products/${productId}`);
+                    const checkData = await checkResponse.json();
+                    
+                    if (checkData.success && checkData.product) {
+                        console.log('=== HODNOTY PRODUKTU Z SQL ===');
+                        console.log('ID:', checkData.product.id);
+                        console.log('Název:', checkData.product.name);
+                        console.log('Kategorie ID:', checkData.product.categoryId);
+                        console.log('Kategorie slug:', checkData.product.categorySlug);
+                        console.log('Category_slug:', checkData.product.category_slug);
+                        console.log('Sortiment kategorie:', checkData.product.category_slug || checkData.product.categorySlug);
+                        console.log('Cena:', checkData.product.price);
+                        console.log('Status:', checkData.product.availabilityStatus);
+                        console.log('================================');
+                    } else {
+                        console.error('Chyba při načítání produktu pro kontrolu:', checkData);
+                    }
+                    
                     showSuccess('Produkt úspěšně aktualizován');
                     loadProducts();
                 } else {
