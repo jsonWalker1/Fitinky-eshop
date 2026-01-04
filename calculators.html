@@ -119,37 +119,37 @@
             <h3>Nerezový plech</h3>
             <div class="calculator-form">
               <div class="input-group">
-                <label>Tloušťka plechu</label>
+                <label for="sheetThickness">Tloušťka plechu</label>
                 <div class="input-with-unit">
-                  <input type="number" id="sheetThickness" step="0.1" min="0" class="calc-input">
+                  <input type="number" id="sheetThickness" name="sheetThickness" step="0.1" min="0" inputmode="decimal" class="calc-input" aria-label="Tloušťka plechu v milimetrech">
                   <span class="unit">mm</span>
                 </div>
               </div>
               <div class="input-group">
-                <label>Šířka plechu</label>
+                <label for="sheetWidth">Šířka plechu</label>
                 <div class="input-with-unit">
-                  <input type="number" id="sheetWidth" step="0.1" min="0" class="calc-input">
+                  <input type="number" id="sheetWidth" name="sheetWidth" step="0.1" min="0" inputmode="decimal" class="calc-input" aria-label="Šířka plechu v milimetrech">
                   <span class="unit">mm</span>
                 </div>
               </div>
               <div class="input-group">
-                <label>Délka plechu</label>
+                <label for="sheetLength">Délka plechu</label>
                 <div class="input-with-unit">
-                  <input type="number" id="sheetLength" step="0.1" min="0" class="calc-input">
+                  <input type="number" id="sheetLength" name="sheetLength" step="0.1" min="0" inputmode="decimal" class="calc-input" aria-label="Délka plechu v milimetrech">
                   <span class="unit">mm</span>
                 </div>
               </div>
               <div class="output-group">
-                <label></label>
+                <label for="sheetWeightPerM">Hmotnost na metr</label>
                 <div class="input-with-unit">
-                  <input type="text" id="sheetWeightPerM" readonly class="calc-output">
+                  <input type="text" id="sheetWeightPerM" name="sheetWeightPerM" readonly class="calc-output" aria-label="Hmotnost na metr v kilogramech">
                   <span class="unit">kg/m</span>
                 </div>
               </div>
               <div class="output-group">
-                <label>Výsledná hmotnost</label>
+                <label for="sheetTotalWeight">Výsledná hmotnost</label>
                 <div class="input-with-unit">
-                  <input type="text" id="sheetTotalWeight" readonly class="calc-output">
+                  <input type="text" id="sheetTotalWeight" name="sheetTotalWeight" readonly class="calc-output" aria-label="Výsledná hmotnost v kilogramech">
                   <span class="unit">kg</span>
                 </div>
               </div>
@@ -169,37 +169,37 @@
             <h3>Nerezová trubka</h3>
             <div class="calculator-form">
               <div class="input-group">
-                <label>Vnější průměr</label>
+                <label for="pipeOuterDiameter">Vnější průměr</label>
                 <div class="input-with-unit">
-                  <input type="number" id="pipeOuterDiameter" step="0.1" min="0" class="calc-input">
+                  <input type="number" id="pipeOuterDiameter" name="pipeOuterDiameter" step="0.1" min="0" inputmode="decimal" class="calc-input" aria-label="Vnější průměr trubky v milimetrech">
                   <span class="unit">mm</span>
                 </div>
               </div>
               <div class="input-group">
-                <label>Tloušťka stěny</label>
+                <label for="pipeWallThickness">Tloušťka stěny</label>
                 <div class="input-with-unit">
-                  <input type="number" id="pipeWallThickness" step="0.1" min="0" class="calc-input">
+                  <input type="number" id="pipeWallThickness" name="pipeWallThickness" step="0.1" min="0" inputmode="decimal" class="calc-input" aria-label="Tloušťka stěny trubky v milimetrech">
                   <span class="unit">mm</span>
                 </div>
               </div>
               <div class="input-group">
-                <label>Počet metrů</label>
+                <label for="pipeLength">Počet metrů</label>
                 <div class="input-with-unit">
-                  <input type="number" id="pipeLength" step="0.01" min="0" class="calc-input">
+                  <input type="number" id="pipeLength" name="pipeLength" step="0.01" min="0" inputmode="decimal" class="calc-input" aria-label="Počet metrů trubky">
                   <span class="unit">m</span>
                 </div>
               </div>
               <div class="output-group">
-                <label></label>
+                <label for="pipeWeightPerM">Hmotnost na metr</label>
                 <div class="input-with-unit">
-                  <input type="text" id="pipeWeightPerM" readonly class="calc-output">
+                  <input type="text" id="pipeWeightPerM" name="pipeWeightPerM" readonly class="calc-output" aria-label="Hmotnost na metr v kilogramech">
                   <span class="unit">kg/m</span>
                 </div>
               </div>
               <div class="output-group">
-                <label>Výsledná hmotnost</label>
+                <label for="pipeTotalWeight">Výsledná hmotnost</label>
                 <div class="input-with-unit">
-                  <input type="text" id="pipeTotalWeight" readonly class="calc-output">
+                  <input type="text" id="pipeTotalWeight" name="pipeTotalWeight" readonly class="calc-output" aria-label="Výsledná hmotnost v kilogramech">
                   <span class="unit">kg</span>
                 </div>
               </div>
@@ -217,44 +217,44 @@
             <h3>Nerezový jekl</h3>
             <div class="calculator-form">
               <div class="input-group">
-                <label>Delší strana</label>
+                <label for="hollowLongSide">Delší strana</label>
                 <div class="input-with-unit">
-                  <input type="number" id="hollowLongSide" step="0.1" min="0" class="calc-input">
+                  <input type="number" id="hollowLongSide" name="hollowLongSide" step="0.1" min="0" inputmode="decimal" class="calc-input" aria-label="Delší strana jeklu v milimetrech">
                   <span class="unit">mm</span>
                 </div>
               </div>
               <div class="input-group">
-                <label>Kratší strana</label>
+                <label for="hollowShortSide">Kratší strana</label>
                 <div class="input-with-unit">
-                  <input type="number" id="hollowShortSide" step="0.1" min="0" class="calc-input">
+                  <input type="number" id="hollowShortSide" name="hollowShortSide" step="0.1" min="0" inputmode="decimal" class="calc-input" aria-label="Kratší strana jeklu v milimetrech">
                   <span class="unit">mm</span>
                 </div>
               </div>
               <div class="input-group">
-                <label>Tloušťka</label>
+                <label for="hollowThickness">Tloušťka</label>
                 <div class="input-with-unit">
-                  <input type="number" id="hollowThickness" step="0.1" min="0" class="calc-input">
+                  <input type="number" id="hollowThickness" name="hollowThickness" step="0.1" min="0" inputmode="decimal" class="calc-input" aria-label="Tloušťka jeklu v milimetrech">
                   <span class="unit">mm</span>
                 </div>
               </div>
               <div class="input-group">
-                <label>Počet metrů</label>
+                <label for="hollowLength">Počet metrů</label>
                 <div class="input-with-unit">
-                  <input type="number" id="hollowLength" step="0.01" min="0" class="calc-input">
+                  <input type="number" id="hollowLength" name="hollowLength" step="0.01" min="0" inputmode="decimal" class="calc-input" aria-label="Počet metrů jeklu">
                   <span class="unit">m</span>
                 </div>
               </div>
               <div class="output-group">
-                <label></label>
+                <label for="hollowWeightPerM">Hmotnost na metr</label>
                 <div class="input-with-unit">
-                  <input type="text" id="hollowWeightPerM" readonly class="calc-output">
+                  <input type="text" id="hollowWeightPerM" name="hollowWeightPerM" readonly class="calc-output" aria-label="Hmotnost na metr v kilogramech">
                   <span class="unit">kg/m</span>
                 </div>
               </div>
               <div class="output-group">
-                <label>Výsledná hmotnost</label>
+                <label for="hollowTotalWeight">Výsledná hmotnost</label>
                 <div class="input-with-unit">
-                  <input type="text" id="hollowTotalWeight" readonly class="calc-output">
+                  <input type="text" id="hollowTotalWeight" name="hollowTotalWeight" readonly class="calc-output" aria-label="Výsledná hmotnost v kilogramech">
                   <span class="unit">kg</span>
                 </div>
               </div>
@@ -273,30 +273,30 @@
             <h3>Nerezová kulatina</h3>
             <div class="calculator-form">
               <div class="input-group">
-                <label>Průměr</label>
+                <label for="roundDiameter">Průměr</label>
                 <div class="input-with-unit">
-                  <input type="number" id="roundDiameter" step="0.1" min="0" class="calc-input">
+                  <input type="number" id="roundDiameter" name="roundDiameter" step="0.1" min="0" inputmode="decimal" class="calc-input" aria-label="Průměr kulatiny v milimetrech">
                   <span class="unit">mm</span>
                 </div>
               </div>
               <div class="input-group">
-                <label>Počet metrů</label>
+                <label for="roundLength">Počet metrů</label>
                 <div class="input-with-unit">
-                  <input type="number" id="roundLength" step="0.01" min="0" class="calc-input">
+                  <input type="number" id="roundLength" name="roundLength" step="0.01" min="0" inputmode="decimal" class="calc-input" aria-label="Počet metrů kulatiny">
                   <span class="unit">m</span>
                 </div>
               </div>
               <div class="output-group">
-                <label></label>
+                <label for="roundWeightPerM">Hmotnost na metr</label>
                 <div class="input-with-unit">
-                  <input type="text" id="roundWeightPerM" readonly class="calc-output">
+                  <input type="text" id="roundWeightPerM" name="roundWeightPerM" readonly class="calc-output" aria-label="Hmotnost na metr v kilogramech">
                   <span class="unit">kg/m</span>
                 </div>
               </div>
               <div class="output-group">
-                <label>Výsledná hmotnost</label>
+                <label for="roundTotalWeight">Výsledná hmotnost</label>
                 <div class="input-with-unit">
-                  <input type="text" id="roundTotalWeight" readonly class="calc-output">
+                  <input type="text" id="roundTotalWeight" name="roundTotalWeight" readonly class="calc-output" aria-label="Výsledná hmotnost v kilogramech">
                   <span class="unit">kg</span>
                 </div>
               </div>
@@ -315,37 +315,37 @@
             <h3>Nerezová plochá tyč</h3>
             <div class="calculator-form">
               <div class="input-group">
-                <label>Šířka</label>
+                <label for="flatWidth">Šířka</label>
                 <div class="input-with-unit">
-                  <input type="number" id="flatWidth" step="0.1" min="0" class="calc-input">
+                  <input type="number" id="flatWidth" name="flatWidth" step="0.1" min="0" inputmode="decimal" class="calc-input" aria-label="Šířka ploché tyče v milimetrech">
                   <span class="unit">mm</span>
                 </div>
               </div>
               <div class="input-group">
-                <label>Tloušťka</label>
+                <label for="flatThickness">Tloušťka</label>
                 <div class="input-with-unit">
-                  <input type="number" id="flatThickness" step="0.1" min="0" class="calc-input">
+                  <input type="number" id="flatThickness" name="flatThickness" step="0.1" min="0" inputmode="decimal" class="calc-input" aria-label="Tloušťka ploché tyče v milimetrech">
                   <span class="unit">mm</span>
                 </div>
               </div>
               <div class="input-group">
-                <label>Počet metrů</label>
+                <label for="flatLength">Počet metrů</label>
                 <div class="input-with-unit">
-                  <input type="number" id="flatLength" step="0.01" min="0" class="calc-input">
+                  <input type="number" id="flatLength" name="flatLength" step="0.01" min="0" inputmode="decimal" class="calc-input" aria-label="Počet metrů ploché tyče">
                   <span class="unit">m</span>
                 </div>
               </div>
               <div class="output-group">
-                <label></label>
+                <label for="flatWeightPerM">Hmotnost na metr</label>
                 <div class="input-with-unit">
-                  <input type="text" id="flatWeightPerM" readonly class="calc-output">
+                  <input type="text" id="flatWeightPerM" name="flatWeightPerM" readonly class="calc-output" aria-label="Hmotnost na metr v kilogramech">
                   <span class="unit">kg/m</span>
                 </div>
               </div>
               <div class="output-group">
-                <label>Výsledná hmotnost</label>
+                <label for="flatTotalWeight">Výsledná hmotnost</label>
                 <div class="input-with-unit">
-                  <input type="text" id="flatTotalWeight" readonly class="calc-output">
+                  <input type="text" id="flatTotalWeight" name="flatTotalWeight" readonly class="calc-output" aria-label="Výsledná hmotnost v kilogramech">
                   <span class="unit">kg</span>
                 </div>
               </div>
@@ -364,30 +364,30 @@
             <h3>Nerezový čtyřhran</h3>
             <div class="calculator-form">
               <div class="input-group">
-                <label>Strana</label>
+                <label for="squareSide">Strana</label>
                 <div class="input-with-unit">
-                  <input type="number" id="squareSide" step="0.1" min="0" class="calc-input">
+                  <input type="number" id="squareSide" name="squareSide" step="0.1" min="0" inputmode="decimal" class="calc-input" aria-label="Strana čtyřhranu v milimetrech">
                   <span class="unit">mm</span>
                 </div>
               </div>
               <div class="input-group">
-                <label>Počet metrů</label>
+                <label for="squareLength">Počet metrů</label>
                 <div class="input-with-unit">
-                  <input type="number" id="squareLength" step="0.01" min="0" class="calc-input">
+                  <input type="number" id="squareLength" name="squareLength" step="0.01" min="0" inputmode="decimal" class="calc-input" aria-label="Počet metrů čtyřhranu">
                   <span class="unit">m</span>
                 </div>
               </div>
               <div class="output-group">
-                <label></label>
+                <label for="squareWeightPerM">Hmotnost na metr</label>
                 <div class="input-with-unit">
-                  <input type="text" id="squareWeightPerM" readonly class="calc-output">
+                  <input type="text" id="squareWeightPerM" name="squareWeightPerM" readonly class="calc-output" aria-label="Hmotnost na metr v kilogramech">
                   <span class="unit">kg/m</span>
                 </div>
               </div>
               <div class="output-group">
-                <label>Výsledná hmotnost</label>
+                <label for="squareTotalWeight">Výsledná hmotnost</label>
                 <div class="input-with-unit">
-                  <input type="text" id="squareTotalWeight" readonly class="calc-output">
+                  <input type="text" id="squareTotalWeight" name="squareTotalWeight" readonly class="calc-output" aria-label="Výsledná hmotnost v kilogramech">
                   <span class="unit">kg</span>
                 </div>
               </div>
@@ -406,30 +406,30 @@
             <h3>Nerezový šestihran</h3>
             <div class="calculator-form">
               <div class="input-group">
-                <label>Průměr přes plochy</label>
+                <label for="hexDiameter">Průměr přes plochy</label>
                 <div class="input-with-unit">
-                  <input type="number" id="hexDiameter" step="0.1" min="0" class="calc-input">
+                  <input type="number" id="hexDiameter" name="hexDiameter" step="0.1" min="0" inputmode="decimal" class="calc-input" aria-label="Průměr přes plochy šestihranu v milimetrech">
                   <span class="unit">mm</span>
                 </div>
               </div>
               <div class="input-group">
-                <label>Počet metrů</label>
+                <label for="hexLength">Počet metrů</label>
                 <div class="input-with-unit">
-                  <input type="number" id="hexLength" step="0.01" min="0" class="calc-input">
+                  <input type="number" id="hexLength" name="hexLength" step="0.01" min="0" inputmode="decimal" class="calc-input" aria-label="Počet metrů šestihranu">
                   <span class="unit">m</span>
                 </div>
               </div>
               <div class="output-group">
-                <label></label>
+                <label for="hexWeightPerM">Hmotnost na metr</label>
                 <div class="input-with-unit">
-                  <input type="text" id="hexWeightPerM" readonly class="calc-output">
+                  <input type="text" id="hexWeightPerM" name="hexWeightPerM" readonly class="calc-output" aria-label="Hmotnost na metr v kilogramech">
                   <span class="unit">kg/m</span>
                 </div>
               </div>
               <div class="output-group">
-                <label>Výsledná hmotnost</label>
+                <label for="hexTotalWeight">Výsledná hmotnost</label>
                 <div class="input-with-unit">
-                  <input type="text" id="hexTotalWeight" readonly class="calc-output">
+                  <input type="text" id="hexTotalWeight" name="hexTotalWeight" readonly class="calc-output" aria-label="Výsledná hmotnost v kilogramech">
                   <span class="unit">kg</span>
                 </div>
               </div>
