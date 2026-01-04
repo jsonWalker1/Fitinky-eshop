@@ -207,7 +207,7 @@
                     
                     <div class="form-group">
                         <label for="productName">Název produktu *</label>
-                        <input type="text" id="productName" name="name" required>
+                        <input type="text" id="productName" name="name" maxlength="255" required>
                     </div>
                     
                     <div class="form-group">
@@ -217,7 +217,7 @@
                     
                     <div class="form-group">
                         <label for="productPrice">Cena (Kč) *</label>
-                        <input type="number" id="productPrice" name="price" step="0.01" min="0" required>
+                        <input type="number" id="productPrice" name="price" step="0.01" min="0" inputmode="decimal" required>
                     </div>
                     
                     <div class="form-group">
@@ -235,7 +235,7 @@
                             </div>
                             
                             <div id="imageUrlInput" class="image-input-wrapper">
-                                <input type="text" id="productImageUrl" placeholder="https://example.com/image.jpg">
+                                <input type="url" id="productImageUrl" placeholder="https://example.com/image.jpg">
                                 <button type="button" class="btn btn-secondary btn-sm" onclick="addImageFromUrl()">Přidat do galerie</button>
                             </div>
                             
@@ -260,7 +260,7 @@
                     
                     <div class="form-group">
                         <label for="productDescription">Popis</label>
-                        <textarea id="productDescription" name="description" rows="4"></textarea>
+                        <textarea id="productDescription" name="description" rows="4" maxlength="2000"></textarea>
                     </div>
                     
                     <div class="form-group">
@@ -297,7 +297,7 @@
                         <div class="attributes-section">
                             <div class="form-group-inline">
                                 <label for="attributeDiameter">Průměr (DN)</label>
-                                <input type="text" id="attributeDiameter" name="attributeDiameter" placeholder="např. DN 20, DN 25">
+                                <input type="text" id="attributeDiameter" name="attributeDiameter" placeholder="např. DN 20, DN 25" maxlength="50">
                             </div>
                             
                             <div class="form-group-inline">
@@ -613,7 +613,7 @@
                                     <form class="product-edit-form" id="edit-form-${product.id}" onsubmit="saveProduct(event, '${product.id}')">
                                         <div class="form-group">
                                             <label>Název</label>
-                                            <input type="text" name="name" value="${escapeHtml(product.name)}" required>
+                                            <input type="text" name="name" value="${escapeHtml(product.name)}" maxlength="255" required>
                                         </div>
                                         <div class="form-group">
                                             <label>Kategorie</label>
@@ -623,15 +623,15 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Cena (Kč)</label>
-                                            <input type="number" name="price" step="0.01" min="0" value="${product.price}" required>
+                                            <input type="number" name="price" step="0.01" min="0" inputmode="decimal" value="${product.price}" required>
                                         </div>
                                         <div class="form-group">
                                             <label>URL obrázku</label>
-                                            <input type="text" name="image" value="${escapeHtml(product.image || '')}">
+                                            <input type="url" name="image" value="${escapeHtml(product.image || '')}" placeholder="https://example.com/image.jpg">
                                         </div>
                                         <div class="form-group">
                                             <label>Popis</label>
-                                            <textarea name="description" rows="3">${escapeHtml(product.description || '')}</textarea>
+                                            <textarea name="description" rows="3" maxlength="2000">${escapeHtml(product.description || '')}</textarea>
                                         </div>
                                         <div class="form-group">
                                             <label>Status</label>
@@ -676,7 +676,7 @@
                                             <div class="attributes-section">
                                                 <div class="form-group-inline">
                                                     <label>Průměr (DN)</label>
-                                                    <input type="text" name="attributeDiameter" value="${escapeHtml(product.attributes?.diameter?.value || '')}" placeholder="např. DN 20">
+                                                    <input type="text" name="attributeDiameter" value="${escapeHtml(product.attributes?.diameter?.value || '')}" placeholder="např. DN 20" maxlength="50">
                                                 </div>
                                                 
                                                 <div class="form-group-inline">
