@@ -21,7 +21,6 @@ Projekt zahrnuje jak zákaznickou část (storefront), tak komplexní admin rozh
 - **HTML5** - semantická struktura stránky
 - **SASS/SCSS** - CSS preprocesor s modulární architekturou
 - **JavaScript (ES6+)** - moderní JavaScript s moduly
-- **Vite** - dev server s hot module replacement
 
 ### Backend
 - **Node.js** - runtime prostředí
