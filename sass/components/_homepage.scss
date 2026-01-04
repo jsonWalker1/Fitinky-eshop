@@ -207,6 +207,42 @@
     }
 }
 
+// Product Category Buttons
+.product-category-buttons {
+    display: flex;
+    justify-content: center;
+    gap: $spacing-md;
+    margin-bottom: $spacing-xl;
+    flex-wrap: wrap;
+    
+    .category-filter-btn {
+        padding: $spacing-sm $spacing-lg;
+        border: 2px solid $color-primary;
+        border-radius: $border-radius-md;
+        background: $color-bg-white;
+        color: $color-primary;
+        font-weight: $font-weight-semibold;
+        font-size: $font-size-base;
+        cursor: pointer;
+        transition: all $transition-base;
+        
+        &:hover {
+            background: rgba($color-primary, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba($color-primary, 0.2);
+        }
+        
+        &.active {
+            background: $color-primary;
+            color: $color-text-white;
+            
+            &:hover {
+                background: $color-primary-dark;
+            }
+        }
+    }
+}
+
 // Useful Links Section
 .useful-links-section {
     @include section-padding;

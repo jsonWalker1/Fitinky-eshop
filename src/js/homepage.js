@@ -72,24 +72,26 @@ function displayCategories(categories) {
     nav.innerHTML = categoriesHtml;
 }
 
-// Načtení nejprodávanějších produktů
-async function loadBestsellers() {
+// Načtení produktů podle kategorie
+async function loadProductsByCategory(categorySlug = 'nejprodavanejsi') {
     try {
-        // Načteme první 4 produkty (nebo můžeme přidat API endpoint pro bestsellers)
-        const response = await fetch(`${API_BASE}/products`);
+        const response = await fetch(`${API_BASE}/products?category=${categorySlug}&limit=4`);
         const data = await response.json();
         
         if (data.success && data.products) {
-            // Zobrazíme první 4 produkty jako "nejprodávanější"
-            const bestsellers = data.products.slice(0, 4);
-            displayBestsellers(bestsellers);
+            displayBestsellers(data.products);
         } else {
-            document.getElementById('bestsellersGrid').innerHTML = '<p>Žádné produkty k dispozici.</p>';
+            document.getElementById('bestsellersGrid').innerHTML = '<p>Žádné produkty v této kategorii.</p>';
         }
     } catch (error) {
         console.error('Chyba při načítání produktů:', error);
         document.getElementById('bestsellersGrid').innerHTML = '<p>Chyba při načítání produktů.</p>';
     }
+}
+
+// Původní funkce pro zpětnou kompatibilitu
+async function loadBestsellers() {
+    await loadProductsByCategory('nejprodavanejsi');
 }
 
 // Zobrazení nejprodávanějších produktů
@@ -137,5 +139,19 @@ function escapeHtml(text) {
 document.addEventListener('DOMContentLoaded', () => {
     loadCategories();
     loadBestsellers();
+    
+    // Event listenery pro filtrační buttony
+    const filterButtons = document.querySelectorAll('.category-filter-btn');
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Odstranit active třídu ze všech buttonů
+            filterButtons.forEach(b => b.classList.remove('active'));
+            // Přidat active třídu na kliknutý button
+            btn.classList.add('active');
+            // Načíst produkty pro vybranou kategorii
+            const categorySlug = btn.dataset.category;
+            loadProductsByCategory(categorySlug);
+        });
+    });
 });
 

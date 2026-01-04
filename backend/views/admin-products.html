@@ -272,6 +272,25 @@
                         </select>
                     </div>
                     
+                    <div class="form-group">
+                        <label class="section-label">Kategorie sortimentu</label>
+                        <div class="sortiment-categories">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="sortimentBestsellers" name="sortimentCategories" value="nejprodavanejsi">
+                                <span>Nejprodávanější</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="sortimentInStock" name="sortimentCategories" value="skladem">
+                                <span>Skladem</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="sortimentDiscounted" name="sortimentCategories" value="zlevnene">
+                                <span>Zlevněné</span>
+                            </label>
+                        </div>
+                        <p class="form-hint">Produkt může být v několika kategoriích sortimentu současně</p>
+                    </div>
+                    
                     <!-- Produktové atributy -->
                     <div class="form-group">
                         <label class="section-label">Technické atributy</label>
@@ -881,6 +900,11 @@
                 document.getElementById('productCategory').value = category.id;
             }
             
+            // Naplnit kategorie sortimentu
+            document.getElementById('sortimentBestsellers').checked = product.categorySlug === 'nejprodavanejsi';
+            document.getElementById('sortimentInStock').checked = product.categorySlug === 'skladem';
+            document.getElementById('sortimentDiscounted').checked = product.categorySlug === 'zlevnene';
+            
             // Načíst hodnoty atributů z API před naplněním formuláře
             await loadAttributeValues();
             
@@ -1145,13 +1169,18 @@
             const form = e.target;
             const productId = document.getElementById('productId').value;
             
+            // Získat zaškrtnuté kategorie sortimentu
+            const sortimentCheckboxes = form.querySelectorAll('input[name="sortimentCategories"]:checked');
+            const sortimentCategory = sortimentCheckboxes.length > 0 ? sortimentCheckboxes[0].value : null; // Pro teď jen první
+            
             const formData = {
                 name: form.name.value,
                 category: form.category.value,
                 price: parseFloat(form.price.value),
                 image: currentProductGallery.length > 0 ? currentProductGallery[0].url : null, // Pro zpětnou kompatibilitu
                 description: form.description.value,
-                availabilityStatus: form.availabilityStatus.value
+                availabilityStatus: form.availabilityStatus.value,
+                sortimentCategory: sortimentCategory // Přidat kategorii sortimentu
             };
             
             // Sbírat atributy - pouze pokud mají hodnotu

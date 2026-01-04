@@ -408,6 +408,9 @@ export const addProduct = async (productData) => {
             }
         }
 
+        // Pokud je zadána sortimentCategory, použij ji jako category_slug
+        const finalCategorySlug = productData.sortimentCategory || categorySlug;
+        
         const id = productData.id || String(Date.now());
         const result = await pool.query(`
             INSERT INTO products (id, name, description, price, image, category_id, category_slug, availability_status)
@@ -420,7 +423,7 @@ export const addProduct = async (productData) => {
             productData.price,
             productData.image || null,
             categoryId,
-            categorySlug,
+            finalCategorySlug,
             productData.availabilityStatus || 'in_stock'
         ]);
 
@@ -466,6 +469,11 @@ export const updateProduct = async (id, productData) => {
                 categoryId = category.id;
                 categorySlug = category.slug;
             }
+        }
+        
+        // Pokud je zadána sortimentCategory, použij ji jako category_slug
+        if (productData.sortimentCategory) {
+            categorySlug = productData.sortimentCategory;
         }
 
         const updates = [];

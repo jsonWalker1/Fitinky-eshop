@@ -74,7 +74,7 @@ export const getCategory = async (req, res) => {
  */
 export const getProducts = async (req, res) => {
     try {
-        const { category, search } = req.query;
+        const { category, search, limit } = req.query;
         
         let products;
         if (category) {
@@ -86,6 +86,11 @@ export const getProducts = async (req, res) => {
                 filters.search = search.trim();
             }
             products = await getAllProducts(filters);
+        }
+        
+        // Aplikovat limit pokud je zadán
+        if (limit && !isNaN(parseInt(limit))) {
+            products = products.slice(0, parseInt(limit));
         }
         
         res.json({
