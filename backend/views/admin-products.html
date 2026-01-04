@@ -618,9 +618,7 @@
                                         <div class="form-group">
                                             <label>Kategorie</label>
                                             <select name="category" required>
-                                                ${categories.map(cat => 
-                                                    `<option value="${cat.id}" ${(cat.id === (category?.id || product.categoryId)) ? 'selected' : ''}>${escapeHtml(cat.name)}</option>`
-                                                ).join('')}
+                                                <option value="">Načítám kategorie...</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -829,8 +827,13 @@
             const details = document.getElementById(`product-details-${productId}`);
             const icon = details.previousElementSibling.querySelector('.expand-icon');
             
-            // Pokud se detail otevírá poprvé, načíst hodnoty atributů pro selecty v inline editoru
+            // Pokud se detail otevírá poprvé, načíst hodnoty atributů a kategorií pro selecty v inline editoru
             if (!details.classList.contains('expanded')) {
+                // Zkontrolovat, jestli jsou kategorie načtené
+                if (!categories || categories.length === 0) {
+                    await loadCategories();
+                }
+                
                 // Zkontrolovat, jestli jsou hodnoty atributů načtené
                 if (!attributeValues.material || attributeValues.material.length === 0) {
                     await loadAttributeValues();
@@ -880,6 +883,15 @@
                     attributeValues.material.map(v => 
                         `<option value="${escapeHtml(v.value)}" ${v.value === currentValue ? 'selected' : ''}>${escapeHtml(v.display_name)}</option>`
                     ).join('');
+            }
+            
+            // Kategorie - naplnit select kategorií
+            const categorySelect = form.querySelector('select[name="category"]');
+            if (categorySelect && categories && categories.length > 0) {
+                const currentCategoryId = product.categoryId || '';
+                categorySelect.innerHTML = categories.map(cat => 
+                    `<option value="${cat.id}" ${cat.id === currentCategoryId ? 'selected' : ''}>${escapeHtml(cat.name)}</option>`
+                ).join('');
             }
         }
         
