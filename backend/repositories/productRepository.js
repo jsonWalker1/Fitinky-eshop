@@ -722,7 +722,7 @@ function mapProductToJSON(row) {
         id: row.id,
         name: row.name,
         description: row.description,
-        price: parseFloat(row.price) || 0),
+        price: parseFloat(row.price) || 0,
         image: row.image,
         categoryId: row.category_id, // ID technické kategorie
         categorySlug: technicalCategorySlug, // Slug technické kategorie (pro kompatibilitu)
