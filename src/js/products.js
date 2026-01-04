@@ -46,9 +46,9 @@ function displayCategories(categories) {
                 <h3>${category.name}</h3>
                 <p>${category.description}</p>
                 <div class="category-count">${category.productCount || 0} produktů</div>
-                <button class="btn btn-primary" onclick="loadCategoryProducts('${category.slug}')">
+                <a href="/category/${category.slug}" class="btn btn-primary">
                     Zobrazit produkty
-                </button>
+                </a>
             </div>
         </div>
     `).join('');

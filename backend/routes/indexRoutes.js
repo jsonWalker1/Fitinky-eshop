@@ -1,5 +1,5 @@
 import express from 'express';
-import { getIndex, getIndexJson, getProducts, getCart, getLogin, getCheckout, getOrders, getCalculators, getSearch, getGrades, getAbout, getContact } from '../controllers/indexController.js';
+import { getIndex, getIndexJson, getProducts, getCart, getLogin, getCheckout, getOrders, getCalculators, getSearch, getGrades, getAbout, getContact, getCategory } from '../controllers/indexController.js';
 import { addProductCategories } from '../controllers/migrationController.js';
 
 const router = express.Router();
@@ -36,6 +36,9 @@ router.get('/about', getAbout);
 
 // GET /contact - vrací contact.html jako HTML
 router.get('/contact', getContact);
+
+// GET /category/:slug - vrací category.html jako HTML
+router.get('/category/:slug', getCategory);
 
 // GET /api/index - vrací index.html jako JSON
 router.get('/api/index', getIndexJson);
