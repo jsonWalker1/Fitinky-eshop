@@ -544,9 +544,16 @@
         }
         
         .calculator-form {
+            display: flex;
+            flex-direction: column;
+            
             .input-group,
             .output-group {
                 margin-bottom: $spacing-sm;
+                height: auto;
+                max-height: none;
+                min-height: 0;
+                flex-shrink: 0;
                 
                 label {
                     display: block;
@@ -561,6 +568,8 @@
                     border-radius: $border-radius-sm;
                     overflow: hidden;
                     background: $color-bg-white;
+                    height: auto;
+                    min-height: 0;
                     
                     .calc-input,
                     .calc-output {

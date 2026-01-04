@@ -3335,9 +3335,17 @@ main {
   text-align: center;
   margin-bottom: 1rem;
 }
+.calculators-page-section .calculator-item .calculator-form {
+  display: flex;
+  flex-direction: column;
+}
 .calculators-page-section .calculator-item .calculator-form .input-group,
 .calculators-page-section .calculator-item .calculator-form .output-group {
   margin-bottom: 0.5rem;
+  height: auto;
+  max-height: none;
+  min-height: 0;
+  flex-shrink: 0;
 }
 .calculators-page-section .calculator-item .calculator-form .input-group label,
 .calculators-page-section .calculator-item .calculator-form .output-group label {
@@ -3356,6 +3364,8 @@ main {
   border-radius: 4px;
   overflow: hidden;
   background: #ffffff;
+  height: auto;
+  min-height: 0;
 }
 .calculators-page-section .calculator-item .calculator-form .input-group .input-with-unit .calc-input,
 .calculators-page-section .calculator-item .calculator-form .input-group .input-with-unit .calc-output,
