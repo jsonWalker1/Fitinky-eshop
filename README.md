@@ -14,10 +14,6 @@ Projekt zahrnuje jak zákaznickou část (storefront), tak komplexní admin rozh
 - [Stav projektu](#-stav-projektu)
 - [Technologie](#technologie)
 - [Struktura projektu](#struktura-projektu)
-- [Sass struktura](#sass-struktura)
-- [Mixiny](#mixiny)
-- [Komponenty](#komponenty)
-- [Workflow](#workflow)
 
 ## 🛠 Technologie
 
@@ -180,33 +176,6 @@ npm run build
 ```
 
 Build najdete ve složce `dist/`.
-
-## 🎨 Sass struktura
-
-### Importy v `main.scss`
-
-Všechny Sass soubory se importují v `sass/main.scss` pomocí `@use`:
-
-```scss
-@use 'variables';           // Proměnné
-@use 'mixins';              // Mixiny
-@use 'base';                // Základní styly
-@use 'layout';              // Layout
-@use 'components/header';    // Header komponenta
-@use 'components/footer';   // Footer komponenta
-@use 'components/mainCon';  // Main container
-@use 'components/landingPage'; // Landing page
-```
-
-**Poznámka:** Při přidávání nových komponent nezapomeňte je přidat do `main.scss`!
-
-### Soubory a jejich účel
-
-- **`_variables.scss`** - CSS proměnné (barvy, spacing, typography, breakpoints)
-- **`_mixins.scss`** - Znovupoužitelné mixiny (tlačítka, text, atd.)
-- **`_base.scss`** - Reset CSS a globální základní styly
-- **`_layout.scss`** - Layout styly (mainContainer, grid, atd.)
-- **`components/_*.scss`** - Styly pro jednotlivé komponenty
 
 ## 🎯 Mixiny
 
