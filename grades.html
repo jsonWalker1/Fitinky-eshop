@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jakosti nerezových materiálů - E-Shop</title>
+  <link rel="stylesheet" href="/sass/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+</head>
+<body>
+  <!-- Top Contact Bar -->
+  <div class="top-contact-bar">
+    <div class="container">
+      <div class="contact-info">
+        <span class="contact-item">
+          <span>Rychlý kontakt:</span>
+          <a href="tel:+420123456789">+420 123 456 789</a>
+        </span>
+        <span class="contact-item">
+          <a href="mailto:info@example.com">info@example.com</a>
+        </span>
+      </div>
+      <a href="#contact" class="btn-inquiry">
+        <span class="material-symbols-outlined">send</span>
+        Nezávazná poptávka
+      </a>
+    </div>
+  </div>
+
+  <!-- Header Navigation -->
+  <header>
+    <div class="logo">
+      <a href="/" class="menu-icon">
+        <img src="/assets/pic/logo.png" alt="logo">
+        <span class="logo-text">
+          <span class="logo-name">E-Shop</span>
+          <span class="logo-tagline">kvalitní produkty</span>
+        </span>
+      </a>
+    </div>
+    
+    <button class="hamburger" aria-label="Menu" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    
+    <div class="header-menu" id="headerMenu">
+      <nav>
+        <ul>
+          <li><a href="/about">Kdo jsme?</a><span class="material-symbols-outlined">expand_more</span></li>
+          <li><a href="/tables">Převodní tabulky</a><span class="material-symbols-outlined">expand_more</span></li>
+          <li><a href="/services">Služby</a><span class="material-symbols-outlined">expand_more</span></li>
+          <li><a href="/articles">Články</a><span class="material-symbols-outlined">expand_more</span></li>
+          <li><a href="/contact">Kontakt</a></li>
+        </ul>
+      </nav>
+    </div>
+    
+    <div class="right-menu">
+      <div class="search-wrapper">
+        <input type="search" id="globalSearchInput" placeholder="Hledat produkty..." class="search-input">
+        <button class="search-button" onclick="performSearch()" title="Vyhledat">
+          <span class="material-symbols-outlined">search</span>
+        </button>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      <div class="menu-icon currency-icon" title="Měna" style="cursor: pointer; position: relative;">
+        <span class="material-symbols-outlined">currency_exchange</span>
+        <span class="currency-text">CZK</span>
+        <div class="currency-menu">
+          <div class="currency-option active" data-currency="CZK">
+            <span class="currency-code">CZK</span>
+            <span class="currency-name">Česká koruna</span>
+          </div>
+          <div class="currency-option" data-currency="EUR">
+            <span class="currency-code">EUR</span>
+            <span class="currency-name">Euro</span>
+          </div>
+          <div class="currency-option" data-currency="USD">
+            <span class="currency-code">USD</span>
+            <span class="currency-name">US Dollar</span>
+          </div>
+        </div>
+      </div>
+      <a href="/login" class="menu-icon" id="loginIcon" title="Přihlásit se">
+        <span class="material-symbols-outlined">person</span>
+      </a>
+      <button class="login" id="logoutButton" style="display: none;">
+        <a href="#" onclick="handleLogout(event)">Odhlásit se</a>
+      </button>
+      <span id="userName" style="display: none; margin-right: 1rem; color: #333; font-weight: 500;"></span>
+      <a href="/cart" class="menu-icon cart-icon" id="cartIcon" aria-label="Košík">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 18C5.9 18 5.01 18.9 5.01 20C5.01 21.1 5.9 22 7 22C8.1 22 9 21.1 9 20C9 18.9 8.1 18 7 18ZM1 2V4H3L6.6 11.59L5.25 14.04C5.09 14.32 5 14.65 5 15C5 16.1 5.9 17 7 17H19V15H7.42C7.28 15 7.17 14.89 7.17 14.75L7.2 14.63L8.1 13H15.55C16.3 13 16.96 12.59 17.3 11.97L20.88 5.48C20.96 5.34 21 5.17 21 5C21 4.45 20.55 4 20 4H5.21L4.27 2H1ZM17 18C15.9 18 15.01 18.9 15.01 20C15.01 21.1 15.9 22 17 22C18.1 22 19 21.1 19 20C19 18.9 18.1 18 17 18Z" fill="currentColor"/>
+        </svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="mainContainer">
+    <div class="container">
+      <section class="calculators-page-section">
+        <h1>Jakosti nerezových materiálů</h1>
+        <p class="section-intro">Kliknutím na jakost se zobrazí detailní informace o materiálu včetně chemického složení, vlastností a použití.</p>
+        
+        <!-- Tabulka jakostí nerezových materiálů -->
+        <div class="steel-grades-section">
+          <div class="steel-grades-table">
+            <div class="grade-row" onclick="toggleGrade('grade304')">
+              <div class="grade-header">
+                <span class="grade-code">AISI 304 / EN 1.4301</span>
+                <span class="material-symbols-outlined expand-icon">expand_more</span>
+              </div>
+              <div class="grade-content" id="grade304">
+                <div class="grade-info">
+                  <h3>Nerezová ocel 304</h3>
+                  <div class="grade-details">
+                    <p><strong>Typ:</strong> Austenitická nerezová ocel</p>
+                    <p><strong>Hustota:</strong> 7,93 g/cm³ (7930 kg/m³)</p>
+                    <p><strong>Chemické složení:</strong> Cr 18-20%, Ni 8-10.5%, C max 0.08%</p>
+                    <p><strong>Vlastnosti:</strong> Vynikající odolnost proti korozi, dobrá svařitelnost, odolnost proti kyselinám</p>
+                    <p><strong>Použití:</strong> Potravinářský průmysl, chemický průmysl, zdravotnictví, architektura, domácí spotřebiče</p>
+                    <p><strong>Normy:</strong> ČSN 17025, EN 1.4301, DIN X5CrNi18-10, AISI 304, UNS S30400</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="grade-row" onclick="toggleGrade('grade316')">
+              <div class="grade-header">
+                <span class="grade-code">AISI 316 / EN 1.4401</span>
+                <span class="material-symbols-outlined expand-icon">expand_more</span>
+              </div>
+              <div class="grade-content" id="grade316">
+                <div class="grade-info">
+                  <h3>Nerezová ocel 316</h3>
+                  <div class="grade-details">
+                    <p><strong>Typ:</strong> Austenitická nerezová ocel s molybdenem</p>
+                    <p><strong>Hustota:</strong> 8,00 g/cm³ (8000 kg/m³)</p>
+                    <p><strong>Chemické složení:</strong> Cr 16-18%, Ni 10-14%, Mo 2-3%, C max 0.08%</p>
+                    <p><strong>Vlastnosti:</strong> Vynikající odolnost proti korozi, odolnost proti chloridům, vyšší pevnost než 304</p>
+                    <p><strong>Použití:</strong> Námořní aplikace, chemický průmysl, lékařské přístroje, potravinářství, farmacie</p>
+                    <p><strong>Normy:</strong> ČSN 17026, EN 1.4401, DIN X5CrNiMo17-12-2, AISI 316, UNS S31600</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="grade-row" onclick="toggleGrade('grade430')">
+              <div class="grade-header">
+                <span class="grade-code">AISI 430 / EN 1.4016</span>
+                <span class="material-symbols-outlined expand-icon">expand_more</span>
+              </div>
+              <div class="grade-content" id="grade430">
+                <div class="grade-info">
+                  <h3>Nerezová ocel 430</h3>
+                  <div class="grade-details">
+                    <p><strong>Typ:</strong> Feritická nerezová ocel</p>
+                    <p><strong>Hustota:</strong> 7,70 g/cm³ (7700 kg/m³)</p>
+                    <p><strong>Chemické složení:</strong> Cr 16-18%, C max 0.12%</p>
+                    <p><strong>Vlastnosti:</strong> Magnetická, dobrá odolnost proti korozi, nižší cena než austenitické oceli</p>
+                    <p><strong>Použití:</strong> Automobilový průmysl, domácí spotřebiče, dekorativní aplikace, výfukové systémy</p>
+                    <p><strong>Normy:</strong> ČSN 17040, EN 1.4016, DIN X6Cr17, AISI 430, UNS S43000</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="grade-row" onclick="toggleGrade('grade410')">
+              <div class="grade-header">
+                <span class="grade-code">AISI 410 / EN 1.4006</span>
+                <span class="material-symbols-outlined expand-icon">expand_more</span>
+              </div>
+              <div class="grade-content" id="grade410">
+                <div class="grade-info">
+                  <h3>Nerezová ocel 410</h3>
+                  <div class="grade-details">
+                    <p><strong>Typ:</strong> Martenzitická nerezová ocel</p>
+                    <p><strong>Hustota:</strong> 7,70 g/cm³ (7700 kg/m³)</p>
+                    <p><strong>Chemické složení:</strong> Cr 11.5-13.5%, C 0.08-0.15%</p>
+                    <p><strong>Vlastnosti:</strong> Magnetická, tvrditelná, dobrá pevnost, střední odolnost proti korozi</p>
+                    <p><strong>Použití:</strong> Nástroje, ventily, čerpadla, kuchyňské nože, mechanické součásti</p>
+                    <p><strong>Normy:</strong> ČSN 17020, EN 1.4006, DIN X12Cr13, AISI 410, UNS S41000</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="grade-row" onclick="toggleGrade('grade321')">
+              <div class="grade-header">
+                <span class="grade-code">AISI 321 / EN 1.4541</span>
+                <span class="material-symbols-outlined expand-icon">expand_more</span>
+              </div>
+              <div class="grade-content" id="grade321">
+                <div class="grade-info">
+                  <h3>Nerezová ocel 321</h3>
+                  <div class="grade-details">
+                    <p><strong>Typ:</strong> Austenitická nerezová ocel s titanem</p>
+                    <p><strong>Hustota:</strong> 7,93 g/cm³ (7930 kg/m³)</p>
+                    <p><strong>Chemické složení:</strong> Cr 17-19%, Ni 9-12%, Ti 5×C min, C max 0.08%</p>
+                    <p><strong>Vlastnosti:</strong> Odolnost proti interkrystalické korozi, vhodná pro vysoké teploty</p>
+                    <p><strong>Použití:</strong> Vysokoteplotní aplikace, výfukové systémy, chemický průmysl, letectví</p>
+                    <p><strong>Normy:</strong> EN 1.4541, DIN X6CrNiTi18-10, AISI 321, UNS S32100</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+    
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <h3>E-Shop</h3>
+          <p>Váš spolehlivý partner pro kvalitní produkty a služby.</p>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Důležité odkazy</h4>
+          <ul>
+            <li><a href="/about">O nás</a></li>
+            <li><a href="/products">Katalog produktů</a></li>
+            <li><a href="/contact">Kontakt</a></li>
+            <li><a href="/orders">Moje objednávky</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h4>K nákupu</h4>
+          <ul>
+            <li><a href="/shipping">Doprava a platba</a></li>
+            <li><a href="/terms">Obchodní podmínky</a></li>
+            <li><a href="/complaints">Reklamace</a></li>
+            <li><a href="/gdpr">GDPR</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h4>Kontakt</h4>
+          <ul class="footer-contact">
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22 16.92V19.92C22 20.52 21.52 21 20.92 21C9.4 21 0 11.6 0 0.08C0 -0.52 0.48 -1 1.08 -1H4.08C4.68 -1 5.16 -0.52 5.16 0.08V3.08C5.16 3.68 4.68 4.16 4.08 4.16H2.08C2.08 12.84 9.16 19.92 17.84 19.92V17.92C17.84 17.32 18.32 16.84 18.92 16.84H21.92C22.52 16.84 23 17.32 23 17.92V20.92H22V16.92Z" fill="currentColor"/>
+              </svg>
+              <span>+420 123 456 789</span>
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" fill="currentColor"/>
+              </svg>
+              <span>info@example.com</span>
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
+              </svg>
+              <span>Adresa 123, 123 45 Město</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2024 E-Shop. Všechna práva vyhrazena.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <script type="module" src="/src/js/main.js"></script>
+  <script type="module" src="/src/js/currency.js"></script>
+  <script type="module" src="/src/js/search.js"></script>
+  <script src="/src/js/calculators.js"></script>
+</body>
+</html>
+

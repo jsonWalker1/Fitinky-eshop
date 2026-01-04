@@ -145,3 +145,18 @@ export const getSearch = (req, res) => {
         res.status(500).send('Chyba při načítání stránky');
     }
 };
+
+/**
+ * Načte a vrátí grades.html jako HTML
+ */
+export const getGrades = (req, res) => {
+    try {
+        const gradesPath = path.join(paths.root, 'grades.html');
+        const gradesContent = fs.readFileSync(gradesPath, 'utf8');
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.send(gradesContent);
+    } catch (error) {
+        console.error('Chyba při načítání grades.html:', error);
+        res.status(500).send('Chyba při načítání stránky');
+    }
+};
