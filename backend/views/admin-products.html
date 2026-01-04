@@ -217,7 +217,7 @@
                     
                     <div class="form-group">
                         <label for="productPrice">Cena (Kč) *</label>
-                        <input type="number" id="productPrice" name="price" step="0.01" min="0" inputmode="decimal" required>
+                        <input type="number" id="productPrice" name="price" step="0.01" min="0" inputmode="decimal" pattern="[0-9]+([.,][0-9]{1,2})?" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 44 || event.charCode === 46" required>
                     </div>
                     
                     <div class="form-group">
@@ -297,7 +297,7 @@
                         <div class="attributes-section">
                             <div class="form-group-inline">
                                 <label for="attributeDiameter">Průměr (DN)</label>
-                                <input type="text" id="attributeDiameter" name="attributeDiameter" placeholder="např. DN 20, DN 25" maxlength="50">
+                                <input type="text" id="attributeDiameter" name="attributeDiameter" placeholder="např. 20" maxlength="10" pattern="[0-9]+" onkeypress="return event.charCode >= 48 && event.charCode <= 57" data-diameter-input="true">
                             </div>
                             
                             <div class="form-group-inline">
@@ -623,7 +623,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Cena (Kč)</label>
-                                            <input type="number" name="price" step="0.01" min="0" inputmode="decimal" value="${product.price}" required>
+                                            <input type="number" name="price" step="0.01" min="0" inputmode="decimal" value="${product.price}" pattern="[0-9]+([.,][0-9]{1,2})?" onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode === 44 || event.charCode === 46" required>
                                         </div>
                                         <div class="form-group">
                                             <label>URL obrázku</label>
@@ -676,7 +676,14 @@
                                             <div class="attributes-section">
                                                 <div class="form-group-inline">
                                                     <label>Průměr (DN)</label>
-                                                    <input type="text" name="attributeDiameter" value="${escapeHtml(product.attributes?.diameter?.value || '')}" placeholder="např. DN 20" maxlength="50">
+                                                    <input type="text" name="attributeDiameter" value="${(() => {
+                                                        const diameterValue = product.attributes?.diameter?.value || '';
+                                                        // Pokud už obsahuje 'DN', zobrazit jen číslo, jinak zobrazit celou hodnotu
+                                                        if (diameterValue && diameterValue.toUpperCase().startsWith('DN')) {
+                                                            return diameterValue.replace(/^DN\s*/i, '');
+                                                        }
+                                                        return diameterValue;
+                                                    })()}" placeholder="např. 20" maxlength="10" pattern="[0-9]+" onkeypress="return event.charCode >= 48 && event.charCode <= 57" data-diameter-input="true">
                                                 </div>
                                                 
                                                 <div class="form-group-inline">
@@ -1089,7 +1096,12 @@
             // Naplnit atributy
             if (product.attributes) {
                 if (product.attributes.diameter?.value) {
-                    document.getElementById('attributeDiameter').value = product.attributes.diameter.value;
+                    // Zobrazit jen číslo (bez "DN"), pokud tam je
+                    let diameterValue = product.attributes.diameter.value;
+                    if (diameterValue && diameterValue.toUpperCase().startsWith('DN')) {
+                        diameterValue = diameterValue.replace(/^DN\s*/i, '');
+                    }
+                    document.getElementById('attributeDiameter').value = diameterValue;
                 }
                 if (product.attributes.connection_type?.value) {
                     document.getElementById('attributeConnectionType').value = product.attributes.connection_type.value;
@@ -1188,7 +1200,12 @@
             // Sbírat atributy - pouze pokud mají hodnotu
             const attributes = {};
             if (form.attributeDiameter?.value) {
-                attributes.diameter = { value: form.attributeDiameter.value, type: 'text' };
+                // Automaticky přidat "DN " před číslo, pokud tam ještě není
+                let diameterValue = form.attributeDiameter.value.trim();
+                if (diameterValue && !diameterValue.toUpperCase().startsWith('DN')) {
+                    diameterValue = 'DN ' + diameterValue;
+                }
+                attributes.diameter = { value: diameterValue, type: 'text' };
             }
             if (form.attributeConnectionType?.value) {
                 attributes.connection_type = { value: form.attributeConnectionType.value, type: 'text' };
@@ -1400,7 +1417,12 @@
             // Sbírat atributy - pouze pokud mají hodnotu
             const attributes = {};
             if (form.attributeDiameter?.value) {
-                attributes.diameter = { value: form.attributeDiameter.value, type: 'text' };
+                // Automaticky přidat "DN " před číslo, pokud tam ještě není
+                let diameterValue = form.attributeDiameter.value.trim();
+                if (diameterValue && !diameterValue.toUpperCase().startsWith('DN')) {
+                    diameterValue = 'DN ' + diameterValue;
+                }
+                attributes.diameter = { value: diameterValue, type: 'text' };
             }
             if (form.attributeConnectionType?.value) {
                 attributes.connection_type = { value: form.attributeConnectionType.value, type: 'text' };
