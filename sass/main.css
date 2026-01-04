@@ -3201,8 +3201,52 @@ main {
   margin-left: auto;
   margin-right: auto;
 }
+.calculators-page-section .section-button {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.calculators-page-section .section-button:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.calculators-page-section .section-button .section-button-header {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  background: #f7fafc;
+  transition: all 0.3s ease;
+}
+.calculators-page-section .section-button .section-button-header:hover {
+  background: rgba(49, 130, 206, 0.05);
+}
+.calculators-page-section .section-button .section-button-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  margin: 0;
+}
+.calculators-page-section .section-button .section-button-header .expand-icon {
+  transition: all 0.3s ease;
+  transform: rotate(0deg);
+}
+.calculators-page-section .section-button .section-button-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.calculators-page-section .section-button .section-button-content.expanded {
+  max-height: 10000px;
+  padding: 1.5rem;
+}
 .calculators-page-section .steel-grades-section {
-  margin-bottom: 3rem;
+  margin-bottom: 0;
 }
 .calculators-page-section .steel-grades-section h2 {
   font-size: 1.5rem;
@@ -3297,7 +3341,6 @@ main {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
-  margin-top: 2rem;
   background: #f5f5f5;
   padding: 2rem;
   border-radius: 8px;
