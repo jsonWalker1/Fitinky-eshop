@@ -454,6 +454,7 @@
                     const mainOption = document.createElement('option');
                     mainOption.value = category.id;
                     mainOption.textContent = category.name;
+                    mainOption.style.fontWeight = '600'; // Tučně pro hlavní kategorie
                     select.appendChild(mainOption);
                     
                     // Podkategorie této hlavní kategorie
@@ -461,7 +462,9 @@
                         subcategoriesMap[category.id].forEach(subcategory => {
                             const subOption = document.createElement('option');
                             subOption.value = subcategory.id;
-                            subOption.textContent = `  └─ ${subcategory.name}`; // Odsazení a znak pro podkategorii
+                            // Lepší zobrazení s odsazením a šipkou
+                            subOption.textContent = `    ├─ ${subcategory.name}`;
+                            subOption.style.paddingLeft = '1rem';
                             select.appendChild(subOption);
                         });
                     }
@@ -472,7 +475,8 @@
                     if (!mainCategories.find(main => main.id === sub.parent_id)) {
                         const orphanOption = document.createElement('option');
                         orphanOption.value = sub.id;
-                        orphanOption.textContent = `  └─ ${sub.name}`;
+                        orphanOption.textContent = `    ├─ ${sub.name}`;
+                        orphanOption.style.paddingLeft = '1rem';
                         select.appendChild(orphanOption);
                     }
                 });
@@ -928,13 +932,66 @@
                     ).join('');
             }
             
-            // Kategorie - naplnit select kategorií
+            // Kategorie - naplnit select kategorií s hierarchií
             const categorySelect = form.querySelector('select[name="category"]');
             if (categorySelect && categories && categories.length > 0) {
                 const currentCategoryId = product.categoryId || '';
-                categorySelect.innerHTML = categories.map(cat => 
-                    `<option value="${cat.id}" ${cat.id === currentCategoryId ? 'selected' : ''}>${escapeHtml(cat.name)}</option>`
-                ).join('');
+                categorySelect.innerHTML = '';
+                
+                // Rozdělit kategorie na hlavní a podkategorie
+                const mainCategories = categories.filter(c => !c.parent_id);
+                const subcategories = categories.filter(c => c.parent_id);
+                
+                // Vytvořit mapu podkategorií podle parent_id a najít názvy nadřazených kategorií
+                const subcategoriesMap = {};
+                subcategories.forEach(sub => {
+                    if (!subcategoriesMap[sub.parent_id]) {
+                        subcategoriesMap[sub.parent_id] = [];
+                    }
+                    subcategoriesMap[sub.parent_id].push(sub);
+                });
+                
+                // Zobrazit hlavní kategorie a jejich podkategorie
+                mainCategories.forEach(category => {
+                    // Hlavní kategorie
+                    const mainOption = document.createElement('option');
+                    mainOption.value = category.id;
+                    mainOption.textContent = category.name;
+                    mainOption.style.fontWeight = '600';
+                    if (category.id === currentCategoryId) {
+                        mainOption.selected = true;
+                    }
+                    categorySelect.appendChild(mainOption);
+                    
+                    // Podkategorie této hlavní kategorie
+                    if (subcategoriesMap[category.id]) {
+                        subcategoriesMap[category.id].forEach(subcategory => {
+                            const subOption = document.createElement('option');
+                            subOption.value = subcategory.id;
+                            // Zobrazit název hlavní kategorie > podkategorie pro přehlednost
+                            subOption.textContent = `    ├─ ${subcategory.name}`;
+                            subOption.style.paddingLeft = '1rem';
+                            if (subcategory.id === currentCategoryId) {
+                                subOption.selected = true;
+                            }
+                            categorySelect.appendChild(subOption);
+                        });
+                    }
+                });
+                
+                // Zobrazit podkategorie, které nemají hlavní kategorii (orphaned)
+                subcategories.forEach(sub => {
+                    if (!mainCategories.find(main => main.id === sub.parent_id)) {
+                        const orphanOption = document.createElement('option');
+                        orphanOption.value = sub.id;
+                        orphanOption.textContent = `    ├─ ${sub.name}`;
+                        orphanOption.style.paddingLeft = '1rem';
+                        if (sub.id === currentCategoryId) {
+                            orphanOption.selected = true;
+                        }
+                        categorySelect.appendChild(orphanOption);
+                    }
+                });
             }
         }
         
