@@ -1,5 +1,6 @@
 import express from 'express';
 import { getIndex, getIndexJson, getProducts, getCart, getLogin, getCheckout, getOrders, getCalculators, getSearch, getGrades, getAbout, getContact } from '../controllers/indexController.js';
+import { addProductCategories } from '../controllers/migrationController.js';
 
 const router = express.Router();
 
@@ -38,6 +39,9 @@ router.get('/contact', getContact);
 
 // GET /api/index - vrací index.html jako JSON
 router.get('/api/index', getIndexJson);
+
+// POST /api/migrations/add-product-categories - spustí migraci pro přidání kategorií sortimentu
+router.post('/api/migrations/add-product-categories', addProductCategories);
 
 export default router;
 
