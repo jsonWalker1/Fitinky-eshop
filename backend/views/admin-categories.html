@@ -282,6 +282,8 @@
                 if (data.success) {
                     allCategories = data.categories;
                     displayCategories(allCategories);
+                    // Naplnit select nadřazených kategorií při načtení
+                    populateParentCategorySelect();
                 } else {
                     showError('Chyba při načítání kategorií');
                 }
@@ -311,8 +313,50 @@
                 return;
             }
             
-            list.innerHTML = categories.map(category => `
-                <div class="category-item">
+            // Rozdělit kategorie na hlavní a podkategorie
+            const mainCategories = categories.filter(c => !c.parent_id);
+            const subcategories = categories.filter(c => c.parent_id);
+            
+            // Vytvořit mapu podkategorií podle parent_id
+            const subcategoriesMap = {};
+            subcategories.forEach(sub => {
+                if (!subcategoriesMap[sub.parent_id]) {
+                    subcategoriesMap[sub.parent_id] = [];
+                }
+                subcategoriesMap[sub.parent_id].push(sub);
+            });
+            
+            // Zobrazit kategorie s hierarchií
+            let html = '';
+            
+            mainCategories.forEach(category => {
+                html += renderCategoryItem(category, false);
+                
+                // Zobrazit podkategorie
+                if (subcategoriesMap[category.id]) {
+                    subcategoriesMap[category.id].forEach(subcategory => {
+                        html += renderCategoryItem(subcategory, true);
+                    });
+                }
+            });
+            
+            // Zobrazit podkategorie, které nemají hlavní kategorii (orphaned)
+            subcategories.forEach(sub => {
+                if (!mainCategories.find(main => main.id === sub.parent_id)) {
+                    html += renderCategoryItem(sub, true);
+                }
+            });
+            
+            list.innerHTML = html;
+        }
+        
+        // Renderování položky kategorie
+        function renderCategoryItem(category, isSubcategory) {
+            const indent = isSubcategory ? 'style="margin-left: 2rem; border-left: 3px solid #3182ce; padding-left: 1rem;"' : '';
+            const parentInfo = category.parent_name ? `<p class="category-parent">Podkategorie: ${escapeHtml(category.parent_name)}</p>` : '';
+            
+            return `
+                <div class="category-item" ${indent}>
                     <div class="category-header">
                         ${category.image 
                             ? `<img src="${category.image}" alt="${category.name}" class="category-image">`
@@ -321,6 +365,7 @@
                         <div class="category-info">
                             <h3>${escapeHtml(category.name)}</h3>
                             <p class="category-slug">/${escapeHtml(category.slug)}</p>
+                            ${parentInfo}
                             ${category.description ? `<p class="category-description">${escapeHtml(category.description)}</p>` : ''}
                             <p class="category-meta">Produktů: ${category.productCount || category.product_count || 0}</p>
                         </div>
@@ -330,13 +375,48 @@
                             <span class="material-symbols-outlined">edit</span>
                             Upravit
                         </button>
+                        ${!isSubcategory ? `<button class="btn btn-primary btn-sm" onclick="addSubcategory('${category.id}', '${escapeHtml(category.name)}')" title="Přidat podkategorii">
+                            <span class="material-symbols-outlined">add</span>
+                            Podkategorie
+                        </button>` : ''}
                         <button class="btn btn-danger" onclick="deleteCategory('${category.id}', '${escapeHtml(category.name)}')">
                             <span class="material-symbols-outlined">delete</span>
                             Smazat
                         </button>
                     </div>
                 </div>
-            `).join('');
+            `;
+        }
+        
+        // Přidat podkategorii
+        window.addSubcategory = function(parentId, parentName) {
+            document.getElementById('categoryForm').reset();
+            document.getElementById('categoryId').value = '';
+            document.getElementById('categoryParent').value = parentId;
+            populateParentCategorySelect();
+            document.getElementById('modalTitle').textContent = `Přidat podkategorii do "${parentName}"`;
+            document.getElementById('categoryModal').classList.add('active');
+            const urlRadio = document.querySelector('input[name="imageSource"][value="url"]');
+            if (urlRadio) urlRadio.checked = true;
+            toggleCategoryImageSource();
+            removeCategoryImagePreview();
+            document.getElementById('categoryUploadProgress').style.display = 'none';
+        };
+        
+        // Naplnit select nadřazených kategorií
+        function populateParentCategorySelect(excludeId = null) {
+            const select = document.getElementById('categoryParent');
+            if (!select) return;
+            
+            select.innerHTML = '<option value="">Hlavní kategorie (bez nadřazené)</option>';
+            
+            const mainCategories = allCategories.filter(c => !c.parent_id && c.id !== excludeId);
+            mainCategories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat.id;
+                option.textContent = cat.name;
+                select.appendChild(option);
+            });
         }
         
         // Naplnit select nadřazených kategorií
