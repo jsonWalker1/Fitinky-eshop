@@ -10,6 +10,8 @@ Projekt zahrnuje jak zákaznickou část (storefront), tak komplexní admin rozh
 
 ## 📋 Obsah
 
+- [O projektu](#-o-projektu)
+- [Stav projektu](#-stav-projektu)
 - [Technologie](#technologie)
 - [Struktura projektu](#struktura-projektu)
 - [Instalace a spuštění](#instalace-a-spuštění)
