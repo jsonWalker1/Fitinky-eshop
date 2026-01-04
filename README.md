@@ -14,7 +14,6 @@ Projekt zahrnuje jak zákaznickou část (storefront), tak komplexní admin rozh
 - [Stav projektu](#-stav-projektu)
 - [Technologie](#technologie)
 - [Struktura projektu](#struktura-projektu)
-- [Instalace a spuštění](#instalace-a-spuštění)
 - [Sass struktura](#sass-struktura)
 - [Mixiny](#mixiny)
 - [Komponenty](#komponenty)
@@ -129,7 +128,6 @@ eshopAdminGUI/
 - [ ] **Email notifikace** - Odesílání emailů při nových objednávkách/zprávách
 - [ ] **Export dat** - Možnost exportovat produkty/objednávky do CSV/Excel
 - [ ] **Statistiky a reporty** - Rozšířit dashboard o grafy a detailní statistiky
-- [ ] **Produktové varianty** - Podpora různých variant produktů (barva, velikost)
 
 ## 🚀 Instalace a spuštění
 
