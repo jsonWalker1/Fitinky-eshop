@@ -1192,13 +1192,8 @@
                 availabilityStatus: form.availabilityStatus.value
             };
             
-            // Přidat sortimentCategory pouze pokud je zaškrtnutá
-            if (sortimentCategory) {
-                formData.sortimentCategory = sortimentCategory;
-            } else {
-                // Pokud není žádná zaškrtnutá, nastav prázdný string pro vymazání
-                formData.sortimentCategory = '';
-            }
+            // Přidat sortimentCategory - vždy, i když je null (pro vymazání)
+            formData.sortimentCategory = sortimentCategory || '';
             
             // Sbírat atributy - pouze pokud mají hodnotu
             const attributes = {};

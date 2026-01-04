@@ -719,6 +719,10 @@ export const deleteCategory = async (id) => {
  * Mapuje SQL řádek na JSON formát (pro kompatibilitu s frontendem)
  */
 function mapProductToJSON(row) {
+    // category_slug z produktu má prioritu před category_slug_db z JOIN (hlavní kategorie)
+    // category_slug se používá pro kategorie sortimentu (nejprodavanejsi, skladem, zlevnene)
+    const categorySlug = row.category_slug || row.category_slug_db || null;
+    
     return {
         id: row.id,
         name: row.name,
@@ -726,7 +730,8 @@ function mapProductToJSON(row) {
         price: parseFloat(row.price) || 0,
         image: row.image,
         categoryId: row.category_id,
-        categorySlug: row.category_slug || row.category_slug_db,
+        categorySlug: categorySlug,
+        category_slug: categorySlug, // Přidat i jako category_slug pro kompatibilitu
         category: row.category_name || row.category_slug || row.category_slug_db,
         availabilityStatus: row.availability_status,
         createdAt: row.created_at ? new Date(row.created_at).toISOString() : new Date().toISOString(),
