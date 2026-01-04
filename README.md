@@ -59,23 +59,65 @@ eshopAdminGUI/
 └── package.json       # NPM konfigurace
 ```
 
-## 🎯 Hlavní funkce
+## 🎯 Stav projektu
 
-### Zákaznická část
-- Procházení produktů a kategorií
-- Nákupní košík
-- Proces objednávky (checkout)
-- Historie objednávek
-- Uživatelská autentizace
+### ✅ Co je hotové a funguje
 
-### Admin panel
-- Dashboard se statistikami
-- Správa produktů (CRUD operace)
-- Správa kategorií
-- Správa objednávek
-- Správa uživatelů
-- Správa produktových atributů
-- Globální vyhledávání
+#### Zákaznická část (Frontend)
+- ✅ **Procházení produktů a kategorií** - Zobrazení produktů podle kategorií, filtrování
+- ✅ **Nákupní košík** - Přidávání/odebírání produktů, zobrazení celkové ceny
+- ✅ **Proces objednávky (checkout)** - Formulář pro dokončení objednávky
+- ✅ **Historie objednávek** - Zobrazení všech objednávek uživatele
+- ✅ **Uživatelská autentizace** - Přihlášení/odhlášení, demo uživatel
+- ✅ **Globální vyhledávání** - Search bar v headeru, dropdown s výsledky, stránka výsledků
+- ✅ **Přepínání měn** - CZK, EUR, USD s ukládáním do localStorage
+- ✅ **Kalkulačky** - Výpočet hmotností nerezových materiálů (plech, trubka, jekl, atd.)
+- ✅ **Tabulka jakostí** - Rozbalovací sekce s informacemi o nerezových materiálech
+- ✅ **Statické stránky** - About, Contact, Services, Articles
+- ✅ **Kontaktní formulář** - Odesílání zpráv s backend API
+- ✅ **Kategorie stránka** - Dynamické zobrazení produktů podle kategorie (`/category/:slug`)
+
+#### Admin panel
+- ✅ **Dashboard** - Přehled statistik a rychlé akce
+- ✅ **Správa produktů** - CRUD operace, inline editor, galerie obrázků
+- ✅ **Správa kategorií** - Hlavní kategorie a podkategorie (hierarchie)
+- ✅ **Správa objednávek** - Zobrazení a správa objednávek
+- ✅ **Správa uživatelů** - Zobrazení uživatelů
+- ✅ **Správa zpráv** - Zobrazení zpráv z kontaktního formuláře
+- ✅ **Správa produktových atributů** - Materiál, tvar, typ připojení, průměr (DN)
+- ✅ **Kategorie sortimentu** - Nejprodávanější, Skladem, Zlevněné (many-to-many)
+- ✅ **Globální vyhledávání** - Vyhledávání produktů, objednávek, uživatelů, kategorií
+- ✅ **Správa měn** - Nastavení kurzů pro přepínání měn
+
+#### Backend a databáze
+- ✅ **PostgreSQL databáze** - Kompletní schéma s produkty, kategoriemi, objednávkami, uživateli
+- ✅ **API endpointy** - RESTful API pro všechny entity
+- ✅ **Autentizace** - Middleware pro ověření uživatelů
+- ✅ **Migrace** - SQL migrace pro databázové změny
+- ✅ **Hierarchie kategorií** - Podpora podkategorií (parent_id)
+
+### ❌ Co nefunguje nebo není dokončené
+
+- ⚠️ **Validace formulářů** - Omezení inputů byly odstraněny, není client-side validace
+- ⚠️ **Admin autentizace** - Jednoduchá autentizace (admin/admin123), bez JWT/session
+- ⚠️ **Hashování hesel** - Hesla nejsou hashovaná (pouze demo)
+- ⚠️ **Měny v databázi** - Kurzy měn jsou zatím pouze v localStorage
+- ⚠️ **Search bar na mobilu** - Je skrytý, není v hamburger menu
+- ⚠️ **Error handling** - Není kompletní error handling na všech místech
+- ⚠️ **Testování** - Chybí unit a integration testy
+
+### 📋 Co je v plánu (TODO)
+
+- [ ] **Bezpečnost** - Implementovat hashování hesel (bcrypt), JWT tokeny, rate limiting
+- [ ] **Validace** - Přidat client-side a server-side validaci formulářů
+- [ ] **Měny v DB** - Přesunout kurzy měn z localStorage do databáze
+- [ ] **Mobilní optimalizace** - Přidat search bar do hamburger menu, vylepšit responzivitu
+- [ ] **Testování** - Přidat unit testy a integration testy
+- [ ] **Dokumentace API** - Vytvořit kompletní API dokumentaci
+- [ ] **Email notifikace** - Odesílání emailů při nových objednávkách/zprávách
+- [ ] **Export dat** - Možnost exportovat produkty/objednávky do CSV/Excel
+- [ ] **Statistiky a reporty** - Rozšířit dashboard o grafy a detailní statistiky
+- [ ] **Produktové varianty** - Podpora různých variant produktů (barva, velikost)
 
 ## 🚀 Instalace a spuštění
 
