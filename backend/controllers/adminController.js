@@ -187,7 +187,7 @@ export const addProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, category, price, description, availabilityStatus, image, attributes, sortimentCategory } = req.body;
+        const { name, category, price, description, availabilityStatus, image, attributes, sortimentCategory, sortimentCategories } = req.body;
         
         const productData = {};
         if (name !== undefined) productData.name = name;
@@ -195,8 +195,11 @@ export const updateProduct = async (req, res) => {
             productData.categoryId = category; // category je ID z formuláře
         }
         if (price !== undefined) productData.price = parseFloat(price);
-        if (sortimentCategory !== undefined) {
-            productData.sortimentCategory = sortimentCategory; // Přidat kategorii sortimentu
+        // Podporovat jak sortimentCategories (pole), tak sortimentCategory (string) pro zpětnou kompatibilitu
+        if (sortimentCategories !== undefined) {
+            productData.sortimentCategories = sortimentCategories; // Pole kategorií sortimentu
+        } else if (sortimentCategory !== undefined) {
+            productData.sortimentCategory = sortimentCategory; // Zpětná kompatibilita: jeden string
         }
         if (description !== undefined) productData.description = description;
         if (image !== undefined) productData.image = image;

@@ -296,8 +296,14 @@ export const getAllProducts = async (filters = {}) => {
         const result = await pool.query(query, params);
         const products = result.rows.map(mapProductToJSON);
         
-        // Načíst obrázky a atributy pro všechny produkty
+        // Načíst obrázky, atributy a kategorie sortimentu pro všechny produkty
         for (const product of products) {
+            // Načíst kategorie sortimentu (many-to-many)
+            const sortimentCategories = await getProductSortimentCategories(product.id);
+            product.sortimentCategories = sortimentCategories;
+            product.category_slug = sortimentCategories[0] || null; // Pro zpětnou kompatibilitu
+            product.sortimentCategory = sortimentCategories[0] || null; // Pro zpětnou kompatibilitu
+            
             const images = await getProductImages(product.id);
             product.images = images.map(img => ({
                 id: img.id,
@@ -332,6 +338,12 @@ export const getProductById = async (id) => {
         
         const product = mapProductToJSON(result.rows[0]);
         
+        // Načíst kategorie sortimentu (many-to-many)
+        const sortimentCategories = await getProductSortimentCategories(id);
+        product.sortimentCategories = sortimentCategories;
+        product.category_slug = sortimentCategories[0] || null; // Pro zpětnou kompatibilitu
+        product.sortimentCategory = sortimentCategories[0] || null; // Pro zpětnou kompatibilitu
+        
         // Načíst obrázky z galerie
         const images = await getProductImages(id);
         product.images = images.map(img => ({
@@ -358,19 +370,26 @@ export const getProductsByCategory = async (categorySlug) => {
     try {
         // categorySlug může být buď:
         // 1. Technická kategorie (spojky-redukce, tvarovky, atd.) - filtruj podle c.slug
-        // 2. Sortiment kategorie (nejprodavanejsi, skladem, zlevnene) - filtruj podle p.category_slug
+        // 2. Sortiment kategorie (nejprodavanejsi, skladem, zlevnene) - filtruj podle product_sortiment_categories
         const result = await pool.query(`
-            SELECT p.*, c.name as category_name, c.slug as category_slug_db
+            SELECT DISTINCT p.*, c.name as category_name, c.slug as category_slug_db
             FROM products p
             LEFT JOIN categories c ON p.category_id = c.id
-            WHERE p.category_slug = $1 OR c.slug = $1
+            LEFT JOIN product_sortiment_categories psc ON p.id = psc.product_id
+            WHERE c.slug = $1 OR psc.sortiment_category_slug = $1
             ORDER BY p.name
         `, [categorySlug]);
         
         const products = result.rows.map(mapProductToJSON);
         
-        // Načíst obrázky a atributy pro všechny produkty
+        // Načíst obrázky, atributy a kategorie sortimentu pro všechny produkty
         for (const product of products) {
+            // Načíst kategorie sortimentu (many-to-many)
+            const sortimentCategories = await getProductSortimentCategories(product.id);
+            product.sortimentCategories = sortimentCategories;
+            product.category_slug = sortimentCategories[0] || null; // Pro zpětnou kompatibilitu
+            product.sortimentCategory = sortimentCategories[0] || null; // Pro zpětnou kompatibilitu
+            
             const images = await getProductImages(product.id);
             product.images = images.map(img => ({
                 id: img.id,
@@ -386,6 +405,64 @@ export const getProductsByCategory = async (categorySlug) => {
     } catch (error) {
         console.error('Chyba při načítání produktů podle kategorie:', error);
         throw error;
+    }
+};
+
+/**
+ * Načte kategorie sortimentu pro produkt
+ */
+export const getProductSortimentCategories = async (productId) => {
+    try {
+        const result = await pool.query(`
+            SELECT sortiment_category_slug 
+            FROM product_sortiment_categories 
+            WHERE product_id = $1
+            ORDER BY sortiment_category_slug
+        `, [productId]);
+        return result.rows.map(row => row.sortiment_category_slug);
+    } catch (error) {
+        console.error('Chyba při načítání kategorií sortimentu:', error);
+        // Pokud tabulka neexistuje, vrať prázdné pole (pro zpětnou kompatibilitu)
+        return [];
+    }
+};
+
+/**
+ * Nastaví kategorie sortimentu pro produkt (smaže staré a přidá nové)
+ */
+export const setProductSortimentCategories = async (productId, sortimentCategories) => {
+    try {
+        // Smaž všechny existující kategorie sortimentu pro tento produkt
+        await pool.query(`
+            DELETE FROM product_sortiment_categories 
+            WHERE product_id = $1
+        `, [productId]);
+        
+        // Přidej nové kategorie sortimentu
+        if (sortimentCategories && Array.isArray(sortimentCategories) && sortimentCategories.length > 0) {
+            const validCategories = sortimentCategories.filter(cat => 
+                cat && ['nejprodavanejsi', 'skladem', 'zlevnene'].includes(cat)
+            );
+            
+            if (validCategories.length > 0) {
+                const values = validCategories.map((_, index) => 
+                    `($1, $${index + 2})`
+                ).join(', ');
+                const params = [productId, ...validCategories];
+                
+                await pool.query(`
+                    INSERT INTO product_sortiment_categories (product_id, sortiment_category_slug)
+                    VALUES ${values}
+                    ON CONFLICT (product_id, sortiment_category_slug) DO NOTHING
+                `, params);
+            }
+        }
+    } catch (error) {
+        console.error('Chyba při ukládání kategorií sortimentu:', error);
+        // Pokud tabulka neexistuje, ignoruj chybu (pro zpětnou kompatibilitu)
+        if (!error.message.includes('does not exist')) {
+            throw error;
+        }
     }
 };
 
@@ -407,20 +484,11 @@ export const addProduct = async (productData) => {
                 categoryId = category.id;
             }
         }
-
-        // category_slug v products je pro kategorii sortimentu (nejprodavanejsi, skladem, zlevnene)
-        // NENÍ to technická kategorie!
-        let sortimentCategorySlug = null;
-        if (productData.sortimentCategory !== undefined) {
-            if (productData.sortimentCategory !== '' && productData.sortimentCategory !== null) {
-                sortimentCategorySlug = productData.sortimentCategory;
-            }
-        }
         
         const id = productData.id || String(Date.now());
         const result = await pool.query(`
-            INSERT INTO products (id, name, description, price, image, category_id, category_slug, availability_status)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+            INSERT INTO products (id, name, description, price, image, category_id, availability_status)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
             RETURNING *
         `, [
             id,
@@ -429,11 +497,23 @@ export const addProduct = async (productData) => {
             productData.price,
             productData.image || null,
             categoryId,
-            sortimentCategorySlug, // category_slug = sortiment kategorie, NENÍ technická kategorie
             productData.availabilityStatus || 'in_stock'
         ]);
 
         const product = mapProductToJSON(result.rows[0]);
+        
+        // Uložit kategorie sortimentu (many-to-many)
+        if (productData.sortimentCategories && Array.isArray(productData.sortimentCategories)) {
+            await setProductSortimentCategories(id, productData.sortimentCategories);
+        } else if (productData.sortimentCategory) {
+            // Zpětná kompatibilita: pokud je sortimentCategory string, převeď na pole
+            await setProductSortimentCategories(id, [productData.sortimentCategory]);
+        }
+        
+        // Načíst kategorie sortimentu pro produkt
+        const sortimentCategories = await getProductSortimentCategories(id);
+        product.sortimentCategories = sortimentCategories;
+        product.category_slug = sortimentCategories[0] || null; // Pro zpětnou kompatibilitu
         
         // Uložit atributy pokud jsou poskytnuty (a nejsou prázdné)
         if (productData.attributes && 
@@ -499,35 +579,33 @@ export const updateProduct = async (id, productData) => {
             updates.push(`category_id = $${paramIndex++}`);
             values.push(categoryId);
         }
-        // category_slug = sortiment kategorie (nejprodavanejsi, skladem, zlevnene)
-        // NENÍ to technická kategorie!
-        if (productData.sortimentCategory !== undefined) {
-            const sortimentSlug = (productData.sortimentCategory === '' || productData.sortimentCategory === null) 
-                ? null 
-                : productData.sortimentCategory;
-            updates.push(`category_slug = $${paramIndex++}`);
-            values.push(sortimentSlug);
-        }
         if (productData.availabilityStatus !== undefined) {
             updates.push(`availability_status = $${paramIndex++}`);
             values.push(productData.availabilityStatus);
         }
 
-        if (updates.length === 0) {
-            return await getProductById(id);
+        if (updates.length > 0) {
+            values.push(id);
+            await pool.query(`
+                UPDATE products 
+                SET ${updates.join(', ')}
+                WHERE id = $${paramIndex}
+            `, values);
         }
 
-        values.push(id);
-        const result = await pool.query(`
-            UPDATE products 
-            SET ${updates.join(', ')}
-            WHERE id = $${paramIndex}
-            RETURNING *
-        `, values);
-
-        if (!result.rows[0]) return null;
+        // Aktualizovat kategorie sortimentu (many-to-many)
+        if (productData.sortimentCategories !== undefined) {
+            await setProductSortimentCategories(id, productData.sortimentCategories);
+        } else if (productData.sortimentCategory !== undefined) {
+            // Zpětná kompatibilita: pokud je sortimentCategory string, převeď na pole
+            const sortimentArray = (productData.sortimentCategory === '' || productData.sortimentCategory === null) 
+                ? [] 
+                : [productData.sortimentCategory];
+            await setProductSortimentCategories(id, sortimentArray);
+        }
         
-        const product = mapProductToJSON(result.rows[0]);
+        const product = await getProductById(id);
+        if (!product) return null;
         
         // Aktualizovat atributy pokud jsou poskytnuty (a nejsou prázdné)
         if (productData.attributes !== undefined && 
