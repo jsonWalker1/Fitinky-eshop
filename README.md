@@ -98,6 +98,13 @@ eshopAdminGUI/
 - ✅ **Migrace** - SQL migrace pro databázové změny
 - ✅ **Hierarchie kategorií** - Podpora podkategorií (parent_id)
 
+#### Deployment
+- ✅ **Railway hosting** - Aplikace je deploynutá na Railway platformě
+- ✅ **PostgreSQL databáze na Railway** - Produkční databáze běží na Railway
+- ✅ **Produkční URL:**
+  - Frontend: [https://web-production-fa55.up.railway.app/](https://web-production-fa55.up.railway.app/)
+  - Admin Dashboard: [https://web-production-fa55.up.railway.app/admin/dashboard](https://web-production-fa55.up.railway.app/admin/dashboard)
+
 ### ❌ Co nefunguje nebo není dokončené
 
 - ⚠️ **Validace formulářů** - Omezení inputů byly odstraněny, není client-side validace
