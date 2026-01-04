@@ -15,25 +15,65 @@ import pool from '../db/connection.js';
  */
 export const getAllCategories = async (searchQuery = null) => {
     try {
-        let query = 'SELECT * FROM categories';
+        let query = 'SELECT c.*, p.name as parent_name, p.slug as parent_slug FROM categories c LEFT JOIN categories p ON c.parent_id = p.id';
         const params = [];
         
         if (searchQuery && searchQuery.trim()) {
             const searchPattern = `%${searchQuery.trim()}%`;
             query += `
-                WHERE name ILIKE $1
-                   OR slug ILIKE $1
-                   OR description ILIKE $1
+                WHERE c.name ILIKE $1
+                   OR c.slug ILIKE $1
+                   OR c.description ILIKE $1
             `;
             params.push(searchPattern);
         }
         
-        query += ' ORDER BY name';
+        query += ' ORDER BY COALESCE(c.parent_id, c.id), c.name';
         
         const result = await pool.query(query, params);
         return result.rows;
     } catch (error) {
         console.error('Chyba při načítání kategorií:', error);
+        throw error;
+    }
+};
+
+/**
+ * Načte kategorie s hierarchií (stromová struktura)
+ */
+export const getCategoriesHierarchy = async () => {
+    try {
+        const result = await pool.query(`
+            SELECT 
+                c.*,
+                p.name as parent_name,
+                p.slug as parent_slug,
+                COUNT(pr.id) as product_count
+            FROM categories c
+            LEFT JOIN categories p ON c.parent_id = p.id
+            LEFT JOIN products pr ON c.id = pr.category_id
+            GROUP BY c.id, p.name, p.slug
+            ORDER BY COALESCE(c.parent_id, c.id), c.name
+        `);
+        return result.rows;
+    } catch (error) {
+        console.error('Chyba při načítání hierarchie kategorií:', error);
+        throw error;
+    }
+};
+
+/**
+ * Načte podkategorie pro danou kategorii
+ */
+export const getSubcategories = async (parentId) => {
+    try {
+        const result = await pool.query(
+            'SELECT * FROM categories WHERE parent_id = $1 ORDER BY name',
+            [parentId]
+        );
+        return result.rows;
+    } catch (error) {
+        console.error('Chyba při načítání podkategorií:', error);
         throw error;
     }
 };
@@ -687,7 +727,7 @@ export const getCategoriesWithProductCount = async (searchQuery = null) => {
  */
 export const addCategory = async (categoryData) => {
     try {
-        const { name, slug, description, image } = categoryData;
+        const { name, slug, description, image, parent_id } = categoryData;
         
         // Generovat ID pokud není poskytnuto
         const id = categoryData.id || `cat-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
@@ -698,10 +738,10 @@ export const addCategory = async (categoryData) => {
             .replace(/^-+|-+$/g, '');
         
         const result = await pool.query(
-            `INSERT INTO categories (id, name, slug, description, image)
-             VALUES ($1, $2, $3, $4, $5)
+            `INSERT INTO categories (id, name, slug, description, image, parent_id)
+             VALUES ($1, $2, $3, $4, $5, $6)
              RETURNING *`,
-            [id, name, finalSlug, description || null, image || null]
+            [id, name, finalSlug, description || null, image || null, parent_id || null]
         );
         
         return result.rows[0];
@@ -735,6 +775,14 @@ export const updateCategory = async (id, categoryData) => {
         if (categoryData.image !== undefined) {
             updates.push(`image = $${paramIndex++}`);
             values.push(categoryData.image);
+        }
+        if (categoryData.parent_id !== undefined) {
+            // Zkontrolovat, že parent_id není stejné jako id (aby kategorie nemohla být svým vlastním rodičem)
+            if (categoryData.parent_id === id) {
+                throw new Error('Kategorie nemůže být svým vlastním rodičem');
+            }
+            updates.push(`parent_id = $${paramIndex++}`);
+            values.push(categoryData.parent_id || null);
         }
         
         if (updates.length === 0) {

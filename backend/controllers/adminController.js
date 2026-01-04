@@ -409,7 +409,7 @@ export const getAdminCategoriesAPI = async (req, res) => {
  */
 export const createCategory = async (req, res) => {
     try {
-        const { name, slug, description, image } = req.body;
+        const { name, slug, description, image, parent_id } = req.body;
         
         if (!name) {
             return res.status(400).json({
@@ -422,7 +422,8 @@ export const createCategory = async (req, res) => {
             name,
             slug,
             description: description || null,
-            image: image || null
+            image: image || null,
+            parent_id: parent_id || null // Přidat podporu pro parent_id
         };
         
         const newCategory = await productsService.addCategory(categoryData);
@@ -457,13 +458,14 @@ export const createCategory = async (req, res) => {
 export const updateAdminCategory = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, slug, description, image } = req.body;
+        const { name, slug, description, image, parent_id } = req.body;
         
         const categoryData = {};
         if (name !== undefined) categoryData.name = name;
         if (slug !== undefined) categoryData.slug = slug;
         if (description !== undefined) categoryData.description = description;
         if (image !== undefined) categoryData.image = image;
+        if (parent_id !== undefined) categoryData.parent_id = parent_id; // Přidat podporu pro parent_id
         
         const updatedCategory = await productsService.updateCategory(id, categoryData);
         
