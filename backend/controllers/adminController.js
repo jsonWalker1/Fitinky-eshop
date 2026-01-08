@@ -3,7 +3,6 @@ import { paths } from '../config/paths.js';
 import path from 'path';
 import * as productsService from '../services/productsService.js';
 import * as userRepo from '../repositories/userRepository.js';
-import * as productRepo from '../repositories/productRepository.js';
 
 /**
  * Controller pro admin rozhraní
@@ -276,37 +275,60 @@ export const deleteProduct = async (req, res) => {
 /**
  * Získá statistiky pro dashboard
  * GET /admin/api/dashboard
- * Používá optimalizované SQL dotazy pro efektivní načítání dat
  */
 export const getDashboardStats = async (req, res) => {
     try {
-        // Načíst statistiky pomocí optimalizovaných SQL dotazů
-        const [productCount, orderStats, userCount, recentOrders, recentProducts] = await Promise.all([
-            productRepo.getProductCount(),
-            userRepo.getOrderStats(),
-            userRepo.getUserCount(),
-            userRepo.getRecentOrders(5),
-            productRepo.getRecentProducts(5)
-        ]);
+        // Získat všechny produkty
+        const products = await productsService.getAllProducts();
+        
+        // Získat všechny objednávky
+        const orders = await userRepo.getAllOrders();
+        const activeOrders = orders.filter(o => 
+            o.status === 'pending' || o.status === 'processing'
+        );
+        
+        // Získat všechny uživatele
+        const users = await userRepo.getAllUsers();
+        
+        // Spočítat tržby dnes
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const todayOrders = orders.filter(o => {
+            const orderDate = new Date(o.createdAt);
+            orderDate.setHours(0, 0, 0, 0);
+            return orderDate.getTime() === today.getTime() && 
+                   (o.status === 'delivered' || o.status === 'shipped');
+        });
+        const todayRevenue = todayOrders.reduce((sum, o) => sum + (parseFloat(o.total) || 0), 0);
+        
+        // Poslední objednávky (5 nejnovějších)
+        const recentOrders = orders
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .slice(0, 5);
+        
+        // Poslední produkty (5 nejnovějších)
+        const recentProducts = products
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .slice(0, 5);
         
         res.json({
             success: true,
             stats: {
                 products: {
-                    total: productCount,
+                    total: products.length,
                     change: 0 // TODO: Implementovat změnu oproti předchozímu období
                 },
                 orders: {
-                    active: orderStats.active,
-                    total: orderStats.total,
+                    active: activeOrders.length,
+                    total: orders.length,
                     change: 0
                 },
                 users: {
-                    total: userCount,
+                    total: users.length,
                     change: 0
                 },
                 revenue: {
-                    today: orderStats.todayRevenue,
+                    today: todayRevenue,
                     change: 0
                 }
             },

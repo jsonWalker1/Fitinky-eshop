@@ -831,46 +831,6 @@ export const deleteCategory = async (id) => {
     }
 };
 
-// ============================================
-// DASHBOARD STATISTICS
-// ============================================
-
-/**
- * Získá počet produktů
- */
-export const getProductCount = async () => {
-    try {
-        const result = await pool.query('SELECT COUNT(*) as count FROM products');
-        return parseInt(result.rows[0].count) || 0;
-    } catch (error) {
-        console.error('Chyba při načítání počtu produktů:', error);
-        throw error;
-    }
-};
-
-/**
- * Získá posledních N produktů pro dashboard
- */
-export const getRecentProducts = async (limit = 5) => {
-    try {
-        const result = await pool.query(`
-            SELECT id, name, created_at
-            FROM products
-            ORDER BY created_at DESC
-            LIMIT $1
-        `, [limit]);
-        
-        return result.rows.map(row => ({
-            id: row.id,
-            name: row.name,
-            createdAt: row.created_at ? new Date(row.created_at).toISOString() : new Date().toISOString()
-        }));
-    } catch (error) {
-        console.error('Chyba při načítání posledních produktů:', error);
-        throw error;
-    }
-};
-
 /**
  * Mapuje SQL řádek na JSON formát (pro kompatibilitu s frontendem)
  */
