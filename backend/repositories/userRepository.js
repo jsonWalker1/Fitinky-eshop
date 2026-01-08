@@ -471,6 +471,76 @@ export const updateOrderStatus = async (orderId, status) => {
 };
 
 // ============================================
+// DASHBOARD STATISTICS
+// ============================================
+
+/**
+ * Získá statistiky objednávek pro dashboard
+ * Vrací: celkový počet, aktivní objednávky, tržby dnes
+ */
+export const getOrderStats = async () => {
+    try {
+        const result = await pool.query(`
+            SELECT 
+                COUNT(*) as total_orders,
+                COUNT(*) FILTER (WHERE status IN ('pending', 'processing')) as active_orders,
+                COALESCE(SUM(total_price) FILTER (
+                    WHERE DATE(created_at) = CURRENT_DATE
+                    AND status IN ('delivered', 'shipped')
+                ), 0) as today_revenue
+            FROM orders
+        `);
+        
+        const row = result.rows[0];
+        return {
+            total: parseInt(row.total_orders) || 0,
+            active: parseInt(row.active_orders) || 0,
+            todayRevenue: parseFloat(row.today_revenue) || 0
+        };
+    } catch (error) {
+        console.error('Chyba při načítání statistik objednávek:', error);
+        throw error;
+    }
+};
+
+/**
+ * Získá počet uživatelů
+ */
+export const getUserCount = async () => {
+    try {
+        const result = await pool.query('SELECT COUNT(*) as count FROM users');
+        return parseInt(result.rows[0].count) || 0;
+    } catch (error) {
+        console.error('Chyba při načítání počtu uživatelů:', error);
+        throw error;
+    }
+};
+
+/**
+ * Získá posledních N objednávek pro dashboard
+ */
+export const getRecentOrders = async (limit = 5) => {
+    try {
+        const result = await pool.query(`
+            SELECT id, created_at, status, total_price
+            FROM orders
+            ORDER BY created_at DESC
+            LIMIT $1
+        `, [limit]);
+        
+        return result.rows.map(row => ({
+            id: row.id,
+            createdAt: row.created_at ? new Date(row.created_at).toISOString() : new Date().toISOString(),
+            status: row.status || 'pending',
+            total: parseFloat(row.total_price) || 0
+        }));
+    } catch (error) {
+        console.error('Chyba při načítání posledních objednávek:', error);
+        throw error;
+    }
+};
+
+// ============================================
 // MAPPING FUNCTIONS
 // ============================================
 
